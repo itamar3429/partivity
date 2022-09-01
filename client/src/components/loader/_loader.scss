@@ -1,0 +1,23 @@
+.loader {
+	display: flex;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	.loader-item {
+		width: 16px;
+		height: 16px;
+		margin: 4px;
+		background: #6e6f81;
+		border-radius: 50%;
+		list-style: none;
+		animation: animation-loading 1.2s infinite;
+
+		&:nth-child(1) {
+			animation-delay: -0.3s;
+		}
+		&:nth-child(2) {
+			animation-delay: -0.15s;
+		}
+	}
+}

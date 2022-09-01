@@ -1,9 +1,10 @@
 .fade-in {
-  animation: fadeIn 0.5s linear;
+  animation: fadeIn 0.5s ease-in;
+  animation-fill-mode: forwards;
 }
 
 .fade-out {
-  animation: fadeOut 0.5s linear;
+  animation: fadeOut 0.5s ease-out;
   animation-fill-mode: forwards;
 }
 

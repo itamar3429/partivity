@@ -1,0 +1,64 @@
+.center-section {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: auto;
+  margin-top: 65px;
+  gap: 25px;
+  width: 90%;
+  flex: 1;
+
+  .text {
+    max-width: 90%;
+    font-family: "Poppins", sans-serif;
+    align-self: flex-start;
+    flex: 2;
+    .title {
+      font-size: 48pt;
+      animation: fadeInOpacity 1s ease-in;
+      z-index: 2;
+      color: rgba(0, 0, 0, 0.657);
+      user-select: none;
+      font-weight: 600;
+      line-height: 55px;
+      @media only screen and (max-width: 800px) {
+        font-size: 38pt;
+      }
+    }
+    .text-content {
+      margin-top: 40px;
+      opacity: 0;
+      animation: fadeInOpacity 1s ease-in;
+      animation-fill-mode: forwards;
+      animation-delay: 1s;
+      color: rgba(71, 71, 71, 0.814);
+    }
+  }
+  .providers-animation {
+    margin: 0;
+    margin-top: 65px;
+    padding: 0;
+    // height: 300px;
+    pointer-events: none;
+    flex: 1;
+    align-self: center;
+  }
+
+  @media only screen and (max-width: 800px) {
+    flex-direction: column;
+    margin-top: 100px;
+
+    .dance-party {
+      height: 300px;
+    }
+  }
+}
+
+@keyframes fadeInOpacity {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

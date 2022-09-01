@@ -1,16 +1,19 @@
 import React from "react";
-import logo from "./logo.svg";
 import { Counter } from "./features/counter/Counter";
-// import "./App.scss";
-import "./components/example.scss";
-import Example from "./components/Example";
+import "./App.scss";
+import { BrowserRouter as Router } from "react-router-dom";
+import AppRoutes from "./components/routes/AppRoutes";
+import Home from "./components/homePage/Home";
+import Template from "./components/template/Template";
 
 function App() {
-  return (
-    <>
-      <Example />
-    </>
-  );
+	return (
+		<Router>
+			<Template>
+				<AppRoutes></AppRoutes>
+			</Template>
+		</Router>
+	);
 }
 
 export default App;

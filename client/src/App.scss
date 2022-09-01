@@ -1,0 +1,21 @@
+@use "./components/loginPage/login";
+@use "./components/dashboard/dashboard";
+@use "./components/homePage/homePage";
+@use "./components/loginResetPage/loginReset";
+@use "./components/signupPage/signupPage";
+@use "./components/template/template.scss";
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-image: linear-gradient(#a6b1e1, #f4eeff);
+	// background-repeat: no-repeat repeat-x;
+	min-height: 100vh;
+	height: fit-content;
+	overflow: auto;
+	min-width: 100%;
+}

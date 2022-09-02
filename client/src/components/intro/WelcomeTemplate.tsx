@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import CustomLink from "../Link";
+import CustomLink from "../helper/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton } from "@mui/material";
 import Lottie from "react-lottie-player";
-import Logo from "../Logo";
-import Loader from "../loader/Loader";
+import Logo from "../helper/Logo";
+import Loader from "../helper/Loader";
 
 function WelcomeTemplate({ children }: React.PropsWithChildren<{}>) {
 	const [show, setShow] = useState(false);
@@ -14,7 +14,9 @@ function WelcomeTemplate({ children }: React.PropsWithChildren<{}>) {
 		useState<Record<string | number, any>>();
 
 	useEffect(() => {
-		import("./ballons-mobile.json").then(setAnimationData);
+		fetch("/lottie/ballons-mobile.json")
+			.then((res) => res.json())
+			.then(setAnimationData);
 	}, []);
 
 	if (!animationData) return <Loader />;

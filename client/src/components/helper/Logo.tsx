@@ -1,11 +1,12 @@
 import React from "react";
-import hat from "../assets/icons/hat.png";
+import hat from "../../assets/icons/hat.png";
 
 type IProps = {
 	fontSize: string | number;
 	letterSpacing: string | number;
 	SpanClass: string;
 	iconClass: string;
+	imgOnly?: boolean;
 };
 
 function Logo({
@@ -13,7 +14,17 @@ function Logo({
 	fontSize,
 	SpanClass,
 	iconClass: imgClass,
+	imgOnly,
 }: IProps) {
+	if (imgOnly)
+		return (
+			<img
+				src={hat}
+				className={imgClass}
+				style={{ height: fontSize }}
+				alt="our app logo."
+			/>
+		);
 	return (
 		<span
 			className={"custom-font " + SpanClass}

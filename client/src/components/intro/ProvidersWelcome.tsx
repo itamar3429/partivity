@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Lottie from "react-lottie-player";
-import WelcomeTemplate from "../welcomeTemplate/WelcomeTemplate";
-import Loader from "../loader/Loader";
-import Logo from "../Logo";
+import WelcomeTemplate from "./WelcomeTemplate";
+import Loader from "../helper/Loader";
+import Logo from "../helper/Logo";
 
 function ProvidersWelcome() {
 	const [animationData, setAnimationData] =
 		useState<Record<string | number, any>>();
 
 	useEffect(() => {
-		import("./providers.json").then(setAnimationData);
+		fetch("/lottie/providers.json")
+			.then((res) => res.json())
+			.then(setAnimationData);
 	}, []);
 
 	if (!animationData) return <Loader />;

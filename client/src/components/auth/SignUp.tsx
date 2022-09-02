@@ -2,7 +2,7 @@ import { ArrowBack } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import CustomLink from "../Link";
+import CustomLink from "../helper/Link";
 
 function SignUp() {
 	const navigate = useNavigate();

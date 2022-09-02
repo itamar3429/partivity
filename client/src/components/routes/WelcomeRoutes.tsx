@@ -1,15 +1,15 @@
 import React from "react";
 import { Route } from "react-router-dom";
-import ProvidersWelcome from "../providersWelcome/ProvidersWelcome";
-import Welcome from "../welcome/Welcome";
+import ProvidersWelcome from "../intro/ProvidersWelcome";
+import Welcome from "../intro/Welcome";
 
 const WelcomeRoutes = () => {
-  return (
-    <>
-      <Route index element={<Welcome />}></Route>
-      <Route path="providers" element={<ProvidersWelcome />}></Route>
-    </>
-  );
+	return (
+		<>
+			<Route index element={<Welcome />}></Route>
+			<Route path="providers" element={<ProvidersWelcome />}></Route>
+		</>
+	);
 };
 
 export default WelcomeRoutes;

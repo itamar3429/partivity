@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "../redux/hooks";
-import { fadeOut, fadeIn } from "../redux/slices/Link.slice";
+import { useDispatch } from "../../redux/hooks";
+import { fadeOut, fadeIn } from "../../redux/slices/link.slice";
 
 type TProps = {
 	to: string;

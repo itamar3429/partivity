@@ -1,2 +1,124 @@
+$green: rgb(0, 183, 0);
+$red: rgb(255, 0, 0);
+$blue: rgb(0, 85, 255);
+$gray: rgb(203, 203, 203);
+
 .input {
+	padding: 10px 15px 10px 10px;
+	font-size: 1.1rem;
+	border-radius: 10px;
+	border: 1px solid gray;
+
+	&:focus-visible {
+		outline: 1px solid black;
+		border: 1px solid rgba(41, 41, 41);
+	}
+
+	&.stretch {
+		width: 100%;
+	}
+}
+
+.button {
+	padding: 10px 30px;
+	font-size: 1.1rem;
+	border-radius: 10px;
+	font-size: initial;
+	cursor: pointer;
+	transition: background-color 0.4s linear;
+
+	&.red {
+		background-color: $red;
+		border: 1px solid darken($color: $red, $amount: 10);
+		color: white;
+		&.outline {
+			background-color: transparent;
+			border: 2px solid $red;
+			color: black;
+			&:hover {
+				border: 2px solid $red;
+			}
+		}
+	}
+	&.green {
+		background-color: $green;
+		border: 1px solid darken($color: $green, $amount: 10);
+		color: white;
+		&.outline {
+			background-color: transparent;
+			border: 2px solid $green;
+			color: black;
+			&:hover {
+				border: 2px solid $green;
+			}
+		}
+	}
+	&.blue {
+		background-color: $blue;
+		border: 1px solid darken($color: $blue, $amount: 10);
+		color: white;
+		&.outline {
+			background-color: transparent;
+			border: 2px solid $blue;
+			color: black;
+			&:hover {
+				border: 2px solid $blue;
+			}
+		}
+	}
+	&.gray {
+		background-color: $gray;
+		border: 1px solid darken($color: $gray, $amount: 20);
+		color: black;
+		&.outline {
+			background-color: transparent;
+			border: 2px solid $gray;
+			color: black;
+			&:hover {
+				border: 2px solid $gray;
+			}
+		}
+	}
+
+	&.stretch {
+		width: 100%;
+		padding: 10px;
+		border-radius: 20px;
+	}
+
+	&:hover {
+		outline: none;
+
+		&.red {
+			background-color: darken($color: $red, $amount: 5);
+			border: 1px solid darken($color: $red, $amount: 15);
+			color: white;
+		}
+		&.green {
+			background-color: darken($color: $green, $amount: 5);
+			border: 1px solid darken($color: $green, $amount: 15);
+			color: white;
+		}
+		&.blue {
+			background-color: darken($color: $blue, $amount: 5);
+			border: 1px solid darken($color: $blue, $amount: 15);
+			color: white;
+		}
+		&.gray {
+			background-color: darken($color: $gray, $amount: 5);
+			border: 1px solid darken($color: $gray, $amount: 15);
+			color: black;
+		}
+	}
+}
+
+.center {
+	width: fit-content;
+	margin: auto;
+}
+
+.link {
+	text-decoration: none;
+	color: initial;
+	cursor: pointer;
 }

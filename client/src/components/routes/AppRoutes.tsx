@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
-import Login from "../login/Login";
-import LoginReset from "../loginResetPage/LoginReset";
-import SignUp from "../signup/SignUp";
+import Login from "../auth/Login";
+import LoginReset from "../auth/LoginReset";
+import SignUp from "../auth/SignUp";
 import WelcomeRoutes from "./WelcomeRoutes";
-import About from "../about/About";
-import Dashboard from "../dashboard/Dashboard";
+import About from "../intro/About";
+import Dashboard from "../main/Dashboard";
 const AppRoutes = () => {
 	return (
 		<Routes>

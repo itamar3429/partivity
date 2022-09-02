@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import Lottie from "react-lottie-player";
-import Loader from "../loader/Loader";
-import WelcomeTemplate from "../welcomeTemplate/WelcomeTemplate";
+import Loader from "../helper/Loader";
+import WelcomeTemplate from "./WelcomeTemplate";
 
 export default function Welcome() {
 	const [animationData, setAnimationData] =
 		useState<Record<string | number, any>>();
 
 	useEffect(() => {
-		import("./dance-party.json").then(setAnimationData);
+		fetch("/lottie/dance-party.json")
+			.then((res) => res.json())
+			.then(setAnimationData);
 	}, []);
 	return (
 		<WelcomeTemplate>

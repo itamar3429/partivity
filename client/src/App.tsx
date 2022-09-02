@@ -2,14 +2,15 @@ import React from "react";
 import "./css/App.scss";
 import { BrowserRouter as Router } from "react-router-dom";
 import AppRoutes from "./components/routes/AppRoutes";
-import Template from "./components/template/Template";
+import { useSelector } from "./redux/hooks";
 
 function App() {
+	const className = useSelector((state) => state.transition.className);
 	return (
 		<Router>
-			<Template>
+			<div className={className}>
 				<AppRoutes></AppRoutes>
-			</Template>
+			</div>
 		</Router>
 	);
 }

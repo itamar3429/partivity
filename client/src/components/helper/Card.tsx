@@ -2,7 +2,7 @@ import React from "react";
 
 type TProps = {
 	title: string;
-	children: React.ReactElement;
+	children: React.ReactNode;
 };
 
 function Card(props: TProps) {

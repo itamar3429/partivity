@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "../../redux/hooks";
 import Logo from "../helper/Logo";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -19,13 +19,19 @@ type TProps = {};
 function Template(props: React.PropsWithChildren<TProps>) {
 	const className = useSelector((state) => state.transition.className);
 	const showNav = useSelector((state) => state.nav.show);
-	const showWide =
-		useSelector((state) => state.nav.showWide) ||
-		document.body.clientWidth < 1000;
+	const [wideMode, setWideMode] = useState(document.body.clientWidth > 1000);
+	const showWide = useSelector((state) => state.nav.showWide) || !wideMode;
 
 	const dispatch = useDispatch();
 	const toggleNav = () => dispatch(toggle());
 	const toggleNavWide = () => dispatch(toggleWide());
+	useEffect(() => {
+		window.addEventListener("resize", () => {
+			const newWideMode = document.body.clientWidth > 1000;
+			setWideMode(newWideMode);
+			console.log("resize");
+		});
+	}, []);
 
 	return (
 		<div className={"template " + className + (!showWide ? " narrow" : "")}>

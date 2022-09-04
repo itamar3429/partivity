@@ -45,6 +45,13 @@ $light-gray: rgb(244, 244, 244);
 				color: $text-color;
 			}
 		}
+
+		&.selected {
+			.nev-item-link {
+				background-color: $item-back-color;
+				color: $text-color;
+			}
+		}
 	}
 }
 
@@ -60,6 +67,12 @@ $light-gray: rgb(244, 244, 244);
 					background-color: white;
 				}
 			}
+
+			&.selected {
+				.nev-item-link {
+					background-color: white;
+				}
+			}
 		}
 	}
 }
@@ -68,7 +81,7 @@ $light-gray: rgb(244, 244, 244);
 	.nav-list-el {
 		&.narrow {
 			padding: 0;
-			padding-top: 5px;
+			padding-top: 10px;
 			.nav-item {
 				.nev-item-link {
 					padding: 0;
@@ -77,6 +90,8 @@ $light-gray: rgb(244, 244, 244);
 					align-items: center;
 					max-height: 50px;
 					min-height: 50px;
+					width: 50px;
+					margin: auto;
 					.icon-only {
 						font-size: 24px;
 						svg {

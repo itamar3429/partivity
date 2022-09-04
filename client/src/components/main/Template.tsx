@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "../../redux/hooks";
 import Logo from "../helper/Logo";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -12,6 +12,7 @@ import MultilineChartIcon from "@mui/icons-material/MultilineChart";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 
 type TProps = {};
 
@@ -53,10 +54,20 @@ function Template(props: React.PropsWithChildren<TProps>) {
 						<NavItem
 							title="dashboard"
 							icon={<MultilineChartIcon />}
+							page="dashboard"
+							to="/"
 						></NavItem>
 						<NavItem
-							title="new party"
+							title="new event"
 							icon={<AddCircleOutlineIcon />}
+							page="event/new"
+							to="/event/new"
+						></NavItem>
+						<NavItem
+							title="providers"
+							icon={<AddBusinessIcon />}
+							page="providers"
+							to="/providers"
 						></NavItem>
 					</NavList>
 				</div>

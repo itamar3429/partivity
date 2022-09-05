@@ -11,7 +11,7 @@ export class Serializer extends PassportSerializer {
     super();
   }
   serializeUser(user: User, done: (err: Error, id: any) => void) {
-    console.log('serializing user:', user);
+    //  console.log('serializing user:', user);
 
     done(null, user.id);
   }
@@ -19,9 +19,9 @@ export class Serializer extends PassportSerializer {
     id: number,
     done: (err: Error, user: Partial<User> | null) => void,
   ) {
-    console.log('deserialize id:', id);
+    //  console.log('deserialize id:', id);
 
-    const user = (await this.authService.userService.getUserById(id)) || {};
+    const user = await this.authService.userService.getUserById(id);
     done(null, user);
   }
 }

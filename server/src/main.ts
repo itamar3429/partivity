@@ -25,6 +25,7 @@ async function bootstrap() {
     cookieSession({
       keys: ['this is a very secret key for the partivity website'],
       maxAge: 60 * 60 * 24 * 1000 * 2,
+      sameSite: 'lax',
     }),
   );
   app.use(passport.initialize());

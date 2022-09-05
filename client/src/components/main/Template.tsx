@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "../../redux/hooks";
+import { useDispatch, useSelector } from "../../app/hooks";
 import Logo from "../helper/Logo";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton } from "@mui/material";
-import { toggle, toggleWide } from "../../redux/slices/nav.slice";
+import { toggle, toggleWide } from "../../app/slices/nav.slice";
 import { Link } from "react-router-dom";
 import NavList from "../helper/NavList";
 import NavItem from "../helper/NavItem";

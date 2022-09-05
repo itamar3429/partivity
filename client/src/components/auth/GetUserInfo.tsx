@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { apiAuth } from "../../api/auth";
-import { useDispatch } from "../../redux/hooks";
-import { setUser } from "../../redux/slices/general.slice";
+import { useDispatch } from "../../app/hooks";
+import { setUser } from "../../app/slices/general.slice";
 
 function GetUserInfo() {
 	const dispatch = useDispatch();
@@ -17,8 +17,9 @@ function GetUserInfo() {
 				);
 			}
 		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-	return <div></div>;
+	return <></>;
 }
 
 export default GetUserInfo;

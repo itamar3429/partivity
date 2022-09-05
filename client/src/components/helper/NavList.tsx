@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "../../redux/hooks";
+import { useSelector } from "../../app/hooks";
 
 function NavList(props: React.PropsWithChildren) {
 	const showWide =

@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { useSelector } from "../../../redux/hooks";
+import { useSelector } from "../../../app/hooks";
 import Loader from "../../helper/Loader";
 
 type TProps = {

@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "../../redux/hooks";
+import { useSelector } from "../../app/hooks";
 
 function ClientsRoutes() {
 	const isConnected = useSelector((state) => state.general.user.connected);

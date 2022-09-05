@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
-import { Route, useNavigate } from "react-router-dom";
-import { useSelector } from "../../redux/hooks";
+import React from "react";
+import { Route } from "react-router-dom";
 import IsProvider from "../auth/authMiddleware/IsProvider";
 import SetPageRender from "../helper/Render";
 import Providers from "../main/Providers";

@@ -3,8 +3,8 @@ import { IconButton } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { apiLogin } from "../../api/auth";
-import { useDispatch } from "../../redux/hooks";
-import { setUser } from "../../redux/slices/general.slice";
+import { useDispatch } from "../../app/hooks";
+import { setUser } from "../../app/slices/general.slice";
 import CustomLink from "../helper/Link";
 
 function Login() {

@@ -3,8 +3,8 @@ import { IconButton } from "@mui/material";
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiLogin, apiRegister } from "../../api/auth";
-import { useDispatch } from "../../redux/hooks";
-import { setUser } from "../../redux/slices/general.slice";
+import { useDispatch } from "../../app/hooks";
+import { setUser } from "../../app/slices/general.slice";
 import CustomLink from "../helper/Link";
 
 function Register() {
@@ -35,7 +35,9 @@ function Register() {
 								if (res.success) {
 									apiLogin(username, password).then((res) => {
 										if (res.success) {
-											dispatch(setUser(res.user));
+											dispatch(
+												setUser({ ...res.user, connected: true })
+											);
 											navigate("/");
 										}
 									});

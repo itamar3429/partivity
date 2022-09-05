@@ -1,6 +1,6 @@
-import React, { ReactNode, useEffect } from "react";
-import { useDispatch, useSelector } from "../../redux/hooks";
-import { setPage } from "../../redux/slices/general.slice";
+import React, { ReactNode } from "react";
+import { useDispatch, useSelector } from "../../app/hooks";
+import { setPage } from "../../app/slices/general.slice";
 
 function SetPage({ page, children }: { page: string; children: ReactNode }) {
 	const dispatch = useDispatch();
@@ -8,7 +8,6 @@ function SetPage({ page, children }: { page: string; children: ReactNode }) {
 	// useEffect(() => {
 	if (currPage !== page) {
 		dispatch(setPage(page));
-		console.log(`setting page to: ${page}`);
 	}
 	// }, []);
 	return <>{children}</>;

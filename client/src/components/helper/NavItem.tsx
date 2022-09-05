@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "../../redux/hooks";
-import { close } from "../../redux/slices/nav.slice";
+import { useDispatch, useSelector } from "../../app/hooks";
+import { close } from "../../app/slices/nav.slice";
 
 type TProps = {
 	to?: string;

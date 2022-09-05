@@ -9,11 +9,15 @@ import ProvidersRoutes from "./ProvidersRoutes";
 import LoginRoutes from "./LoginRoutes";
 import IsNotLogged from "../auth/authMiddleware/IsNotLogged";
 import GetUserInfo from "../auth/GetUserInfo";
+import IsClient from "../auth/authMiddleware/IsClient";
 const AppRoutes = () => {
 	GetUserInfo();
 	return (
 		<Routes>
-			<Route path="/" element={Render(<Dashboard />, "dashboard")} />
+			<Route
+				path="/"
+				element={Render(<Dashboard />, "dashboard", IsClient)}
+			/>
 			<Route path="/welcome">{WelcomeRoutes()}</Route>
 			<Route path="/event">{PartyRoutes()}</Route>
 			<Route path="/providers">{ProvidersRoutes()}</Route>

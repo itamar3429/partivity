@@ -5,10 +5,10 @@ class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'first_name' })
+  @Column({ name: 'first_name', default: null })
   firstName: string;
 
-  @Column({ name: 'last_name' })
+  @Column({ name: 'last_name', default: null })
   lastName: string;
 
   @Column()
@@ -20,7 +20,7 @@ class User {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ default: 'client' })
   role: 'admin' | 'provider' | 'client';
 }
 

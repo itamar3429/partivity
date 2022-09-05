@@ -1,10 +1,10 @@
 import React from "react";
 import { Route } from "react-router-dom";
-import SetPageRender from "../helper/SetPageRender";
+import SetPageRender from "../helper/Render";
 import ProvidersWelcome from "../intro/ProvidersWelcome";
 import Welcome from "../intro/Welcome";
 
-const WelcomeRoutes = () => {
+const WelcomeRoutes = (redirect: string | undefined = undefined) => {
 	return (
 		<>
 			<Route index element={SetPageRender(<Welcome />, "intro")}></Route>

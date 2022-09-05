@@ -1,18 +1,18 @@
 import React from "react";
 import { Route } from "react-router-dom";
-import SetPageRender from "../helper/SetPageRender";
+import IsClient from "../auth/authMiddleware/IsClient";
+import SetPageRender from "../helper/Render";
 import PlanParty from "../main/PlanParty";
 
-const WelcomeRoutes = () => {
+const PartyRoutes = () => {
 	return (
 		<>
-			{/* <Route index element={SetPageRender(<Welcome />, "intro")}></Route> */}
 			<Route
 				path="new"
-				element={SetPageRender(<PlanParty />, "event/new")}
+				element={SetPageRender(<PlanParty />, "event/new", IsClient)}
 			></Route>
 		</>
 	);
 };
 
-export default WelcomeRoutes;
+export default PartyRoutes;

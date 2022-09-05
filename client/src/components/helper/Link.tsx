@@ -1,7 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "../../redux/hooks";
-import { fadeOut, fadeIn } from "../../redux/slices/link.slice";
+import {
+	fadeOut,
+	fadeIn,
+	clearTransitionThunk,
+} from "../../redux/slices/link.slice";
 
 type TProps = {
 	to: string;
@@ -30,6 +34,7 @@ const CustomLink = (props: React.PropsWithChildren<TProps>) => {
 					dispatch(fadeOut());
 					setTimeout(() => {
 						dispatch(fadeIn());
+						dispatch(clearTransitionThunk(500));
 						navigate(props.to);
 					}, 500);
 				}

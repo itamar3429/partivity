@@ -1,33 +1,28 @@
 import { Route, Routes } from "react-router-dom";
-import Login from "../auth/Login";
-import LoginReset from "../auth/LoginReset";
-import SignUp from "../auth/SignUp";
+import Register from "../auth/Register";
 import WelcomeRoutes from "./WelcomeRoutes";
 import About from "../intro/About";
 import Dashboard from "../main/Dashboard";
-import SetPageRender from "../helper/SetPageRender";
+import Render from "../helper/Render";
 import PartyRoutes from "./PartyRoutes";
+import ProvidersRoutes from "./ProvidersRoutes";
+import LoginRoutes from "./LoginRoutes";
+import IsNotLogged from "../auth/authMiddleware/IsNotLogged";
+import GetUserInfo from "../auth/GetUserInfo";
 const AppRoutes = () => {
+	GetUserInfo();
 	return (
 		<Routes>
-			<Route path="/" element={SetPageRender(<Dashboard />, "dashboard")} />
+			<Route path="/" element={Render(<Dashboard />, "dashboard")} />
 			<Route path="/welcome">{WelcomeRoutes()}</Route>
 			<Route path="/event">{PartyRoutes()}</Route>
-			<Route path="/login">
-				<Route index element={SetPageRender(<Login />, "login")} />
-				<Route
-					path="reset"
-					element={SetPageRender(<LoginReset />, "login/reset")}
-				/>
-			</Route>
+			<Route path="/providers">{ProvidersRoutes()}</Route>
+			<Route path="/login">{LoginRoutes()}</Route>
 			<Route
 				path="/register"
-				element={SetPageRender(<SignUp />, "register")}
+				element={Render(<Register />, "register", IsNotLogged)}
 			/>
-			<Route
-				path="about"
-				element={SetPageRender(<About />, "intro/about")}
-			/>
+			<Route path="about" element={Render(<About />, "intro/about")} />
 		</Routes>
 	);
 };

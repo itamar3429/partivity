@@ -1,12 +1,23 @@
 import { ArrowBack } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiLogin, apiRegister } from "../../api/auth";
+import { useDispatch } from "../../redux/hooks";
+import { setUser } from "../../redux/slices/general.slice";
 import CustomLink from "../helper/Link";
 
-function SignUp() {
+function Register() {
 	const navigate = useNavigate();
 	const content = useRef<HTMLDivElement>(null);
+
+	const [username, setUsername] = useState("");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [verifyPass, setVerifyPass] = useState("");
+	// const [alert, setAlert] = useState("");
+	const dispatch = useDispatch();
+
 	return (
 		<div id="register-container">
 			<CustomLink to="/welcome" className="back-icon">
@@ -19,6 +30,18 @@ function SignUp() {
 					className="register-form right"
 					onSubmit={(e) => {
 						e.preventDefault();
+						if (password === verifyPass) {
+							apiRegister(username, email, password).then((res) => {
+								if (res.success) {
+									apiLogin(username, password).then((res) => {
+										if (res.success) {
+											dispatch(setUser(res.user));
+											navigate("/");
+										}
+									});
+								}
+							});
+						}
 					}}
 				>
 					<h1>Sign Up</h1>
@@ -26,21 +49,35 @@ function SignUp() {
 						className="form-input"
 						type="text"
 						placeholder="Username"
+						value={username}
+						onChange={(e) => setUsername(e.currentTarget.value)}
+						pattern="^[^ ]*$"
 					/>
 					<input
 						className="form-input"
 						type={"email"}
 						placeholder="Email"
+						value={email}
+						onChange={(e) => setEmail(e.currentTarget.value)}
 					/>
 					<input
 						className="form-input"
 						type="password"
 						placeholder="Password"
+						value={password}
+						onChange={(e) => setPassword(e.currentTarget.value)}
+						pattern="^[0-9a-zA-Z]{6,20}$"
+						title={`password can contain digits letters and capital letters
+and needs to be between and 20 digits long`}
 					/>
 					<input
 						className="form-input"
 						type="password"
 						placeholder="Confirm password"
+						value={verifyPass}
+						onChange={(e) => setVerifyPass(e.currentTarget.value)}
+						pattern={`^${password}$`}
+						title={`passwords do not match`}
 					/>
 					<button className="submit-btn" type="submit">
 						SIGN UP
@@ -69,4 +106,4 @@ function SignUp() {
 	);
 }
 
-export default SignUp;
+export default Register;

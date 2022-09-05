@@ -1,12 +1,19 @@
 import { ArrowBack } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { apiLogin } from "../../api/auth";
+import { useDispatch } from "../../redux/hooks";
+import { setUser } from "../../redux/slices/general.slice";
 import CustomLink from "../helper/Link";
 
 function Login() {
+	const dispatch = useDispatch();
+
 	const content = useRef<HTMLDivElement>(null);
 	const navigate = useNavigate();
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
 	return (
 		<div id="login-container">
 			<CustomLink to="/welcome" className="back-icon">
@@ -19,6 +26,12 @@ function Login() {
 					className="login-form left"
 					onSubmit={(e) => {
 						e.preventDefault();
+						apiLogin(username, password).then((res) => {
+							if (res.success) {
+								dispatch(setUser({ ...res.user, connected: true }));
+								navigate("/");
+							}
+						});
 					}}
 				>
 					<h1>Log in</h1>
@@ -26,11 +39,17 @@ function Login() {
 						className="form-input"
 						type="text"
 						placeholder="Username"
+						required
+						value={username}
+						onChange={(e) => setUsername(e.currentTarget.value)}
 					/>
 					<input
 						className="form-input"
 						type="password"
 						placeholder="Password"
+						required
+						value={password}
+						onChange={(e) => setPassword(e.currentTarget.value)}
 					/>
 					<Link to={"/login/reset"} className="link">
 						forgot your password?

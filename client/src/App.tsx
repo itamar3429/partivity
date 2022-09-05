@@ -6,6 +6,7 @@ import { useSelector } from "./redux/hooks";
 
 function App() {
 	const className = useSelector((state) => state.transition.className);
+
 	return (
 		<Router>
 			<div className={className}>

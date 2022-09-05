@@ -5,7 +5,7 @@ export const navSlice = createSlice({
 		show: false,
 		showWide: true,
 	},
-	name: "Transition",
+	name: "NavBar",
 	reducers: {
 		open(state) {
 			state.show = true;

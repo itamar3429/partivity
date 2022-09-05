@@ -1,0 +1,44 @@
+.row {
+	display: flex;
+
+	&.center {
+		justify-content: center;
+	}
+
+	&.v-center {
+		align-items: center;
+	}
+}
+
+.col {
+	width: 100%;
+}
+
+.col-3 {
+	width: 25%;
+}
+
+.col-6 {
+	width: 50%;
+}
+.col-9 {
+	width: 75%;
+}
+.col-12 {
+	width: 100%;
+}
+
+@media only screen and (max-width: 500px) {
+	.col-sm-3 {
+		width: 25%;
+	}
+	.col-sm-6 {
+		width: 50%;
+	}
+	.col-sm-9 {
+		width: 75%;
+	}
+	.col-sm-12 {
+		width: 100%;
+	}
+}

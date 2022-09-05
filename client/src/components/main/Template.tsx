@@ -14,6 +14,10 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import PostAddIcon from "@mui/icons-material/PostAdd";
+import ForProviders from "../auth/authExclude/ForProviders";
+import ForClient from "../auth/authExclude/ForClient";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import Filler from "../helper/Filler";
 
 type TProps = {};
 
@@ -72,22 +76,28 @@ function Template(props: React.PropsWithChildren<TProps>) {
 							page="event/new"
 							to="/event/new"
 						></NavItem>
-						{role === "provider" && (
-							<>
-								<NavItem
-									title="providers"
-									icon={<AddBusinessIcon />}
-									page="providers"
-									to="/providers"
-								></NavItem>
-								<NavItem
-									title="add service"
-									icon={<PostAddIcon />}
-									page="providers/add"
-									to="/providers/add"
-								></NavItem>
-							</>
-						)}
+						<ForProviders>
+							<NavItem
+								title="providers"
+								icon={<AddBusinessIcon />}
+								page="providers"
+								to="/providers"
+							></NavItem>
+							<NavItem
+								title="add service"
+								icon={<PostAddIcon />}
+								page="providers/add"
+								to="/providers/add"
+							></NavItem>
+						</ForProviders>
+						<ForClient strict>
+							<NavItem
+								title="become provider"
+								icon={<PersonAddIcon />}
+								page="provider/join"
+								to="/provider/join"
+							></NavItem>
+						</ForClient>
 					</NavList>
 				</div>
 				<div className="nav-btn">
@@ -114,7 +124,11 @@ function Template(props: React.PropsWithChildren<TProps>) {
 					</div>
 					<div className="header-right">user menu</div>
 				</div>
-				<div className="page-content">{props.children}</div>
+				<div className="page-content">
+					<Filler></Filler>
+					{props.children}
+					<Filler></Filler>
+				</div>
 			</div>
 		</div>
 	);

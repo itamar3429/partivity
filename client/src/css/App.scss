@@ -1,17 +1,17 @@
+@use "./elements";
+@use "./animations";
+@use "./grid";
 @use "./components/login";
 @use "./components/dashboard";
 @use "./components/welcome";
-@use "./components/loginReset";
 @use "./components/signupPage";
 @use "./components/template.scss";
 @use "./components/welcome_template";
 @use "./components/proviers_welcome";
 @use "./components/about";
-@use "./components/loader";
-@use "./components/card";
-@use "./elements";
-@use "./animations";
 @use "./components/nav";
+@use "./components/helpers";
+@use "./components/providers/i";
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap");
 @import "https://fonts.googleapis.com/css?family=Raleway";

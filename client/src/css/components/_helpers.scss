@@ -1,0 +1,67 @@
+// ---    CARD    ---
+
+.card {
+	background-color: white;
+	border-radius: 10px;
+	width: 90%;
+	margin: auto;
+	padding: 0 10px;
+	.card-header {
+		padding: 10px 15px 4px;
+		border-bottom: 2px solid #f1f1f1;
+	}
+	.card-body {
+	}
+
+	.card-border {
+		border-bottom: 2px solid #f1f1f1;
+	}
+}
+
+// ===    CARD END   ===
+
+// ---    LOGIN RESET    ---
+
+.reset-container {
+	width: 70%;
+	// min-height: 90vh;
+	margin: auto;
+	margin-top: 100px;
+	max-width: 550px;
+}
+
+@media only screen and (max-width: 550px) {
+	.reset-container {
+		width: 97%;
+	}
+}
+
+// ===    LOGIN RESET END    ===
+
+// ---    LOADER    ---
+
+.loader {
+	display: flex;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	.loader-item {
+		width: 16px;
+		height: 16px;
+		margin: 4px;
+		background: #6e6f81;
+		border-radius: 50%;
+		list-style: none;
+		animation: animation-loading 1.2s infinite;
+
+		&:nth-child(1) {
+			animation-delay: -0.3s;
+		}
+		&:nth-child(2) {
+			animation-delay: -0.15s;
+		}
+	}
+}
+
+// ===    LOADER END   ===

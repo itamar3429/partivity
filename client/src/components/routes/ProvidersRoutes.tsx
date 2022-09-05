@@ -2,7 +2,8 @@ import React from "react";
 import { Route } from "react-router-dom";
 import IsProvider from "../auth/authMiddleware/IsProvider";
 import SetPageRender from "../helper/Render";
-import Providers from "../main/Providers";
+import AddService from "../main/providers/AddService";
+import Providers from "../main/providers/Providers";
 
 const WelcomeRoutes = () => {
 	return (
@@ -13,7 +14,7 @@ const WelcomeRoutes = () => {
 			></Route>
 			<Route
 				path="add"
-				element={SetPageRender(<Providers />, "providers/add", IsProvider)}
+				element={SetPageRender(<AddService />, "providers/add", IsProvider)}
 			></Route>
 		</>
 	);

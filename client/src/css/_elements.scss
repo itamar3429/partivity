@@ -6,12 +6,12 @@ $gray: rgb(203, 203, 203);
 .input {
 	padding: 10px 15px 10px 10px;
 	font-size: 1.1rem;
-	border-radius: 10px;
-	border: 1px solid gray;
+	border-radius: 15px;
+	border: 1px solid #e5e5e5;
 
 	&:focus-visible {
-		outline: 1px solid black;
-		border: 1px solid rgba(41, 41, 41);
+		outline: 1px solid darken($color: #e5e5e5, $amount: 15);
+		border: 1px solid darken($color: #e5e5e5, $amount: 10);
 	}
 
 	&.stretch {

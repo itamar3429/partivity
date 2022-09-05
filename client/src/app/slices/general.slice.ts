@@ -5,12 +5,14 @@ type TAction<T> = {
 	payload: T;
 };
 
-type TUser = {
+export type TRole = "client" | "provider" | "admin";
+
+export type TUser = {
 	username: string;
 	firstName: string | null;
 	lastName: string | null;
 	email: string;
-	role: "client" | "provider" | "admin";
+	role: TRole;
 	connected: boolean;
 };
 

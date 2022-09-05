@@ -11,6 +11,8 @@ function LoginReset() {
 						display: "flex",
 						flexDirection: "column",
 						gap: 30,
+						paddingTop: 40,
+						paddingBottom: 40,
 					}}
 					onSubmit={(e) => {
 						e.preventDefault();
@@ -27,7 +29,7 @@ function LoginReset() {
 						<input
 							type="submit"
 							value="Reset"
-							className="button red stretch outline"
+							className="button green stretch outline"
 						/>
 					</div>
 				</form>

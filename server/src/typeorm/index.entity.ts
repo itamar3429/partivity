@@ -7,6 +7,7 @@ import ServiceImages from './images.entity';
 import LocationService from './location.entity';
 import MusicService from './music.entity';
 import PartyPlan from './party.entity';
+import Service from './services.entity';
 import User from './users.entity';
 
 export const entitiesArr = [
@@ -18,6 +19,7 @@ export const entitiesArr = [
   ServiceImages,
   ServiceAvailability,
   PartyPlan,
+  Service,
 ];
 
 export const entitiesObj = {
@@ -29,7 +31,9 @@ export const entitiesObj = {
   ServiceImages,
   ServiceAvailability,
   PartyPlan,
+  Service,
 };
+console.log(mysqlConfig);
 
 export const OrmForRoot = TypeOrmModule.forRoot({
   type: 'mysql',
@@ -38,11 +42,12 @@ export const OrmForRoot = TypeOrmModule.forRoot({
   host: mysqlConfig.host,
   port: mysqlConfig.port,
   database: mysqlConfig.database,
+  //   ssl: mysqlConfig.database,
   ssl: {
     rejectUnauthorized: false,
   },
   entities: entitiesArr,
-  synchronize: true,
+  synchronize: false,
 });
 
 export const ormForFeatureAll = TypeOrmModule.forFeature(entitiesArr);

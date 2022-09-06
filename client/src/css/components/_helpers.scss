@@ -2,12 +2,12 @@
 
 .card {
 	background-color: white;
-	border-radius: 10px;
+	border-radius: 19px;
 	width: 90%;
 	margin: auto;
 	padding: 0 10px;
 	.card-header {
-		padding: 10px 15px 4px;
+		padding: 20px 15px 20px 30px;
 		border-bottom: 2px solid #f1f1f1;
 	}
 	.card-body {
@@ -15,6 +15,13 @@
 
 	.card-border {
 		border-bottom: 2px solid #f1f1f1;
+	}
+
+	&.mar-top {
+		margin-top: 50px;
+	}
+	&.mar-bottom {
+		margin-bottom: 40px;
 	}
 }
 

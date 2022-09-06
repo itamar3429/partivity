@@ -1,3 +1,6 @@
 export const api = {
-	host: process.env.NODE_ENV === "production" ? "" : "//localhost:5000",
+	host:
+		process.env.NODE_ENV === "production"
+			? "//production.host"
+			: "//localhost:5000",
 };

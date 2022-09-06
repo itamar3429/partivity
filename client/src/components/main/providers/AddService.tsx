@@ -9,9 +9,12 @@ import {
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import addService from "../../../api/providers/addService";
 import Card from "../../helper/Card";
 import Filler from "../../helper/Filler";
 import Template from "../Template";
+export const services = ["location", "music", "food", "general"] as const;
 
 function AddService() {
 	const [service, setService] = useState(0);
@@ -22,8 +25,9 @@ function AddService() {
 	const [country, setCountry] = useState("");
 	const [city, setCity] = useState("");
 	const [address, setAddress] = useState("");
+	const [name, setName] = useState("");
 
-	const services = ["location", "music", "food", "general"];
+	const navigate = useNavigate();
 
 	const showCapacity = ["location", "general"].includes(services[service]);
 	const showAddress = ["location"].includes(services[service]);
@@ -33,6 +37,23 @@ function AddService() {
 				<form
 					onSubmit={(e) => {
 						e.preventDefault();
+						const chosenService = services[service];
+						addService({
+							description,
+							service: chosenService,
+							serviceType: type,
+							title,
+							capacity: showCapacity ? capacity : undefined,
+							address: showAddress ? address : undefined,
+							city: showAddress ? city : undefined,
+							country: showAddress ? country : undefined,
+							name: chosenService !== "location" ? name : undefined,
+						}).then((res) => {
+							if (res.success && res.service?.id) {
+								const { id } = res.service;
+								navigate("/providers/edit/images/" + id);
+							}
+						});
 					}}
 				>
 					<div
@@ -91,23 +112,49 @@ function AddService() {
 									/>
 								)}
 							</Stack>
-
-							<TextField
-								label="Service Type"
-								placeholder="Service Specific Type"
-								value={type}
-								style={{ width: "300px", minWidth: "200px" }}
-								onChange={(e) => {
-									const val = e.currentTarget.value;
-									setType(val);
+							<Stack
+								spacing={0}
+								direction={"row"}
+								style={{
+									flexWrap: "wrap",
+									gap: 25,
 								}}
-								inputProps={{
-									inputMode: "text",
-									type: "text",
-								}}
-								name="type"
-								required
-							/>
+							>
+								{services[service] !== "location" && (
+									<TextField
+										label="business name"
+										placeholder="name of your business"
+										value={name}
+										style={{ width: 300, minWidth: 200 }}
+										onChange={(e) => {
+											const val = e.currentTarget.value;
+											setName(val);
+										}}
+										inputProps={{
+											inputMode: "text",
+											type: "text",
+										}}
+										name="type"
+										required={services[service] !== "general"}
+									/>
+								)}
+								<TextField
+									label="Service Type"
+									placeholder="Service Specific Type"
+									value={type}
+									style={{ width: "300px", minWidth: "200px" }}
+									onChange={(e) => {
+										const val = e.currentTarget.value;
+										setType(val);
+									}}
+									inputProps={{
+										inputMode: "text",
+										type: "text",
+									}}
+									name="type"
+									required
+								/>
+							</Stack>
 							<TextField
 								label="Title"
 								placeholder="Title"

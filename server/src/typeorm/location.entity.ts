@@ -17,6 +17,9 @@ class LocationService {
   userId: number;
 
   @Column()
+  country: string;
+
+  @Column()
   city: string;
 
   @Column()

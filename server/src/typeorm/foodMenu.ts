@@ -8,7 +8,7 @@ import {
 import Service from './services.entity';
 
 @Entity()
-class ServiceImages {
+class serviceMenu {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -16,17 +16,17 @@ class ServiceImages {
   @JoinColumn({ name: 'service_id' })
   serviceId: number;
 
-  //   @Column({ name: 'service_id' })
-  //   serviceId: number;
+  @Column({ nullable: false })
+  title: string;
 
-  @Column()
-  serviceName: 'music' | 'general' | 'location' | 'food';
+  @Column({ nullable: false })
+  description: string;
+
+  @Column({ nullable: false })
+  price: number;
 
   @Column()
   image: string;
-
-  @Column()
-  role: string;
 }
 
-export default ServiceImages;
+export default serviceMenu;

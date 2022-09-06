@@ -1,5 +1,5 @@
-import { config } from 'dotenv';
-config();
+// import { config } from 'dotenv';
+// config();
 
 export const mysqlConfig = {
   username: process.env.MYSQL_USERNAME,
@@ -7,4 +7,10 @@ export const mysqlConfig = {
   host: process.env.MYSQL_HOST,
   port: Number(process.env.MYSQL_PORT),
   database: process.env.MYSQL_DATABASE,
+  ssl:
+    process.env.MYSQL_PROTOCOL === 'DEV'
+      ? false
+      : {
+          rejectUnauthorized: false,
+        },
 };

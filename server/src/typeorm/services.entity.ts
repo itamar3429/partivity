@@ -15,7 +15,7 @@ class Service {
 
   @ManyToOne(() => User, (user) => user.id, { cascade: true })
   @JoinColumn({ name: 'user_id' })
-  @Column({ nullable: false })
+  @Column({ nullable: false, name: 'user_id' })
   userId: number;
 
   @Column({ type: 'char', length: 100 })

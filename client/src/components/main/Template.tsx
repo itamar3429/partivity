@@ -50,7 +50,7 @@ function Template(props: React.PropsWithChildren<TProps>) {
 					display: "block",
 				}}
 			></span>
-			<div className={"nav" + (showNav ? " show" : "")}>
+			<div className={"nav-bar" + (showNav ? " show" : "")}>
 				<Link to={"/"} className="link">
 					<div className="nav-icon">
 						<Logo

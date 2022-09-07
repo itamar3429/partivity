@@ -11,7 +11,7 @@
 @use "./components/about";
 @use "./components/nav";
 @use "./components/helpers";
-@use "./components/providers/i";
+@use "./components/providers/index";
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap");
 @import "https://fonts.googleapis.com/css?family=Raleway";

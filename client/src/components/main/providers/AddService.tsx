@@ -94,6 +94,7 @@ function AddService() {
 										const val = Number(select.target.value);
 										setService(val);
 									}}
+									className="add-service-input"
 									select
 									label="Service"
 									name="service"
@@ -114,6 +115,7 @@ function AddService() {
 										placeholder="Capacity"
 										value={capacity}
 										style={{ minWidth: 200 }}
+										className="add-service-input"
 										onChange={(e) => {
 											const val = Number(e.currentTarget.value);
 											setCapacity(val || 0);
@@ -141,6 +143,7 @@ function AddService() {
 										placeholder="name of your business"
 										value={name}
 										style={{ width: 300, minWidth: 200 }}
+										className="add-service-input"
 										onChange={(e) => {
 											const val = e.currentTarget.value;
 											setName(val);
@@ -158,6 +161,7 @@ function AddService() {
 									placeholder="Service Specific Type"
 									value={type}
 									style={{ width: "300px", minWidth: "200px" }}
+									className="add-service-input"
 									onChange={(e) => {
 										const val = e.currentTarget.value;
 										setType(val);
@@ -177,6 +181,7 @@ function AddService() {
 								placeholder="Title"
 								value={title}
 								style={{ width: "90%", minWidth: "200px" }}
+								className="add-service-input"
 								onChange={(e) => {
 									const val = e.currentTarget.value;
 									setTitle(val);
@@ -196,6 +201,7 @@ function AddService() {
 									placeholder="Description"
 									value={description}
 									style={{ width: "90%", minWidth: "200px" }}
+									className="add-service-input"
 									onChange={(e) => {
 										const val = e.currentTarget.value;
 										setDescription(val);
@@ -224,6 +230,7 @@ function AddService() {
 										left: 0,
 										zIndex: -1,
 									}}
+									className="add-service-input"
 									inputProps={{
 										inputMode: "text",
 										type: "text",
@@ -269,6 +276,7 @@ function AddService() {
 										inputMode: "text",
 										type: "text",
 									}}
+									className="add-service-input"
 									name="country"
 									required
 								/>
@@ -285,6 +293,7 @@ function AddService() {
 										inputMode: "text",
 										type: "text",
 									}}
+									className="add-service-input"
 									name="city"
 									required
 								/>
@@ -301,6 +310,7 @@ function AddService() {
 										inputMode: "text",
 										type: "text",
 									}}
+									className="add-service-input"
 									name="address"
 									required
 								/>

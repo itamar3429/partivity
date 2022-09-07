@@ -32,7 +32,13 @@ export class ProvidersService {
   }
 
   async getServices(userId: number) {
-    const services = await this.serviceRepo.findBy({ userId });
+    const services = await this.serviceRepo.query(
+      `SELECT services.*, JSON_ARRAYAGG(obj_id) AS images FROM services 
+		LEFT JOIN service_images ON service_id = services.id
+		WHERE user_id = ?
+		GROUP BY services.id`,
+      [userId],
+    );
 
     return services;
   }

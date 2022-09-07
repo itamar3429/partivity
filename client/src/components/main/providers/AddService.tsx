@@ -1,18 +1,20 @@
-import { Block } from "@mui/icons-material";
+// import { Block } from "@mui/icons-material";
 import {
 	DialogTitle,
-	FormControl,
-	InputLabel,
+	// FormControl,
+	// InputLabel,
+	// Select,
 	MenuItem,
-	Select,
 	TextField,
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import addService from "../../../api/providers/addService";
+import { useDispatch } from "../../../app/hooks";
 import Card from "../../helper/Card";
-import Filler from "../../helper/Filler";
+import { TransitionRedirect } from "../../helper/Link";
+// import Filler from "../../helper/Filler";
 import Template from "../Template";
 export const services = ["location", "music", "food", "general"] as const;
 
@@ -26,17 +28,25 @@ function AddService() {
 	const [city, setCity] = useState("");
 	const [address, setAddress] = useState("");
 	const [name, setName] = useState("");
+	const [loading, setLoading] = useState(false);
 
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const showCapacity = ["location", "general"].includes(services[service]);
 	const showAddress = ["location"].includes(services[service]);
+
 	return (
 		<Template>
-			<Card title="add a service" className="add-service-card">
+			<Card
+				title="add a service"
+				className="add-service-card"
+				loader={loading}
+			>
 				<form
 					onSubmit={(e) => {
 						e.preventDefault();
+						setLoading(true);
 						const chosenService = services[service];
 						addService({
 							description,
@@ -51,8 +61,13 @@ function AddService() {
 						}).then((res) => {
 							if (res.success && res.service?.id) {
 								const { id } = res.service;
-								navigate("/providers/edit/images/" + id);
+								TransitionRedirect(
+									"/providers/edit/images/" + id,
+									dispatch,
+									navigate
+								);
 							}
+							setLoading(false);
 						});
 					}}
 				>
@@ -150,6 +165,8 @@ function AddService() {
 									inputProps={{
 										inputMode: "text",
 										type: "text",
+										pattern: ".{4,}",
+										title: "required. at least 4 characters",
 									}}
 									name="type"
 									required
@@ -167,27 +184,58 @@ function AddService() {
 								inputProps={{
 									inputMode: "text",
 									type: "text",
+									pattern: ".{5,}",
+									title: "required. at least 5 characters",
 								}}
 								name="title"
 								required
 							/>
-							<TextField
-								label="Description"
-								placeholder="Description"
-								value={description}
-								style={{ width: "90%", minWidth: "200px" }}
-								onChange={(e) => {
-									const val = e.currentTarget.value;
-									setDescription(val);
-								}}
-								inputProps={{
-									inputMode: "text",
-									type: "text",
-								}}
-								name="description"
-								required
-								multiline
-							/>
+							<div style={{ position: "relative" }}>
+								<TextField
+									label="Description"
+									placeholder="Description"
+									value={description}
+									style={{ width: "90%", minWidth: "200px" }}
+									onChange={(e) => {
+										const val = e.currentTarget.value;
+										setDescription(val);
+									}}
+									inputProps={{
+										inputMode: "text",
+										type: "text",
+										pattern: ".{15,}",
+										title: "required. at least 15 characters",
+										required: true,
+									}}
+									name="description"
+									required
+									multiline
+								/>
+								<TextField
+									value={description}
+									style={{
+										opacity: 0,
+										overflow: "hidden",
+										marginTop: 0,
+										position: "absolute",
+										width: "100%",
+										minWidth: "100%",
+										bottom: 0,
+										left: 0,
+										zIndex: -1,
+									}}
+									inputProps={{
+										inputMode: "text",
+										type: "text",
+										pattern: ".{15,}",
+										title: "required. at least 15 characters",
+										hidden: true,
+									}}
+									name="description"
+									required
+									hidden
+								/>
+							</div>
 						</Stack>
 					</div>
 					{showAddress && (

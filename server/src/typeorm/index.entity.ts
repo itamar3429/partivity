@@ -47,7 +47,7 @@ export const OrmForRoot = TypeOrmModule.forRoot({
     rejectUnauthorized: false,
   },
   entities: entitiesArr,
-  synchronize: false,
+  synchronize: true,
 });
 
 export const ormForFeatureAll = TypeOrmModule.forFeature(entitiesArr);

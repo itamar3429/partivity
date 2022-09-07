@@ -14,6 +14,20 @@ type TProps = {
 	onClick?: Function;
 };
 
+export const TransitionRedirect = (
+	to: any,
+	dispatch: any,
+	navigate: any,
+	ms = 500
+) => {
+	dispatch(fadeOut());
+	setTimeout(() => {
+		dispatch(fadeIn());
+		dispatch(clearTransitionThunk(ms));
+		navigate(to);
+	}, ms);
+};
+
 const CustomLink = (props: React.PropsWithChildren<TProps>) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -31,12 +45,7 @@ const CustomLink = (props: React.PropsWithChildren<TProps>) => {
 				const isDiff = props.to !== pathname && props.to !== href;
 
 				if (isDiff) {
-					dispatch(fadeOut());
-					setTimeout(() => {
-						dispatch(fadeIn());
-						dispatch(clearTransitionThunk(500));
-						navigate(props.to);
-					}, 500);
+					TransitionRedirect(props.to, dispatch, navigate);
 				}
 			}}
 		>

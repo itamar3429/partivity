@@ -3,6 +3,7 @@ version: "3.4"
 services:
    db:
       image: mysql:latest
+      command: --authentication_policy=mysql_native_password
       restart: always
       environment:
          MYSQL_ROOT_PASSWORD: pass
@@ -12,7 +13,17 @@ services:
       ports:
          - 3306:3306
       volumes: # not working need to checkout why that is
-         - ./init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+         - ./init:/docker-entrypoint-initdb.d
+   s3:
+      image: minio/minio
+      ports:
+         - "9000:9000"
+      volumes:
+         - ~/volumes/partivity/minio:/data
+      environment:
+         MINIO_ACCESS_KEY: minio_secret_key
+         MINIO_SECRET_KEY: minio_secret_key
+      command: server /data
    static:
       image: partivity-static
       build:
@@ -38,6 +49,10 @@ services:
          MYSQL_USERNAME: user
          MYSQL_PORT: 3306
          MYSQL_PROTOCOL: DEV
+         MINIO_ACCESS_KEY: minio_secret_key
+         MINIO_SECRET_KEY: minio_secret_key
+         MINIO_HOST: s3
+         MINIO_PORT: 9000
       ports:
          - 5000:5000
       volumes:

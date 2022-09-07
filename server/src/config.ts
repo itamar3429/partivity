@@ -14,3 +14,11 @@ export const mysqlConfig = {
           rejectUnauthorized: false,
         },
 };
+
+export const minioConfig = {
+  accessKey: process.env.MINIO_ACCESS_KEY,
+  secretKey: process.env.MINIO_SECRET_KEY,
+  host: process.env.MINIO_HOST,
+  port: process.env.MINIO_PORT,
+  ssl: process.env.NODE_ENV == 'production',
+};

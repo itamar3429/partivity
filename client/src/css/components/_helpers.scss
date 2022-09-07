@@ -11,6 +11,34 @@
 		border-bottom: 2px solid #f1f1f1;
 	}
 	.card-body {
+		position: relative;
+
+		&.card-loader {
+			pointer-events: none;
+		}
+
+		.card-loader-container {
+			position: absolute;
+			background-color: rgba(5, 5, 5, 0.377);
+			height: 100%;
+			width: calc(100% + 20px);
+			margin-left: -10px;
+			display: block;
+			pointer-events: none;
+			z-index: 10;
+			cursor: grab;
+			border-bottom-right-radius: 19px;
+			border-bottom-left-radius: 19px;
+			opacity: 1;
+			animation: fadeIn 1s ease-in;
+
+			.card-loader-inner {
+				position: relative;
+				height: 100%;
+				width: 100%;
+				display: block;
+			}
+		}
 	}
 
 	.card-border {

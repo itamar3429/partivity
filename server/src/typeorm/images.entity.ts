@@ -14,19 +14,17 @@ class ServiceImages {
 
   @ManyToOne(() => Service, (service) => service.id, { cascade: true })
   @JoinColumn({ name: 'service_id' })
+  @Column({ name: 'service_id' })
   serviceId: number;
-
-  //   @Column({ name: 'service_id' })
-  //   serviceId: number;
-
-  @Column()
-  serviceName: 'music' | 'general' | 'location' | 'food';
 
   @Column()
   image: string;
 
-  @Column()
-  role: string;
+  @Column({ nullable: false, name: 'obj_id' })
+  objId: string;
+
+  @Column({ name: 'file_ext' })
+  fileExt: string;
 }
 
 export default ServiceImages;

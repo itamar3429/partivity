@@ -4,6 +4,7 @@ import { AppModule } from './app.module';
 // import expressSession from 'express-session';
 import cookieSession from 'cookie-session';
 import cors from 'cors';
+import { json, raw } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,14 +14,6 @@ async function bootstrap() {
       origin: true,
     }),
   );
-  //   app.use(
-  //     expressSession({
-  //       secret: 'this is a very secret key for the partivity website',
-  //       cookie: { maxAge: 60 * 60 * 24 * 1000 * 2 },
-  //       resave: false,
-  //       saveUninitialized: true,
-  //     }),
-  //   );
   app.use(
     cookieSession({
       keys: ['this is a very secret key for the partivity website'],

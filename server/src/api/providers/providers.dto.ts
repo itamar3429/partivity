@@ -18,7 +18,7 @@ export class addServiceDto {
   capacity: number;
 
   @IsString()
-  @Length(5)
+  @Length(4)
   serviceType: string;
 
   @IsString()
@@ -26,7 +26,7 @@ export class addServiceDto {
   title: string;
 
   @IsString()
-  @Length(5)
+  @Length(15)
   description: string;
 
   @ValidateIf((o: addServiceDto) => o.service === 'location')

@@ -1,27 +1,11 @@
 import React, { useEffect, useState } from "react";
-import getServices from "../../../api/providers/getServices";
+import getServices, { TService } from "../../../api/providers/getServices";
 import Card from "../../helper/Card";
 import Template from "../Template";
-import { services } from "./AddService";
 import FoodService from "./FoodService";
 import GeneralService from "./GeneralService";
 import LocationService from "./LocationService";
 import MusicService from "./MusicService";
-
-export type TService = {
-	id: number;
-	service: typeof services[number];
-	service_type: string;
-	country: string | null;
-	city: string | null;
-	address: string | null;
-	capacity: number | null;
-	title: string;
-	description: string;
-	name?: string;
-	user_id: number;
-	images: string[] | [null];
-};
 
 function Providers() {
 	const [services, setServices] = useState<TService[]>([]);

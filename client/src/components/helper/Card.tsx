@@ -15,7 +15,6 @@ function Card(props: TProps) {
 			<div className="card-header">
 				<h3 className="title-2">{props.title}</h3>
 			</div>
-			{/* {props.loader && ( */}
 			<div className={"card-body" + (props.loader && " card-loader")}>
 				{props.loader && (
 					<>
@@ -29,8 +28,6 @@ function Card(props: TProps) {
 				)}
 				{props.children}
 			</div>
-			{/* )} */}
-			{/* {!props.loader && <div className="card-body">{props.children}</div>} */}
 		</div>
 	);
 }

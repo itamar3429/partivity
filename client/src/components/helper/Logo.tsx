@@ -8,7 +8,11 @@ type IProps = {
 	iconClass: string;
 	imgOnly?: boolean;
 };
-
+/**
+ *
+ * this component will provide the application logo.
+ * with the requested size and spacing and additional optional settings.
+ */
 function Logo({
 	letterSpacing,
 	fontSize,

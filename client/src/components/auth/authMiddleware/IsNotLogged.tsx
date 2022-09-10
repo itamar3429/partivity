@@ -6,6 +6,15 @@ import Loader from "../../helper/Loader";
 type TProps = {
 	to?: string;
 };
+
+/**
+ *
+ * this Component will get children
+ *
+ * and will render them if the user is not logged in
+ *
+ * else it'll redirect the user to the dashboard.
+ */
 function IsNotLogged({ to, children }: React.PropsWithChildren<TProps>) {
 	if (!to) to = "/";
 	const user = useSelector((state) => state.general.user);

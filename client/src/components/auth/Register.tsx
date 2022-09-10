@@ -8,14 +8,14 @@ import { setUser } from "../../app/slices/general.slice";
 import CustomLink from "../helper/Link";
 
 function Register() {
-	const navigate = useNavigate();
-	const content = useRef<HTMLDivElement>(null);
-
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [verifyPass, setVerifyPass] = useState("");
 	// const [alert, setAlert] = useState("");
+
+	const navigate = useNavigate();
+	const content = useRef<HTMLDivElement>(null);
 	const dispatch = useDispatch();
 
 	return (

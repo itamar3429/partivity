@@ -10,6 +10,23 @@ import LoginRoutes from "./LoginRoutes";
 import IsNotLogged from "../auth/authMiddleware/IsNotLogged";
 import GetUserInfo from "../auth/GetUserInfo";
 import IsClient from "../auth/authMiddleware/IsClient";
+
+/**
+ *
+ * this component manages the app routes.
+ *
+ * each route with two or more sub routes being received by its own component
+ *
+ * 	<Route path="/">{IndexRoutes()}</Route>
+ *
+ * indexRoutes:
+ *
+ * 	return <>
+ * 		<Route index element={<IndexComp />} />
+ * 		<Route path='/secondary' element={<SecondaryComp />} />
+ * 	</>
+ *
+ */
 const AppRoutes = () => {
 	GetUserInfo();
 	return (

@@ -8,12 +8,13 @@ import { setUser } from "../../app/slices/general.slice";
 import CustomLink from "../helper/Link";
 
 function Login() {
-	const dispatch = useDispatch();
-
-	const content = useRef<HTMLDivElement>(null);
-	const navigate = useNavigate();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+
+	const dispatch = useDispatch();
+	const content = useRef<HTMLDivElement>(null);
+	const navigate = useNavigate();
+
 	return (
 		<div id="login-container">
 			<CustomLink to="/welcome" className="back-icon">

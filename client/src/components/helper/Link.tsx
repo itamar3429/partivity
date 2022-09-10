@@ -13,7 +13,14 @@ type TProps = {
 	style?: React.CSSProperties;
 	onClick?: Function;
 };
-
+/**
+ *
+ * this component is integrated within the context of the application.
+ *
+ * it provides the ability to have a link that will animate when clicked.
+ *
+ * it'll fade out the page where it's clicked and then fade in the new page
+ */
 export const TransitionRedirect = (
 	to: any,
 	dispatch: any,

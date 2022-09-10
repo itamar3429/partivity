@@ -1,6 +1,7 @@
 import React from "react";
 import Card from "../helper/Card";
 
+// logic is not yet implemented
 function LoginReset() {
 	return (
 		<div className="reset-container">

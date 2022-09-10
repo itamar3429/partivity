@@ -2,8 +2,8 @@ import { Button } from "@mui/material";
 import React from "react";
 import { Carousel } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { TService } from "../../../api/providers/getServices";
 import { api } from "../../../config";
-import { TService } from "./Providers";
 
 type TProps = {
 	service: TService;

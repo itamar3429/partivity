@@ -9,7 +9,6 @@ import Loader from "../helper/Loader";
 
 function WelcomeTemplate({ children }: React.PropsWithChildren<{}>) {
 	const [show, setShow] = useState(false);
-	const closeNav = () => setShow(false);
 	const [animationData, setAnimationData] =
 		useState<Record<string | number, any>>();
 
@@ -18,6 +17,8 @@ function WelcomeTemplate({ children }: React.PropsWithChildren<{}>) {
 			.then((res) => res.json())
 			.then(setAnimationData);
 	}, []);
+
+	const closeNav = () => setShow(false);
 
 	if (!animationData) return <Loader />;
 	return (

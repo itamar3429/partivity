@@ -11,12 +11,12 @@ import { Stack } from "@mui/system";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import addService from "../../../api/providers/addService";
+import { services } from "../../../api/providers/types";
 import { useDispatch } from "../../../app/hooks";
 import Card from "../../helper/Card";
 import { TransitionRedirect } from "../../helper/Link";
 // import Filler from "../../helper/Filler";
 import Template from "../Template";
-export const services = ["location", "music", "food", "general"] as const;
 
 function AddService() {
 	const [service, setService] = useState(0);

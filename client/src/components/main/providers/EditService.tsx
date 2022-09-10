@@ -54,6 +54,7 @@ function EditService() {
 			}
 			setLoading(false);
 		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const serviceId = Number(params.service_id);

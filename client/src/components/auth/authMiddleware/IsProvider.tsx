@@ -6,6 +6,15 @@ import Loader from "../../helper/Loader";
 type TProps = {
 	to?: string;
 };
+
+/**
+ *
+ * this Component will get children
+ *
+ * and will render them if the user has admin or provider privileges
+ *
+ * else it'll redirect the user to a page he he has privileges to (a dashboard or a welcome page).
+ */
 function IsProvider({ to, children }: React.PropsWithChildren<TProps>) {
 	if (!to) to = "/";
 	const user = useSelector((state) => state.general.user);

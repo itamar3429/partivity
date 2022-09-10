@@ -1,5 +1,20 @@
 import { api } from "../../config";
+import { services } from "./types";
 
+export type TService = {
+	id: number;
+	service: typeof services[number];
+	service_type: string;
+	country: string | null;
+	city: string | null;
+	address: string | null;
+	capacity: number | null;
+	title: string;
+	description: string;
+	name?: string;
+	user_id: number;
+	images: string[] | [null];
+};
 export default async function getServices() {
 	const res = await fetch(api.host + "/providers/services", api.defOptions);
 	if (res.ok) {

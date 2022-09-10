@@ -6,6 +6,15 @@ import Loader from "../../helper/Loader";
 type TProps = {
 	to?: string;
 };
+
+/**
+ *
+ * this Component will get children
+ *
+ * and will render them if the user has at least client privileges
+ *
+ * else it'll redirect the user to a welcome page.
+ */
 function IsClient({ to, children }: React.PropsWithChildren<TProps>) {
 	if (!to) to = "/welcome";
 	const user = useSelector((state) => state.general.user);

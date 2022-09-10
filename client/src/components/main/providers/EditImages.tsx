@@ -1,7 +1,6 @@
 import { Button } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getFileData } from "../../../api/images";
 import {
 	addServiceImage,
 	getImages,
@@ -14,6 +13,7 @@ function parseFileName(str: string, len: number) {
 	const dotIndex = str.lastIndexOf(".");
 	const name = dotIndex >= 0 ? str.substring(0, dotIndex) : str;
 	const ext = dotIndex >= 0 ? str.substring(dotIndex) : "";
+
 	if (name.length > len) {
 		const half = Math.ceil(len / 2);
 		const nameLength = name.length;

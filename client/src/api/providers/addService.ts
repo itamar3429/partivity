@@ -1,6 +1,5 @@
-import { StringLiteral } from "typescript";
-import { services } from "../../components/main/providers/AddService";
 import { api } from "../../config";
+import { services } from "./types";
 
 type TData = {
 	service: typeof services[number];

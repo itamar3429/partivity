@@ -30,7 +30,6 @@ function Template(props: React.PropsWithChildren<TProps>) {
 	const dispatch = useDispatch();
 	const toggleNav = () => dispatch(toggle());
 	const toggleNavWide = () => dispatch(toggleWide());
-	const role = "provider";
 
 	window.onresize = () => {
 		const newWideMode = document.body.clientWidth >= 1000;

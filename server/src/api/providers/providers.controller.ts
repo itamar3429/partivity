@@ -6,10 +6,8 @@ import {
   HttpException,
   Param,
   Post,
-  Query,
   Request,
   UploadedFile,
-  UploadedFiles,
   UseGuards,
   UseInterceptors,
   UsePipes,
@@ -17,7 +15,6 @@ import {
   Put,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { raw } from 'express';
 import { AuthenticateProvider } from '../../auth/auth.guard';
 import { addServiceDto } from './providers.dto';
 import { ProvidersService } from './providers.service';

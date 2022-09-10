@@ -5,10 +5,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import FoodService from './food.entity';
-import GeneralService from './general.entity';
-import LocationService from './location.entity';
-import MusicService from './music.entity';
+import Service from './services.entity';
 import User from './users.entity';
 
 @Entity()
@@ -32,29 +29,29 @@ class PartyPlan {
   @Column()
   status: 'pending' | 'open' | 'close';
 
-  @ManyToOne(() => FoodService, (service) => service.id, {
+  @ManyToOne(() => Service, (service) => service.id, {
     createForeignKeyConstraints: false,
   })
-  @JoinColumn({ name: 'food_id' })
-  foodId: number;
+  @JoinColumn({ name: 'service_id' })
+  serviceId: number;
 
-  @ManyToOne(() => LocationService, (service) => service.id, {
-    createForeignKeyConstraints: false,
-  })
-  @JoinColumn({ name: 'location_id' })
-  locationId: number;
+  //   @ManyToOne(() => LocationService, (service) => service.id, {
+  //     createForeignKeyConstraints: false,
+  //   })
+  //   @JoinColumn({ name: 'location_id' })
+  //   locationId: number;
 
-  @ManyToOne(() => GeneralService, (service) => service.id, {
-    createForeignKeyConstraints: false,
-  })
-  @JoinColumn({ name: 'general_id' })
-  generalId: number;
+  //   @ManyToOne(() => GeneralService, (service) => service.id, {
+  //     createForeignKeyConstraints: false,
+  //   })
+  //   @JoinColumn({ name: 'general_id' })
+  //   generalId: number;
 
-  @ManyToOne(() => MusicService, (service) => service.id, {
-    createForeignKeyConstraints: false,
-  })
-  @JoinColumn({ name: 'music_id' })
-  musicId: number;
+  //   @ManyToOne(() => MusicService, (service) => service.id, {
+  //     createForeignKeyConstraints: false,
+  //   })
+  //   @JoinColumn({ name: 'music_id' })
+  //   musicId: number;
 }
 
 export default PartyPlan;

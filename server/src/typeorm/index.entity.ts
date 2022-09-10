@@ -1,21 +1,13 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { mysqlConfig } from '../config';
 import ServiceAvailability from './availability.entity';
-import FoodService from './food.entity';
-import GeneralService from './general.entity';
 import ServiceImages from './images.entity';
-import LocationService from './location.entity';
-import MusicService from './music.entity';
 import PartyPlan from './party.entity';
 import Service from './services.entity';
 import User from './users.entity';
 
 export const entitiesArr = [
   User,
-  LocationService,
-  MusicService,
-  FoodService,
-  GeneralService,
   ServiceImages,
   ServiceAvailability,
   PartyPlan,
@@ -24,10 +16,6 @@ export const entitiesArr = [
 
 export const entitiesObj = {
   User,
-  LocationService,
-  MusicService,
-  FoodService,
-  GeneralService,
   ServiceImages,
   ServiceAvailability,
   PartyPlan,

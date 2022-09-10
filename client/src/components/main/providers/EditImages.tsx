@@ -10,6 +10,23 @@ import Card from "../../helper/Card";
 import Template from "../Template";
 import EditImageItem from "./EditImageItem";
 
+function parseFileName(str: string, len: number) {
+	const dotIndex = str.lastIndexOf(".");
+	const name = dotIndex >= 0 ? str.substring(0, dotIndex) : str;
+	const ext = dotIndex >= 0 ? str.substring(dotIndex) : "";
+	if (name.length > len) {
+		const half = Math.ceil(len / 2);
+		const nameLength = name.length;
+		return (
+			name.substring(0, len - half) +
+			"..." +
+			name.substring(nameLength - half, nameLength) +
+			ext
+		);
+	}
+	return str;
+}
+
 function EditImages() {
 	const [images, setImages] = useState<any[]>([]);
 	const [fileName, setFileName] = useState("");
@@ -62,7 +79,7 @@ function EditImages() {
 				</div>
 				<div className="add-new-img">
 					<div className="file-input">
-						<span>{fileName}</span>
+						<span>{parseFileName(fileName, 20)}</span>
 						<Button variant="contained" component="label">
 							Upload
 							<input

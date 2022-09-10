@@ -14,6 +14,7 @@ import {
   UseInterceptors,
   UsePipes,
   ValidationPipe,
+  Put,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { raw } from 'express';
@@ -30,6 +31,32 @@ export class ProvidersController {
   async getServices(@Request() req: any) {
     const services = await this.service.getServices(req.user.id);
     return { services, success: true };
+  }
+
+  @Get('service/:id')
+  async getService(@Request() req: any, @Param('id') id: number) {
+    const service = await this.service.getService(req.user.id, id);
+    if (service) return { service, success: true };
+    return { success: false, message: 'service not found' };
+  }
+
+  @Put('service/:id')
+  @UsePipes(
+    new ValidationPipe({
+      whitelist: true,
+    }),
+  )
+  async updateService(
+    @Request() req: any,
+    @Param('id') id: number,
+    @Body() body: addServiceDto,
+  ) {
+    const updated = await this.service.updateService(req.user.id, id, body);
+    if (updated.affected)
+      return { success: true, message: 'service updated successfully' };
+    console.log(updated);
+
+    return { success: false, message: 'service cant be updated' };
   }
 
   @Post('add')

@@ -5,6 +5,7 @@ import SetPageRender from "../helper/Render";
 import EditImages from "../main/providers/EditImages";
 import AddService from "../main/providers/AddService";
 import Providers from "../main/providers/Providers";
+import EditService from "../main/providers/EditService";
 
 const WelcomeRoutes = () => {
 	return (
@@ -16,6 +17,14 @@ const WelcomeRoutes = () => {
 			<Route
 				path="add"
 				element={SetPageRender(<AddService />, "providers/add", IsProvider)}
+			></Route>
+			<Route
+				path="edit/service/:service_id"
+				element={SetPageRender(
+					<EditService />,
+					"providers/add",
+					IsProvider
+				)}
 			></Route>
 			<Route
 				path="edit/images/:service_id"

@@ -31,32 +31,6 @@ export class ProvidersService {
     return this.serviceRepo.save(service);
   }
 
-  async getServices(userId: number) {
-    const services = await this.serviceRepo.query(
-      `SELECT services.*, JSON_ARRAYAGG(obj_id) AS images FROM services 
-		LEFT JOIN service_images ON service_id = services.id
-		WHERE user_id = ?
-		GROUP BY services.id`,
-      [userId],
-    );
-
-    return services;
-  }
-
-  async getServiceImages(serviceId: number) {
-    try {
-      return await this.serviceImages.find({
-        where: { serviceId },
-        select: {
-          objId: true,
-          id: true,
-        },
-      });
-    } catch (err) {
-      throw new HttpException(err, 500);
-    }
-  }
-
   async addImageToDB(filename: string, serviceId: number, ext: string) {
     try {
       const uuid = this.genObjId();
@@ -73,8 +47,97 @@ export class ProvidersService {
     }
   }
 
+  async getServices(userId: number) {
+    const services = await this.serviceRepo.query(
+      `SELECT services.*, JSON_ARRAYAGG(obj_id) AS images FROM services 
+	  LEFT JOIN service_images ON service_id = services.id
+	  WHERE user_id = ?
+	  GROUP BY services.id`,
+      [userId],
+    );
+
+    return services;
+  }
+
+  async getService(userId: number, serviceId: number) {
+    const service = await this.serviceRepo.query(
+      `SELECT * FROM services 
+	  WHERE user_id = ?
+	  AND id = ?
+	  GROUP BY services.id`,
+      [userId, serviceId],
+    );
+
+    return service[0];
+  }
+
+  async getServiceImages(serviceId: number) {
+    try {
+      return await this.serviceImages.find({
+        where: { serviceId },
+        select: {
+          objId: true,
+          id: true,
+        },
+      });
+    } catch (err) {
+      throw new HttpException(err, 500);
+    }
+  }
+
   async removeImgByObjId(objId: string) {
     await this.serviceImages.delete({ objId });
+  }
+
+  async deleteImage(imageId: number, userId: number, isAdmin: boolean) {
+    const AuthenticateUser = (await this.serviceImages.query(
+      `
+	 SELECT * FROM service_images 
+	 LEFT JOIN services on services.id = service_id
+	 WHERE user_id = ? AND service_images.id = ?
+	 `,
+      [userId, imageId],
+    )) as any[];
+    try {
+      if (AuthenticateUser.length || isAdmin) {
+        const objName = AuthenticateUser[0].obj_id;
+        const deletedDB = await this.serviceImages.delete({ id: imageId });
+
+        if (deletedDB.affected) {
+          const deletedStorage = await this.storage.removeObject(
+            MINIO_IMG_BUCKET,
+            objName,
+          );
+        }
+        return {
+          success: true,
+          deletedId: imageId,
+          message: 'deleted successfully',
+        };
+      }
+      throw new ForbiddenException();
+    } catch (err) {
+      throw new HttpException(
+        {
+          success: false,
+          message: 'error while trying to delete image: ' + err?.code,
+        },
+        500,
+      );
+    }
+  }
+
+  async updateService(
+    userId: number,
+    serviceId: number,
+    service: addServiceDto,
+  ) {
+    delete service.service;
+    const res = await this.serviceRepo.update(
+      { id: serviceId, userId },
+      { ...service },
+    );
+    return res;
   }
 
   async insertObj(objName: string, bufferArr: Uint8Array) {
@@ -115,44 +178,6 @@ export class ProvidersService {
       } else {
         return '';
       }
-    }
-  }
-
-  async deleteImage(imageId: number, userId: number, isAdmin: boolean) {
-    const AuthenticateUser = (await this.serviceImages.query(
-      `
-	 SELECT * FROM service_images 
-	 LEFT JOIN services on services.id = service_id
-	 WHERE user_id = ? AND service_images.id = ?
-	 `,
-      [userId, imageId],
-    )) as any[];
-    try {
-      if (AuthenticateUser.length || isAdmin) {
-        const objName = AuthenticateUser[0].obj_id;
-        const deletedDB = await this.serviceImages.delete({ id: imageId });
-
-        if (deletedDB.affected) {
-          const deletedStorage = await this.storage.removeObject(
-            MINIO_IMG_BUCKET,
-            objName,
-          );
-        }
-        return {
-          success: true,
-          deletedId: imageId,
-          message: 'deleted successfully',
-        };
-      }
-      throw new ForbiddenException();
-    } catch (err) {
-      throw new HttpException(
-        {
-          success: false,
-          message: 'error while trying to delete image: ' + err?.code,
-        },
-        500,
-      );
     }
   }
 }

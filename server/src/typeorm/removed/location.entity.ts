@@ -5,10 +5,10 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import User from './users.entity';
+import User from '../users.entity';
 
 @Entity()
-class FoodService {
+class LocationService {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -17,16 +17,22 @@ class FoodService {
   userId: number;
 
   @Column()
-  name: string;
+  country: string;
+
+  @Column()
+  city: string;
+
+  @Column()
+  address: string;
+
+  @Column()
+  capacity: number;
 
   @Column()
   title: string;
 
   @Column()
   description: string;
-
-  @Column()
-  type: string;
 }
 
-export default FoodService;
+export default LocationService;

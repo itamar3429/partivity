@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { deleteService } from "../../../api/providers/deletedService";
 import getServices, { TService } from "../../../api/providers/getServices";
 import Card from "../../helper/Card";
 import Template from "../Template";
-import FoodService from "./FoodService";
-import GeneralService from "./GeneralService";
-import LocationService from "./LocationService";
-import MusicService from "./MusicService";
+import Service from "./Service";
 
 function Providers() {
 	const [services, setServices] = useState<TService[]>([]);
@@ -17,6 +15,13 @@ function Providers() {
 			}
 		});
 	}, []);
+
+	const deleteServiceById = async (serviceId: number) => {
+		const res = await deleteService(serviceId);
+		if (res.success) {
+			setServices((pre) => pre.filter((x) => x.id !== serviceId));
+		}
+	};
 	return (
 		<Template>
 			<Card
@@ -25,19 +30,14 @@ function Providers() {
 			>
 				<div className="services-view-body">
 					{services.map((service) => {
-						if (service.service === "location")
-							return (
-								<LocationService service={service} key={service.id} />
-							);
-						if (service.service === "food")
-							return <FoodService service={service} key={service.id} />;
-						if (service.service === "general")
-							return (
-								<GeneralService service={service} key={service.id} />
-							);
-						if (service.service === "music")
-							return <MusicService service={service} key={service.id} />;
-						return <></>;
+						return (
+							<Service
+								key={service.id}
+								service={service}
+								type={service.service}
+								onDelete={deleteServiceById}
+							></Service>
+						);
 					})}
 				</div>
 			</Card>

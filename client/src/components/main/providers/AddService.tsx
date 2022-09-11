@@ -137,25 +137,23 @@ function AddService() {
 									gap: 25,
 								}}
 							>
-								{services[service] !== "location" && (
-									<TextField
-										label="business name"
-										placeholder="name of your business"
-										value={name}
-										style={{ width: 300, minWidth: 200 }}
-										className="add-service-input"
-										onChange={(e) => {
-											const val = e.currentTarget.value;
-											setName(val);
-										}}
-										inputProps={{
-											inputMode: "text",
-											type: "text",
-										}}
-										name="type"
-										required={services[service] !== "general"}
-									/>
-								)}
+								<TextField
+									label="business name"
+									placeholder="name of your business"
+									value={name}
+									style={{ width: 300, minWidth: 200 }}
+									className="add-service-input"
+									onChange={(e) => {
+										const val = e.currentTarget.value;
+										setName(val);
+									}}
+									inputProps={{
+										inputMode: "text",
+										type: "text",
+									}}
+									name="type"
+									required={services[service] !== "general"}
+								/>
 								<TextField
 									label="Service Type"
 									placeholder="Service Specific Type"

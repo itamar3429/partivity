@@ -15,8 +15,13 @@ import {
   Put,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import ServiceSchedule from '../../typeorm/schedule.entity';
 import { AuthenticateProvider } from '../../auth/auth.guard';
-import { addServiceDto } from './providers.dto';
+import {
+  AddScheduleDto,
+  addServiceDto,
+  EditScheduleDto,
+} from './providers.dto';
 import { ProvidersService } from './providers.service';
 
 @Controller('providers')
@@ -51,7 +56,6 @@ export class ProvidersController {
     const updated = await this.service.updateService(req.user.id, id, body);
     if (updated.affected)
       return { success: true, message: 'service updated successfully' };
-    console.log(updated);
 
     return { success: false, message: 'service cant be updated' };
   }
@@ -106,6 +110,11 @@ export class ProvidersController {
     }
   }
 
+  @Delete('service/:id')
+  deleteService(@Request() req: any, @Param('id') serviceId: number) {
+    return this.service.deleteService(serviceId, req.user.id);
+  }
+
   @Delete('image/delete/:id')
   deleteImage(@Request() req: any, @Param('id') imgId: string) {
     return this.service.deleteImage(
@@ -113,5 +122,45 @@ export class ProvidersController {
       Number(req.user.id),
       req.user.role === 'admin',
     );
+  }
+
+  @Get('schedule/:service_id')
+  getSchedule(@Request() req: any, @Param('service_id') serviceId: number) {
+    const userId = req.user.id;
+    return this.service.getSchedule(userId, serviceId);
+  }
+
+  @Post('schedule/:service_id')
+  async addSchedule(
+    @Request() req: any,
+    @Param('service_id') serviceId: number,
+    @Body() schedules: AddScheduleDto[],
+  ) {
+    const userId = req.user.id;
+    const res = await this.service.addSchedules(userId, serviceId, schedules);
+    return res;
+  }
+
+  @UsePipes(
+    new ValidationPipe({
+      whitelist: true,
+    }),
+  )
+  @Put('schedule/:id')
+  async updateSchedule(
+    @Request() req: any,
+    @Param('id') id: number,
+    @Body() schedule: EditScheduleDto,
+  ) {
+    const userId = req.user.id;
+    const res = await this.service.updateSchedule(userId, id, schedule);
+    return res;
+  }
+
+  @Delete('schedule/:id')
+  async deleteSchedule(@Request() req: any, @Param('id') id: number) {
+    const userId = req.user.id;
+    const res = await this.service.deleteSchedule(userId, id);
+    return res;
   }
 }

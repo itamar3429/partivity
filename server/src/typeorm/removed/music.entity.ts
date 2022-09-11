@@ -5,10 +5,10 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import User from './users.entity';
+import User from '../users.entity';
 
 @Entity()
-class LocationService {
+class MusicService {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -17,16 +17,10 @@ class LocationService {
   userId: number;
 
   @Column()
-  country: string;
+  name: string;
 
-  @Column()
-  city: string;
-
-  @Column()
-  address: string;
-
-  @Column()
-  capacity: number;
+  @Column({ name: 'music_type' })
+  musicType: string;
 
   @Column()
   title: string;
@@ -35,4 +29,4 @@ class LocationService {
   description: string;
 }
 
-export default LocationService;
+export default MusicService;

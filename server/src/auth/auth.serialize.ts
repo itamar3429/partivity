@@ -11,16 +11,12 @@ export class Serializer extends PassportSerializer {
     super();
   }
   serializeUser(user: User, done: (err: Error, id: any) => void) {
-    //  console.log('serializing user:', user);
-
     done(null, user.id);
   }
   async deserializeUser(
     id: number,
     done: (err: Error, user: Partial<User> | null) => void,
   ) {
-    //  console.log('deserialize id:', id);
-
     const user = await this.authService.userService.getUserById(id);
     done(null, user);
   }

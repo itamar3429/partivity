@@ -3,12 +3,17 @@ import {
   HttpException,
   Inject,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import ServiceAvailability from '../../typeorm/availability.entity';
+import ServiceSchedule from '../../typeorm/schedule.entity';
 import ServiceImages from '../../typeorm/images.entity';
 import { Repository } from 'typeorm';
-import { addServiceDto } from './providers.dto';
+import {
+  AddScheduleDto,
+  addServiceDto,
+  EditScheduleDto,
+} from './providers.dto';
 import Service from '../../typeorm/services.entity';
 import { MINIO_CONNECTION } from 'nestjs-minio';
 import { Client } from 'minio';
@@ -19,12 +24,16 @@ export class ProvidersService {
   constructor(
     @InjectRepository(ServiceImages)
     private readonly serviceImages: Repository<ServiceImages>,
-    @InjectRepository(ServiceAvailability)
-    private readonly serviceAvailability: Repository<ServiceAvailability>,
+    @InjectRepository(ServiceSchedule)
+    private readonly serviceSchedule: Repository<ServiceSchedule>,
     @InjectRepository(Service)
     private readonly serviceRepo: Repository<Service>,
     @Inject(MINIO_CONNECTION) private readonly storage: Client,
   ) {}
+
+  async isScheduleOwner(userId: number, serviceId: number) {
+    return !!(await this.serviceRepo.findBy({ userId, id: serviceId })).length;
+  }
 
   async addService(data: addServiceDto, userId: number) {
     const service = this.serviceRepo.create({ ...data, userId });
@@ -52,6 +61,7 @@ export class ProvidersService {
       `SELECT services.*, JSON_ARRAYAGG(obj_id) AS images FROM services 
 	  LEFT JOIN service_images ON service_id = services.id
 	  WHERE user_id = ?
+	  AND deleted = false
 	  GROUP BY services.id`,
       [userId],
     );
@@ -87,6 +97,14 @@ export class ProvidersService {
 
   async removeImgByObjId(objId: string) {
     await this.serviceImages.delete({ objId });
+  }
+
+  async deleteService(serviceId: number, userId: number) {
+    const res = await this.serviceRepo.update(
+      { userId, id: serviceId },
+      { deleted: true },
+    );
+    return { success: !!res.affected };
   }
 
   async deleteImage(imageId: number, userId: number, isAdmin: boolean) {
@@ -160,6 +178,63 @@ export class ProvidersService {
         500,
       );
     }
+  }
+
+  async getSchedule(userId: number, serviceId: number) {
+    const res = await this.serviceSchedule.query(
+      ` SELECT service_schedule.* FROM service_schedule
+	 	INNER JOIN services on services.id = service_id 
+	 	WHERE service_id = ? AND user_id = ?
+	 	`,
+      [serviceId, userId],
+    );
+
+    return { success: true, schedules: res };
+  }
+
+  async addSchedules(
+    userId: number,
+    serviceId: number,
+    schedules: AddScheduleDto[],
+  ) {
+    if (await this.isScheduleOwner(userId, serviceId)) {
+      const res = await this.serviceSchedule.save(schedules);
+      return { success: true, schedule: res };
+    }
+    return { success: false };
+  }
+
+  async updateSchedule(userId: number, id: number, schedule: EditScheduleDto) {
+    const serviceId = schedule.serviceId;
+
+    if (await this.isScheduleOwner(userId, serviceId)) {
+      const res = await this.serviceSchedule.update(
+        {
+          serviceId,
+          id,
+        },
+        schedule,
+      );
+
+      return { success: !!res.affected };
+    } else throw new UnauthorizedException(undefined, 'unauthorized access');
+  }
+
+  async deleteSchedule(userId: number, id: number) {
+    const isOwner = !!(
+      await this.serviceSchedule.query(
+        `select count(*) as count from service_schedule 
+	inner join services on services.id = service_id
+	where user_id = ? and service_schedule.id = ?`,
+        [userId, id],
+      )
+    )[0].count;
+    if (isOwner) {
+      const res = await this.serviceSchedule.delete({ id });
+
+      return { success: !!res.affected };
+    }
+    return { success: false };
   }
 
   genObjId() {

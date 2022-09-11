@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
+  IsDate,
+  IsDateString,
   IsEnum,
   IsNumber,
   IsString,
@@ -41,7 +43,40 @@ export class addServiceDto {
   @IsString()
   address: string;
 
-  @ValidateIf((o: addServiceDto) => !!o.service.match(/food|music/))
+  //   @ValidateIf((o: addServiceDto) => !!o.service.match(/food|music/))
   @IsString()
   name: string;
+}
+
+@Injectable()
+export class AddScheduleDto {
+  @IsDateString()
+  start: Date;
+
+  @IsDateString()
+  end: Date;
+
+  @IsString()
+  title: string;
+
+  @IsNumber()
+  price: number;
+}
+
+@Injectable()
+export class EditScheduleDto {
+  @IsDateString()
+  start: Date;
+
+  @IsDateString()
+  end: Date;
+
+  @IsNumber()
+  serviceId: number;
+
+  @IsString()
+  title: string;
+
+  @IsNumber()
+  price: number;
 }

@@ -3,16 +3,20 @@ import React from "react";
 import { Carousel } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { TService } from "../../../api/providers/getServices";
+import { services } from "../../../api/providers/types";
 import { api } from "../../../config";
 
 type TProps = {
 	service: TService;
+	type: typeof services[number];
+	onDelete: (serviceId: number) => void;
 };
 
-function MusicService({ service }: TProps) {
+function Service({ service, type, onDelete }: TProps) {
+	const title = type[0].toUpperCase() + type.substring(1);
 	return (
 		<div className="service">
-			<h3>Music Service</h3>
+			<h3>{title} Service</h3>
 
 			<div
 				style={{
@@ -26,6 +30,12 @@ function MusicService({ service }: TProps) {
 						<b>name: </b>
 						<span>{service.name}</span>
 					</div>
+					{["location", "general"].includes(type) && (
+						<div>
+							<b>capacity: </b>
+							<span>{service.capacity || "not set"}</span>
+						</div>
+					)}
 					<div>
 						<b>service type: </b>
 						<span>{service.service_type}</span>
@@ -38,15 +48,29 @@ function MusicService({ service }: TProps) {
 						<b>description: </b>
 						<span>{service.description}</span>
 					</div>
+
+					{["location"].includes(type) && (
+						<>
+							<h5 style={{ marginTop: 10 }}>address</h5>
+							<div>
+								<b>country: </b>
+								<span>{service.country}</span>
+							</div>
+							<div>
+								<b>city: </b>
+								<span>{service.city}</span>
+							</div>
+							<div>
+								<b>address: </b>
+								<span>{service.address}</span>
+							</div>
+						</>
+					)}
 				</div>
 				{service.images[0] ? (
 					<Carousel className="provider-view-images">
 						{service.images.map((img, i) => (
-							<Carousel.Item
-								interval={5000}
-								key={i}
-								className="carousel-item"
-							>
+							<Carousel.Item interval={5000} key={i}>
 								<img
 									src={api.host + "/storage/get/" + img}
 									alt=""
@@ -70,17 +94,38 @@ function MusicService({ service }: TProps) {
 			<div className="buttons">
 				<Link to={`/providers/edit/service/${service.id}`} className="link">
 					<Button color="success" variant="contained">
-						Edit details
+						Edit Details
 					</Button>
 				</Link>
 				<Link to={`/providers/edit/images/${service.id}`} className="link">
 					<Button color="info" variant="contained">
-						Edit images
+						Edit Images
 					</Button>
 				</Link>
+				<Link to={`/providers/schedule/${service.id}`} className="link">
+					<Button color="secondary" variant="contained">
+						Schedule
+					</Button>
+				</Link>
+				{["food"].includes(type) && (
+					<Link to={`/providers/menu/${service.id}`} className="link">
+						<Button color="warning" variant="contained">
+							Menu
+						</Button>
+					</Link>
+				)}
+				<Button
+					color="error"
+					variant="contained"
+					onClick={() => {
+						onDelete(service.id);
+					}}
+				>
+					Delete
+				</Button>
 			</div>
 		</div>
 	);
 }
 
-export default MusicService;
+export default Service;

@@ -35,7 +35,6 @@ function Template(props: React.PropsWithChildren<TProps>) {
 		const newWideMode = document.body.clientWidth >= 1000;
 		if (newWideMode !== wideMode) {
 			setWideMode(newWideMode);
-			console.log("resize");
 		}
 	};
 

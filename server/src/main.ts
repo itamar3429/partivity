@@ -4,7 +4,6 @@ import { AppModule } from './app.module';
 // import expressSession from 'express-session';
 import cookieSession from 'cookie-session';
 import cors from 'cors';
-import { json, raw } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

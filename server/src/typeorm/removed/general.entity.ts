@@ -5,10 +5,10 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import User from './users.entity';
+import User from '../users.entity';
 
 @Entity()
-class MusicService {
+class GeneralService {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,14 +19,14 @@ class MusicService {
   @Column()
   name: string;
 
-  @Column({ name: 'music_type' })
-  musicType: string;
-
   @Column()
   title: string;
 
   @Column()
   description: string;
+
+  @Column()
+  type: string;
 }
 
-export default MusicService;
+export default GeneralService;

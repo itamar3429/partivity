@@ -46,6 +46,9 @@ class Service {
 
   @Column({ default: null })
   name: string;
+
+  @Column({ default: false })
+  deleted: boolean;
 }
 
 export default Service;

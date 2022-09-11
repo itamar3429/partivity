@@ -1,6 +1,6 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { mysqlConfig } from '../config';
-import ServiceAvailability from './availability.entity';
+import ServiceSchedule from './schedule.entity';
 import ServiceImages from './images.entity';
 import PartyPlan from './party.entity';
 import Service from './services.entity';
@@ -9,7 +9,7 @@ import User from './users.entity';
 export const entitiesArr = [
   User,
   ServiceImages,
-  ServiceAvailability,
+  ServiceSchedule,
   PartyPlan,
   Service,
 ];
@@ -17,11 +17,10 @@ export const entitiesArr = [
 export const entitiesObj = {
   User,
   ServiceImages,
-  ServiceAvailability,
+  ServiceSchedule,
   PartyPlan,
   Service,
 };
-console.log(mysqlConfig);
 
 export const OrmForRoot = TypeOrmModule.forRoot({
   type: 'mysql',

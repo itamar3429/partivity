@@ -121,7 +121,6 @@ function EditImages() {
 										console.log("couldn't load file");
 									}
 									setLoading(false);
-									// setFileName("");
 								}}
 							>
 								add

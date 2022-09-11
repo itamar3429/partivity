@@ -27,8 +27,6 @@ export async function addServiceImage(
 	fileContent: File,
 	serviceId: number | string
 ) {
-	console.log(serviceId);
-	console.log(fileContent);
 	const data = new FormData();
 	data.append("file", fileContent, fileContent.name);
 

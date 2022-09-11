@@ -6,6 +6,7 @@ import EditImages from "../main/providers/EditImages";
 import AddService from "../main/providers/AddService";
 import Providers from "../main/providers/Providers";
 import EditService from "../main/providers/EditService";
+import Schedule from "../main/providers/schedule/Schedule";
 
 const WelcomeRoutes = () => {
 	return (
@@ -17,6 +18,10 @@ const WelcomeRoutes = () => {
 			<Route
 				path="add"
 				element={SetPageRender(<AddService />, "providers/add", IsProvider)}
+			></Route>
+			<Route
+				path="schedule/:service_id"
+				element={SetPageRender(<Schedule />, "providers/add", IsProvider)}
 			></Route>
 			<Route
 				path="edit/service/:service_id"

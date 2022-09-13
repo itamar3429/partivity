@@ -16,7 +16,8 @@ import { useDispatch } from "../../../app/hooks";
 import Card from "../../helper/Card";
 import { TransitionRedirect } from "../../helper/Link";
 // import Filler from "../../helper/Filler";
-import Template from "../Template";
+import Template from "../template/Template";
+import s from "./P.module.scss";
 
 function AddService() {
 	const [service, setService] = useState(0);
@@ -40,7 +41,7 @@ function AddService() {
 		<Template>
 			<Card
 				title="add a service"
-				className="add-service-card"
+				className={s["add-service-card"]}
 				loader={loading}
 			>
 				<form
@@ -51,7 +52,7 @@ function AddService() {
 						addService({
 							description,
 							service: chosenService,
-							serviceType: type,
+							service_type: type,
 							title,
 							capacity: showCapacity ? capacity : undefined,
 							address: showAddress ? address : undefined,
@@ -67,6 +68,8 @@ function AddService() {
 									navigate
 								);
 							}
+							console.log(res);
+
 							setLoading(false);
 						});
 					}}
@@ -94,7 +97,7 @@ function AddService() {
 										const val = Number(select.target.value);
 										setService(val);
 									}}
-									className="add-service-input"
+									className={s["add-service-input"]}
 									select
 									label="Service"
 									name="service"
@@ -115,7 +118,7 @@ function AddService() {
 										placeholder="Capacity"
 										value={capacity}
 										style={{ minWidth: 200 }}
-										className="add-service-input"
+										className={s["add-service-input"]}
 										onChange={(e) => {
 											const val = Number(e.currentTarget.value);
 											setCapacity(val || 0);
@@ -142,7 +145,7 @@ function AddService() {
 									placeholder="name of your business"
 									value={name}
 									style={{ width: 300, minWidth: 200 }}
-									className="add-service-input"
+									className={s["add-service-input"]}
 									onChange={(e) => {
 										const val = e.currentTarget.value;
 										setName(val);
@@ -159,7 +162,7 @@ function AddService() {
 									placeholder="Service Specific Type"
 									value={type}
 									style={{ width: "300px", minWidth: "200px" }}
-									className="add-service-input"
+									className={s["add-service-input"]}
 									onChange={(e) => {
 										const val = e.currentTarget.value;
 										setType(val);
@@ -179,7 +182,7 @@ function AddService() {
 								placeholder="Title"
 								value={title}
 								style={{ width: "90%", minWidth: "200px" }}
-								className="add-service-input"
+								className={s["add-service-input"]}
 								onChange={(e) => {
 									const val = e.currentTarget.value;
 									setTitle(val);
@@ -199,7 +202,7 @@ function AddService() {
 									placeholder="Description"
 									value={description}
 									style={{ width: "90%", minWidth: "200px" }}
-									className="add-service-input"
+									className={s["add-service-input"]}
 									onChange={(e) => {
 										const val = e.currentTarget.value;
 										setDescription(val);
@@ -228,7 +231,7 @@ function AddService() {
 										left: 0,
 										zIndex: -1,
 									}}
-									className="add-service-input"
+									className={s["add-service-input"]}
 									inputProps={{
 										inputMode: "text",
 										type: "text",
@@ -274,7 +277,7 @@ function AddService() {
 										inputMode: "text",
 										type: "text",
 									}}
-									className="add-service-input"
+									className={s["add-service-input"]}
 									name="country"
 									required
 								/>
@@ -291,7 +294,7 @@ function AddService() {
 										inputMode: "text",
 										type: "text",
 									}}
-									className="add-service-input"
+									className={s["add-service-input"]}
 									name="city"
 									required
 								/>
@@ -308,7 +311,7 @@ function AddService() {
 										inputMode: "text",
 										type: "text",
 									}}
-									className="add-service-input"
+									className={s["add-service-input"]}
 									name="address"
 									required
 								/>

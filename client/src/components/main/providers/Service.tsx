@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { TService } from "../../../api/providers/getServices";
 import { services } from "../../../api/providers/types";
 import { api } from "../../../config";
+import s from "./P.module.scss";
 
 type TProps = {
 	service: TService;
@@ -15,16 +16,16 @@ type TProps = {
 function Service({ service, type, onDelete }: TProps) {
 	const title = type[0].toUpperCase() + type.substring(1);
 	return (
-		<div className="service">
+		<div className={s.service}>
 			<h3>{title} Service</h3>
 
 			<div
 				style={{
 					display: "flex",
 				}}
-				className="provider-view-container"
+				className={s["provider-view-container"]}
 			>
-				<div className="service-details">
+				<div className={s["service-details"]}>
 					<h5>details</h5>
 					<div>
 						<b>name: </b>
@@ -68,7 +69,7 @@ function Service({ service, type, onDelete }: TProps) {
 					)}
 				</div>
 				{service.images[0] ? (
-					<Carousel className="provider-view-images">
+					<Carousel className={s["provider-view-images"]}>
 						{service.images.map((img, i) => (
 							<Carousel.Item interval={5000} key={i}>
 								<img
@@ -84,14 +85,14 @@ function Service({ service, type, onDelete }: TProps) {
 					</Carousel>
 				) : (
 					<div
-						className="provider-view-images"
+						className={s["provider-view-images"]}
 						style={{ textAlign: "center" }}
 					>
 						no images
 					</div>
 				)}
 			</div>
-			<div className="buttons">
+			<div className={s["buttons"]}>
 				<Link to={`/providers/edit/service/${service.id}`} className="link">
 					<Button color="success" variant="contained">
 						Edit Details

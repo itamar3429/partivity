@@ -19,6 +19,11 @@ import { MINIO_CONNECTION } from 'nestjs-minio';
 import { Client } from 'minio';
 import { MINIO_IMG_BUCKET } from '../../minio/constants';
 import { v4 as uuidV4 } from 'uuid';
+
+const N_IMAGES = ServiceImages.getName();
+const N_SERVICES = Service.getName();
+const N_SCHEDULE = ServiceSchedule.getName();
+
 @Injectable()
 export class ProvidersService {
   constructor(
@@ -32,11 +37,12 @@ export class ProvidersService {
   ) {}
 
   async isScheduleOwner(userId: number, serviceId: number) {
-    return !!(await this.serviceRepo.findBy({ userId, id: serviceId })).length;
+    return !!(await this.serviceRepo.findBy({ user_id: userId, id: serviceId }))
+      .length;
   }
 
   async addService(data: addServiceDto, userId: number) {
-    const service = this.serviceRepo.create({ ...data, userId });
+    const service = this.serviceRepo.create({ ...data, user_id: userId });
     return this.serviceRepo.save(service);
   }
 
@@ -45,9 +51,9 @@ export class ProvidersService {
       const uuid = this.genObjId();
       const imageInstance = this.serviceImages.create({
         image: filename,
-        serviceId,
+        service_id: serviceId,
         objId: uuid,
-        fileExt: ext,
+        file_ext: ext,
       });
       const res = await this.serviceImages.save(imageInstance);
       return { success: true, uuid, imageData: res, imageId: res.id };
@@ -58,11 +64,11 @@ export class ProvidersService {
 
   async getServices(userId: number) {
     const services = await this.serviceRepo.query(
-      `SELECT services.*, JSON_ARRAYAGG(obj_id) AS images FROM services 
-	  LEFT JOIN service_images ON service_id = services.id
+      `SELECT ${N_SERVICES}.*, JSON_ARRAYAGG(obj_id) AS images FROM ${N_SERVICES} 
+	  LEFT JOIN ${N_IMAGES} ON service_id = ${N_SERVICES}.id
 	  WHERE user_id = ?
 	  AND deleted = false
-	  GROUP BY services.id`,
+	  GROUP BY ${N_SERVICES}.id`,
       [userId],
     );
 
@@ -71,10 +77,10 @@ export class ProvidersService {
 
   async getService(userId: number, serviceId: number) {
     const service = await this.serviceRepo.query(
-      `SELECT * FROM services 
+      `SELECT * FROM ${N_SERVICES} 
 	  WHERE user_id = ?
 	  AND id = ?
-	  GROUP BY services.id`,
+	  GROUP BY ${N_SERVICES}.id`,
       [userId, serviceId],
     );
 
@@ -84,7 +90,7 @@ export class ProvidersService {
   async getServiceImages(serviceId: number) {
     try {
       return await this.serviceImages.find({
-        where: { serviceId },
+        where: { service_id: serviceId },
         select: {
           objId: true,
           id: true,
@@ -101,7 +107,7 @@ export class ProvidersService {
 
   async deleteService(serviceId: number, userId: number) {
     const res = await this.serviceRepo.update(
-      { userId, id: serviceId },
+      { user_id: userId, id: serviceId },
       { deleted: true },
     );
     return { success: !!res.affected };
@@ -110,9 +116,9 @@ export class ProvidersService {
   async deleteImage(imageId: number, userId: number, isAdmin: boolean) {
     const AuthenticateUser = (await this.serviceImages.query(
       `
-	 SELECT * FROM service_images 
-	 LEFT JOIN services on services.id = service_id
-	 WHERE user_id = ? AND service_images.id = ?
+	 SELECT * FROM ${N_IMAGES} 
+	 LEFT JOIN ${N_SERVICES} on ${N_SERVICES}.id = service_id
+	 WHERE user_id = ? AND ${N_IMAGES}.id = ?
 	 `,
       [userId, imageId],
     )) as any[];
@@ -152,7 +158,7 @@ export class ProvidersService {
   ) {
     delete service.service;
     const res = await this.serviceRepo.update(
-      { id: serviceId, userId },
+      { id: serviceId, user_id: userId },
       { ...service },
     );
     return res;
@@ -182,8 +188,8 @@ export class ProvidersService {
 
   async getSchedule(userId: number, serviceId: number) {
     const res = await this.serviceSchedule.query(
-      ` SELECT service_schedule.* FROM service_schedule
-	 	INNER JOIN services on services.id = service_id 
+      ` SELECT ${N_SCHEDULE}.* FROM ${N_SCHEDULE}
+	 	INNER JOIN ${N_SERVICES} on ${N_SERVICES}.id = service_id 
 	 	WHERE service_id = ? AND user_id = ?
 	 	`,
       [serviceId, userId],
@@ -205,12 +211,12 @@ export class ProvidersService {
   }
 
   async updateSchedule(userId: number, id: number, schedule: EditScheduleDto) {
-    const serviceId = schedule.serviceId;
+    const serviceId = schedule.service_id;
 
     if (await this.isScheduleOwner(userId, serviceId)) {
       const res = await this.serviceSchedule.update(
         {
-          serviceId,
+          service_id: serviceId,
           id,
         },
         schedule,
@@ -223,9 +229,9 @@ export class ProvidersService {
   async deleteSchedule(userId: number, id: number) {
     const isOwner = !!(
       await this.serviceSchedule.query(
-        `select count(*) as count from service_schedule 
-	inner join services on services.id = service_id
-	where user_id = ? and service_schedule.id = ?`,
+        `select count(*) as count from ${N_SCHEDULE} 
+	inner join ${N_SERVICES} on ${N_SERVICES}.id = service_id
+	where user_id = ? and ${N_SCHEDULE}.id = ?`,
         [userId, id],
       )
     )[0].count;

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useDispatch } from "../../app/hooks";
 import {
 	fadeOut,
@@ -23,8 +23,8 @@ type TProps = {
  */
 export const TransitionRedirect = (
 	to: any,
-	dispatch: any,
-	navigate: any,
+	dispatch: ReturnType<typeof useDispatch>,
+	navigate: NavigateFunction,
 	ms = 500
 ) => {
 	dispatch(fadeOut());

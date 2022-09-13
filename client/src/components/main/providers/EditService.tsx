@@ -15,7 +15,9 @@ import { getService } from "../../../api/providers/getServices";
 import { useDispatch } from "../../../app/hooks";
 import Card from "../../helper/Card";
 import { TransitionRedirect } from "../../helper/Link";
-import Template from "../Template";
+import Template from "../template/Template";
+import s from "./P.module.scss";
+
 export const services = ["location", "music", "food", "general"] as const;
 
 function EditService() {
@@ -66,7 +68,7 @@ function EditService() {
 		<Template>
 			<Card
 				title="edit service"
-				className="add-service-card"
+				className={s["add-service-card"]}
 				loader={loading}
 			>
 				<form
@@ -78,7 +80,7 @@ function EditService() {
 							{
 								service: chosenService,
 								description,
-								serviceType: type,
+								service_type: type,
 								title,
 								capacity: showCapacity ? capacity : undefined,
 								address: showAddress ? address : undefined,
@@ -98,7 +100,7 @@ function EditService() {
 					}}
 				>
 					<div
-						className="card-border"
+						className={"card-border"}
 						style={{
 							margin: 20,
 							padding: 10,
@@ -120,7 +122,7 @@ function EditService() {
 										const val = Number(select.target.value);
 										setService(val);
 									}}
-									className="add-service-input"
+									className={s["add-service-input"]}
 									select
 									label="Service"
 									name="service"
@@ -141,7 +143,7 @@ function EditService() {
 										placeholder="Capacity"
 										value={capacity}
 										style={{ minWidth: 200 }}
-										className="add-service-input"
+										className={s["add-service-input"]}
 										onChange={(e) => {
 											const val = Number(e.currentTarget.value);
 											if (val >= 0) setCapacity(val || 0);
@@ -168,7 +170,7 @@ function EditService() {
 									placeholder="name of your business"
 									value={name}
 									style={{ width: 300, minWidth: 200 }}
-									className="add-service-input"
+									className={s["add-service-input"]}
 									onChange={(e) => {
 										const val = e.currentTarget.value;
 										setName(val);
@@ -185,7 +187,7 @@ function EditService() {
 									placeholder="Service Specific Type"
 									value={type}
 									style={{ width: "300px", minWidth: "200px" }}
-									className="add-service-input"
+									className={s["add-service-input"]}
 									onChange={(e) => {
 										const val = e.currentTarget.value;
 										setType(val);
@@ -205,7 +207,7 @@ function EditService() {
 								placeholder="Title"
 								value={title}
 								style={{ width: "90%", minWidth: "200px" }}
-								className="add-service-input"
+								className={s["add-service-input"]}
 								onChange={(e) => {
 									const val = e.currentTarget.value;
 									setTitle(val);
@@ -225,7 +227,7 @@ function EditService() {
 									placeholder="Description"
 									value={description}
 									style={{ width: "90%", minWidth: "200px" }}
-									className="add-service-input"
+									className={s["add-service-input"]}
 									onChange={(e) => {
 										const val = e.currentTarget.value;
 										setDescription(val);
@@ -254,7 +256,7 @@ function EditService() {
 										left: 0,
 										zIndex: -1,
 									}}
-									className="add-service-input"
+									className={s["add-service-input"]}
 									inputProps={{
 										inputMode: "text",
 										type: "text",
@@ -300,7 +302,7 @@ function EditService() {
 										inputMode: "text",
 										type: "text",
 									}}
-									className="add-service-input"
+									className={s["add-service-input"]}
 									name="country"
 									required
 								/>
@@ -317,7 +319,7 @@ function EditService() {
 										inputMode: "text",
 										type: "text",
 									}}
-									className="add-service-input"
+									className={s["add-service-input"]}
 									name="city"
 									required
 								/>
@@ -334,7 +336,7 @@ function EditService() {
 										inputMode: "text",
 										type: "text",
 									}}
-									className="add-service-input"
+									className={s["add-service-input"]}
 									name="address"
 									required
 								/>

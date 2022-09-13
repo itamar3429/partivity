@@ -21,7 +21,7 @@ export class addServiceDto {
 
   @IsString()
   @Length(4)
-  serviceType: string;
+  service_type: string;
 
   @IsString()
   @Length(5)
@@ -72,7 +72,7 @@ export class EditScheduleDto {
   end: Date;
 
   @IsNumber()
-  serviceId: number;
+  service_id: number;
 
   @IsString()
   title: string;

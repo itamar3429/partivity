@@ -75,7 +75,7 @@ function WelcomeTemplate({ children }: React.PropsWithChildren<{}>) {
 									Providers
 								</CustomLink>
 							</li>
-							<li>
+							{/* <li>
 								<CustomLink
 									onClick={closeNav}
 									style={{
@@ -86,7 +86,7 @@ function WelcomeTemplate({ children }: React.PropsWithChildren<{}>) {
 								>
 									Lets Party
 								</CustomLink>
-							</li>
+							</li> */}
 							<li>
 								<CustomLink
 									onClick={closeNav}

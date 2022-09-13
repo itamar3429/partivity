@@ -1,5 +1,5 @@
 import React from "react";
-import Template from "./Template";
+import Template from "../template/Template";
 
 function Dashboard() {
 	return (

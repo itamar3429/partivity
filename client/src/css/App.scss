@@ -2,16 +2,11 @@
 @use "./animations";
 @use "./grid";
 @use "./components/login";
-@use "./components/dashboard";
 @use "./components/welcome";
 @use "./components/signupPage";
-@use "./components/template.scss";
 @use "./components/welcome_template";
 @use "./components/proviers_welcome";
 @use "./components/about";
-@use "./components/nav";
-@use "./components/helpers";
-@use "./components/providers/index";
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap");
 @import "https://fonts.googleapis.com/css?family=Raleway";

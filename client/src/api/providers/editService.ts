@@ -6,7 +6,7 @@ type TData = {
 
 	capacity?: number | undefined;
 
-	serviceType: string;
+	service_type: string;
 
 	title: string;
 

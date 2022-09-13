@@ -1,23 +1,24 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "../../app/hooks";
-import Logo from "../helper/Logo";
+import { useDispatch, useSelector } from "../../../app/hooks";
+import Logo from "../../helper/Logo";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton } from "@mui/material";
-import { toggle, toggleWide } from "../../app/slices/nav.slice";
+import { toggle, toggleWide } from "../../../app/slices/nav.slice";
 import { Link } from "react-router-dom";
-import NavList from "../helper/NavList";
-import NavItem from "../helper/NavItem";
+import NavList from "./NavList";
+import NavItem from "./NavItem";
 import MultilineChartIcon from "@mui/icons-material/MultilineChart";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import PostAddIcon from "@mui/icons-material/PostAdd";
-import ForProviders from "../auth/authExclude/ForProviders";
-import ForClient from "../auth/authExclude/ForClient";
+import ForProviders from "../../auth/authExclude/ForProviders";
+import ForClient from "../../auth/authExclude/ForClient";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import Filler from "../helper/Filler";
+import Filler from "../../helper/Filler";
+import s from "./T.module.scss";
 
 type TProps = {};
 
@@ -39,7 +40,9 @@ function Template(props: React.PropsWithChildren<TProps>) {
 	};
 
 	return (
-		<div className={"template " + className + (!showWide ? " narrow" : "")}>
+		<div
+			className={`${s.template} ${className} ${!showWide ? s.narrow : ""}`}
+		>
 			<span
 				style={{
 					maxWidth: 0,
@@ -48,11 +51,11 @@ function Template(props: React.PropsWithChildren<TProps>) {
 					display: "block",
 				}}
 			></span>
-			<div className={"nav-bar" + (showNav ? " show" : "")}>
-				<Link to={"/"} className="link">
-					<div className="nav-icon">
+			<div className={`${s.nav_bar} ${showNav ? s.show : ""}`}>
+				<Link to={"/"} className={"link"}>
+					<div className={s.nav_icon}>
 						<Logo
-							SpanClass="nav-log-element"
+							SpanClass={s.nav_log_element}
 							fontSize={20}
 							iconClass=""
 							letterSpacing={13}
@@ -60,7 +63,7 @@ function Template(props: React.PropsWithChildren<TProps>) {
 						/>
 					</div>
 				</Link>
-				<div className="nav-list">
+				<div className={s.nav_list}>
 					<NavList>
 						<NavItem
 							title="dashboard"
@@ -98,18 +101,18 @@ function Template(props: React.PropsWithChildren<TProps>) {
 						</ForClient>
 					</NavList>
 				</div>
-				<div className="nav-btn">
+				<div className={s.nav_btn}>
 					<IconButton onClick={toggleNav}>
 						{!showNav ? <MenuIcon></MenuIcon> : <CloseIcon></CloseIcon>}
 					</IconButton>
 				</div>
 			</div>
 
-			<div className="page-container">
-				<div className="nav-header">
-					<div className="header-left">
+			<div className={s.page_container}>
+				<div className={s.nav_header}>
+					<div className={s.header_left}>
 						<IconButton
-							className="show-wide-narrow"
+							className={s.show_wide_narrow}
 							onClick={toggleNavWide}
 						>
 							{!showWide ? (
@@ -120,9 +123,9 @@ function Template(props: React.PropsWithChildren<TProps>) {
 						</IconButton>
 						some feature go here
 					</div>
-					<div className="header-right">user menu</div>
+					<div className={s.header_right}>user menu</div>
 				</div>
-				<div className="page-content">
+				<div className={s.page_content}>
 					<Filler></Filler>
 					{props.children}
 					<Filler></Filler>

@@ -1,25 +1,28 @@
 import React from "react";
 import Filler from "./Filler";
 import Loader from "./Loader";
+import s from "./Helpers.module.scss";
 
 type TProps = {
 	title: string;
 	children: React.ReactNode;
 	className?: string;
 	loader?: boolean;
+	header_end?: React.ReactNode;
 };
 
 function Card(props: TProps) {
 	return (
-		<div className={"card " + props.className}>
-			<div className="card-header">
+		<div className={`${props.className} ${s.card}`}>
+			<div className={s.card_header}>
 				<h3 className="title-2">{props.title}</h3>
+				<div>{props.header_end}</div>
 			</div>
-			<div className={"card-body" + (props.loader && " card-loader")}>
+			<div className={`${s.card_body} ${props.loader && s.card_loader}`}>
 				{props.loader && (
 					<>
-						<div className="card-loader-container" tabIndex={0}>
-							<div className="card-loader-inner">
+						<div className={s.card_loader_container} tabIndex={0}>
+							<div className={s.card_loader_inner}>
 								<Loader></Loader>
 							</div>
 						</div>

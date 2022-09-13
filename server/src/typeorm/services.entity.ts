@@ -8,21 +8,22 @@ import {
 import { serviceEnum } from './dto/Services.dto';
 import User from './users.entity';
 
-@Entity('services')
+const NAME = 'services';
+@Entity(NAME)
 class Service {
   @PrimaryGeneratedColumn()
   id: number;
 
   @ManyToOne(() => User, (user) => user.id, { cascade: true })
   @JoinColumn({ name: 'user_id' })
-  @Column({ nullable: false, name: 'user_id' })
-  userId: number;
+  @Column({ nullable: false })
+  user_id: number;
 
   @Column({ type: 'char', length: 100 })
   service: typeof serviceEnum[number];
 
   @Column({ name: 'service_type' })
-  serviceType: string;
+  service_type: string;
 
   // for location <====
   @Column({ default: null })
@@ -49,6 +50,10 @@ class Service {
 
   @Column({ default: false })
   deleted: boolean;
+
+  static getName() {
+    return NAME;
+  }
 }
 
 export default Service;

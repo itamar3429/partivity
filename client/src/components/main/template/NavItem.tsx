@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "../../app/hooks";
-import { close } from "../../app/slices/nav.slice";
+import { useDispatch, useSelector } from "../../../app/hooks";
+import { close } from "../../../app/slices/nav.slice";
+import s from "./T.module.scss";
 
 type TProps = {
 	to?: string;
@@ -21,25 +22,23 @@ function NavItem(props: React.PropsWithChildren<TProps>) {
 
 	return (
 		<li
-			className={
-				"nav-item" +
-				(!showWide ? " icon-only" : "") +
-				(page === props.page ? " selected" : "")
-			}
+			className={`${s.nav_item} ${!showWide ? s.icon_only : ""} ${
+				page === props.page ? s.selected : ""
+			}`}
 		>
 			<Link
 				to={props.to || ""}
 				onClick={closeNav}
-				className="link nev-item-link"
+				className={`link ${s.nav_item_link}`}
 			>
 				{showWide ? (
 					<>
-						{props.icon || <div className="fill-icon"></div>}
-						<span className="item-text">{props.title}</span>
+						{props.icon || <div className={s.fill_icon}></div>}
+						<span className={s.item_text}>{props.title}</span>
 					</>
 				) : (
 					<>
-						<div className="icon-only">{props.icon}</div>
+						<div className={s.icon_only}>{props.icon}</div>
 					</>
 				)}
 			</Link>

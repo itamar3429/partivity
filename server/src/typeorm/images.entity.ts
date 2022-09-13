@@ -7,15 +7,16 @@ import {
 } from 'typeorm';
 import Service from './services.entity';
 
-@Entity()
+const NAME = 'service_images';
+
+@Entity({ name: NAME })
 class ServiceImages {
   @PrimaryGeneratedColumn()
   id: number;
 
   @ManyToOne(() => Service, (service) => service.id, { cascade: true })
   @JoinColumn({ name: 'service_id' })
-  @Column({ name: 'service_id' })
-  serviceId: number;
+  service_id: number;
 
   @Column()
   image: string;
@@ -24,7 +25,11 @@ class ServiceImages {
   objId: string;
 
   @Column({ name: 'file_ext' })
-  fileExt: string;
+  file_ext: string;
+
+  static getName() {
+    return NAME;
+  }
 }
 
 export default ServiceImages;

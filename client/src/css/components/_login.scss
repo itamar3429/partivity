@@ -117,3 +117,21 @@ $lightBlue: #b2a4ff;
 		left: 20px;
 	}
 }
+
+// ---    LOGIN RESET    ---
+
+.reset_container {
+	width: 70%;
+	// min-height: 90vh;
+	margin: auto;
+	margin-top: 100px;
+	max-width: 550px;
+}
+
+@media only screen and (max-width: 550px) {
+	.reset_container {
+		width: 97%;
+	}
+}
+
+// ===    LOGIN RESET END    ===

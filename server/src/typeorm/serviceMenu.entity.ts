@@ -7,14 +7,15 @@ import {
 } from 'typeorm';
 import Service from './services.entity';
 
-@Entity()
-class serviceMenu {
+const NAME = 'service_menu';
+@Entity({ name: NAME })
+class ServiceMenu {
   @PrimaryGeneratedColumn()
   id: number;
 
   @ManyToOne(() => Service, (service) => service.id, { cascade: true })
   @JoinColumn({ name: 'service_id' })
-  serviceId: number;
+  service_id: number;
 
   @Column({ nullable: false })
   title: string;
@@ -27,6 +28,10 @@ class serviceMenu {
 
   @Column()
   image: string;
+
+  static getName() {
+    return NAME;
+  }
 }
 
-export default serviceMenu;
+export default ServiceMenu;

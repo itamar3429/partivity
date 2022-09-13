@@ -7,8 +7,9 @@ import {
 } from 'typeorm';
 import Service from './services.entity';
 
+const NAME = 'service_schedule';
 @Entity({
-  name: 'service_schedule',
+  name: NAME,
 })
 class ServiceSchedule {
   @PrimaryGeneratedColumn()
@@ -16,7 +17,7 @@ class ServiceSchedule {
 
   @ManyToOne(() => Service, (service) => service.id, { cascade: true })
   @JoinColumn({ name: 'service_id' })
-  serviceId: number;
+  service_id: number;
 
   @Column({ type: 'timestamp' })
   start: Date;
@@ -29,6 +30,10 @@ class ServiceSchedule {
 
   @Column()
   price: number;
+
+  static getName() {
+    return NAME;
+  }
 }
 
 export default ServiceSchedule;

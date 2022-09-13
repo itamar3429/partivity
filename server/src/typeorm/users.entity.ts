@@ -1,15 +1,16 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'users' })
+const NAME = 'users';
+@Entity({ name: NAME })
 class User {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({ name: 'first_name', default: null })
-  firstName: string;
+  first_name: string;
 
   @Column({ name: 'last_name', default: null })
-  lastName: string;
+  last_name: string;
 
   @Column()
   username: string;
@@ -22,6 +23,10 @@ class User {
 
   @Column({ default: 'client' })
   role: 'admin' | 'provider' | 'client';
+
+  static getName() {
+    return NAME;
+  }
 }
 
 export default User;

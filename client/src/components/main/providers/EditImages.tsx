@@ -1,13 +1,14 @@
-import { Button } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
+import Button from "@mui/material/Button";
 import { useParams } from "react-router-dom";
 import {
 	addServiceImage,
 	getImages,
 } from "../../../api/providers/serviceImages";
 import Card from "../../helper/Card";
-import Template from "../Template";
+import Template from "../template/Template";
 import EditImageItem from "./EditImageItem";
+import s from "./P.module.scss";
 
 function parseFileName(str: string, len: number) {
 	const dotIndex = str.lastIndexOf(".");
@@ -61,12 +62,8 @@ function EditImages() {
 
 	return (
 		<Template>
-			<Card
-				title="edit images"
-				className="mar-top mar-bottom"
-				loader={loading}
-			>
-				<div className="edit-img-list card-border">
+			<Card title="edit images" className={s.images_card} loader={loading}>
+				<div className={`${s["edit-img-list"]} card-border`}>
 					{images.map((image, i) => (
 						<EditImageItem
 							key={i}
@@ -76,9 +73,17 @@ function EditImages() {
 							setLoading={setLoading}
 						/>
 					))}
+					{!images.length && (
+						<h4
+							className="title"
+							style={{ textAlign: "center", width: "100%" }}
+						>
+							no images
+						</h4>
+					)}
 				</div>
-				<div className="add-new-img">
-					<div className="file-input">
+				<div className={s["add-new-img"]}>
+					<div className={s["file-input"]}>
 						<span>{parseFileName(fileName, 20)}</span>
 						<Button variant="contained" component="label">
 							Upload
@@ -95,7 +100,7 @@ function EditImages() {
 						</Button>
 					</div>
 					{fileName && (
-						<div className="file-submit">
+						<div className={s["file-submit"]}>
 							<Button
 								variant="contained"
 								component="label"

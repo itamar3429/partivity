@@ -3,7 +3,7 @@ import { api } from "../../config";
 export type TSchedule = {
 	start: Date;
 	end: Date;
-	serviceId: number;
+	service_id: number;
 	title: string;
 	price: number;
 };

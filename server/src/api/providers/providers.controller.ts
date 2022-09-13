@@ -15,7 +15,6 @@ import {
   Put,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import ServiceSchedule from '../../typeorm/schedule.entity';
 import { AuthenticateProvider } from '../../auth/auth.guard';
 import {
   AddScheduleDto,
@@ -23,6 +22,7 @@ import {
   EditScheduleDto,
 } from './providers.dto';
 import { ProvidersService } from './providers.service';
+import { TUser, User } from '../../decorators/user.decorator';
 
 @Controller('providers')
 @UseGuards(AuthenticateProvider)
@@ -30,14 +30,14 @@ export class ProvidersController {
   constructor(private readonly service: ProvidersService) {}
 
   @Get('services')
-  async getServices(@Request() req: any) {
-    const services = await this.service.getServices(req.user.id);
+  async getServices(@User() user: TUser) {
+    const services = await this.service.getServices(user.id);
     return { services, success: true };
   }
 
   @Get('service/:id')
-  async getService(@Request() req: any, @Param('id') id: number) {
-    const service = await this.service.getService(req.user.id, id);
+  async getService(@User() user: TUser, @Param('id') id: number) {
+    const service = await this.service.getService(user.id, id);
     if (service) return { service, success: true };
     return { success: false, message: 'service not found' };
   }
@@ -49,11 +49,11 @@ export class ProvidersController {
     }),
   )
   async updateService(
-    @Request() req: any,
+    @User() user: TUser,
     @Param('id') id: number,
     @Body() body: addServiceDto,
   ) {
-    const updated = await this.service.updateService(req.user.id, id, body);
+    const updated = await this.service.updateService(user.id, id, body);
     if (updated.affected)
       return { success: true, message: 'service updated successfully' };
 
@@ -62,9 +62,9 @@ export class ProvidersController {
 
   @Post('add')
   @UsePipes(ValidationPipe)
-  async addService(@Body() body: addServiceDto, @Request() req: any) {
+  async addService(@Body() body: addServiceDto, @User() user: TUser) {
     try {
-      const res = await this.service.addService(body, req.user.id);
+      const res = await this.service.addService(body, user.id);
       return { service: res, success: true };
     } catch (err) {
       return {
@@ -111,32 +111,32 @@ export class ProvidersController {
   }
 
   @Delete('service/:id')
-  deleteService(@Request() req: any, @Param('id') serviceId: number) {
-    return this.service.deleteService(serviceId, req.user.id);
+  deleteService(@User() user: TUser, @Param('id') serviceId: number) {
+    return this.service.deleteService(serviceId, user.id);
   }
 
   @Delete('image/delete/:id')
-  deleteImage(@Request() req: any, @Param('id') imgId: string) {
+  deleteImage(@User() user: TUser, @Param('id') imgId: string) {
     return this.service.deleteImage(
       Number(imgId),
-      Number(req.user.id),
-      req.user.role === 'admin',
+      Number(user.id),
+      user.role === 'admin',
     );
   }
 
   @Get('schedule/:service_id')
-  getSchedule(@Request() req: any, @Param('service_id') serviceId: number) {
-    const userId = req.user.id;
+  getSchedule(@User() user: TUser, @Param('service_id') serviceId: number) {
+    const userId = user.id;
     return this.service.getSchedule(userId, serviceId);
   }
 
   @Post('schedule/:service_id')
   async addSchedule(
-    @Request() req: any,
+    @User() user: TUser,
     @Param('service_id') serviceId: number,
     @Body() schedules: AddScheduleDto[],
   ) {
-    const userId = req.user.id;
+    const userId = user.id;
     const res = await this.service.addSchedules(userId, serviceId, schedules);
     return res;
   }
@@ -148,18 +148,18 @@ export class ProvidersController {
   )
   @Put('schedule/:id')
   async updateSchedule(
-    @Request() req: any,
+    @User() user: TUser,
     @Param('id') id: number,
     @Body() schedule: EditScheduleDto,
   ) {
-    const userId = req.user.id;
+    const userId = user.id;
     const res = await this.service.updateSchedule(userId, id, schedule);
     return res;
   }
 
   @Delete('schedule/:id')
-  async deleteSchedule(@Request() req: any, @Param('id') id: number) {
-    const userId = req.user.id;
+  async deleteSchedule(@User() user: TUser, @Param('id') id: number) {
+    const userId = user.id;
     const res = await this.service.deleteSchedule(userId, id);
     return res;
   }

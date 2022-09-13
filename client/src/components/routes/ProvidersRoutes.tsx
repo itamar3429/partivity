@@ -21,13 +21,17 @@ const WelcomeRoutes = () => {
 			></Route>
 			<Route
 				path="schedule/:service_id"
-				element={SetPageRender(<Schedule />, "providers/add", IsProvider)}
+				element={SetPageRender(
+					<Schedule />,
+					"providers/schedule",
+					IsProvider
+				)}
 			></Route>
 			<Route
 				path="edit/service/:service_id"
 				element={SetPageRender(
 					<EditService />,
-					"providers/add",
+					"providers/edit",
 					IsProvider
 				)}
 			></Route>

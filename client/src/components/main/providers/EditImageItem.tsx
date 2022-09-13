@@ -3,6 +3,7 @@ import { IconButton } from "@mui/material";
 import React from "react";
 import { deleteImages } from "../../../api/providers/serviceImages";
 import { api } from "../../../config";
+import s from "./P.module.scss";
 
 type TProps = {
 	image: {
@@ -17,9 +18,9 @@ type TProps = {
 
 function EditImageItem(props: TProps) {
 	return (
-		<div className="edit-img-item" key={props.image.id}>
+		<div className={s["edit-img-item"]} key={props.image.id}>
 			<img
-				className="img"
+				className={s.img}
 				src={
 					props.image.error ||
 					api.host + "/storage/get/" + props.image.objId
@@ -31,7 +32,7 @@ function EditImageItem(props: TProps) {
 			/>
 			<IconButton
 				color="warning"
-				className="delete-img-btn"
+				className={s["delete-img-btn"]}
 				onClick={(e) => {
 					const id = props.image.id;
 					props.setLoading(true);

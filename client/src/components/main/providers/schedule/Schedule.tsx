@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Template from "../../Template";
+import Template from "../../template/Template";
 import s from "./S.module.scss";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { dateFnsLocalizer, Calendar } from "react-big-calendar";
@@ -89,7 +89,7 @@ function Schedule() {
 				end: currDateTo,
 				title,
 				price,
-				serviceId,
+				service_id: serviceId,
 			});
 			dateFrom.setDate(dateFrom.getDate() + 1);
 		}
@@ -119,7 +119,7 @@ function Schedule() {
 			end,
 			price,
 			start,
-			serviceId,
+			service_id: serviceId,
 		});
 		if (res.success) {
 			reloadSchedule();

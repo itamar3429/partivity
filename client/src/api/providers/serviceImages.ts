@@ -16,9 +16,7 @@ export async function getImages(serviceId: string): Promise<
 	);
 	if (res.ok) {
 		const data = await res.json();
-		if (data.success) {
-			return data;
-		}
+		return data;
 	}
 	return { success: false, message: "something went wrong" };
 }
@@ -39,7 +37,7 @@ export async function addServiceImage(
 		body: data,
 	});
 	if (res.ok) {
-		return res.json();
+		return await res.json();
 	}
 	return { success: false, message: "failed to upload image to the server" };
 }
@@ -51,9 +49,22 @@ export async function deleteImages(imgId: number) {
 	});
 	if (res.ok) {
 		const data = await res.json();
-		if (data.success) {
-			return data;
+		return data;
+	}
+	return { success: false, message: "something went wrong" };
+}
+
+export async function updatePrimaryImage(imgId: number, serviceId: number) {
+	const res = await fetch(
+		`${api.host}/providers/primary/image/${serviceId}/${imgId}`,
+		{
+			...api.defOptions,
+			method: "PUT",
 		}
+	);
+	if (res.ok) {
+		const data = await res.json();
+		return data;
 	}
 	return { success: false, message: "something went wrong" };
 }

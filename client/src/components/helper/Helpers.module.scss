@@ -105,3 +105,59 @@
 }
 
 // ===    LOADER END   ===
+
+// ===    searchForm   ===
+
+.search_form {
+	position: relative;
+	padding: 0;
+	background-color: #fff;
+
+	.options_container {
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+		max-height: calc(50vh - 100px);
+		width: 100%;
+		height: fit-content;
+		border-radius: 4px;
+		overflow-x: hidden;
+		.options {
+			max-height: calc(50vh - 100px);
+			width: 100%;
+			height: fit-content;
+			display: flex;
+			flex-direction: column;
+			overflow-y: auto;
+			background-color: white;
+			color: rgba(0, 0, 0, 0.87);
+			font-family: Roboto, Helvetica, Arial, sans-serif;
+			font-weight: 400;
+			box-sizing: border-box;
+			box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px,
+				rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
+			transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+
+			.option {
+				padding: 6px 16px;
+				background-color: white;
+				border: none;
+				outline: none;
+				text-align: left;
+				cursor: pointer;
+				user-select: none;
+				font-size: 1rem;
+
+				line-height: 1.5;
+				letter-spacing: 0.00938em;
+				&:hover,
+				&:focus-visible,
+				&:focus-within {
+					background-color: rgb(227, 227, 227);
+				}
+			}
+		}
+	}
+}
+//   ===   end search form ====

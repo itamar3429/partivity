@@ -1,8 +1,8 @@
 import {
-  ForbiddenException,
   HttpException,
   Inject,
   Injectable,
+  InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -36,14 +36,37 @@ export class ProvidersService {
     @Inject(MINIO_CONNECTION) private readonly storage: Client,
   ) {}
 
-  async isScheduleOwner(userId: number, serviceId: number) {
+  async isServiceOwner(userId: number, serviceId: number) {
     return !!(await this.serviceRepo.findBy({ user_id: userId, id: serviceId }))
       .length;
+  }
+  async isImageOwner(userId: number, imageId: number) {
+    return !!(
+      await this.serviceImages
+        .createQueryBuilder(N_IMAGES)
+        .innerJoin(
+          Service,
+          N_SERVICES,
+          `${N_SERVICES}.id = ${N_IMAGES}.service_id
+			 AND ${N_SERVICES}.user_id = ${userId}
+	 		`,
+        )
+        .where({
+          id: imageId,
+        })
+        .getMany()
+    ).length;
   }
 
   async addService(data: addServiceDto, userId: number) {
     const service = this.serviceRepo.create({ ...data, user_id: userId });
     return this.serviceRepo.save(service);
+  }
+
+  async isFirstImage(serviceId: number) {
+    return !(await this.serviceImages.findOne({
+      where: { service_id: serviceId },
+    }));
   }
 
   async addImageToDB(filename: string, serviceId: number, ext: string) {
@@ -52,12 +75,22 @@ export class ProvidersService {
       const imageInstance = this.serviceImages.create({
         image: filename,
         service_id: serviceId,
-        objId: uuid,
+        obj_id: uuid,
         file_ext: ext,
+        primary: await this.isFirstImage(serviceId),
       });
       const res = await this.serviceImages.save(imageInstance);
-      return { success: true, uuid, imageData: res, imageId: res.id };
+
+      return {
+        success: true,
+        uuid,
+        imageData: res,
+        imageId: res.id,
+        primary: res.primary,
+      };
     } catch (err) {
+      console.log(err);
+
       throw new HttpException('failed when trying to save image to db', 500);
     }
   }
@@ -89,20 +122,44 @@ export class ProvidersService {
 
   async getServiceImages(serviceId: number) {
     try {
-      return await this.serviceImages.find({
-        where: { service_id: serviceId },
+      const res = await this.serviceImages.find({
+        where: { service_id: Number(serviceId) },
         select: {
-          objId: true,
+          obj_id: true,
           id: true,
+          primary: true,
+        },
+        order: {
+          primary: 'DESC',
         },
       });
+
+      return res;
     } catch (err) {
       throw new HttpException(err, 500);
     }
   }
 
+  async changePrimaryImage(userId: number, imageId: number, serviceId: number) {
+    const isOwner = await this.isServiceOwner(userId, serviceId);
+    if (isOwner) {
+      const res = await this.serviceImages.query(
+        `
+	 update service_images set 
+	 service_images.primary = (service_images.id = ?) 
+	 where service_images.service_id = ?`,
+        [imageId, serviceId],
+      );
+      console.log(res);
+
+      return { success: !!res.changedRows };
+    } else {
+      throw new UnauthorizedException('user not allowed');
+    }
+  }
+
   async removeImgByObjId(objId: string) {
-    await this.serviceImages.delete({ objId });
+    await this.serviceImages.delete({ obj_id: objId });
   }
 
   async deleteService(serviceId: number, userId: number) {
@@ -114,39 +171,40 @@ export class ProvidersService {
   }
 
   async deleteImage(imageId: number, userId: number, isAdmin: boolean) {
-    const AuthenticateUser = (await this.serviceImages.query(
-      `
-	 SELECT * FROM ${N_IMAGES} 
-	 LEFT JOIN ${N_SERVICES} on ${N_SERVICES}.id = service_id
-	 WHERE user_id = ? AND ${N_IMAGES}.id = ?
-	 `,
-      [userId, imageId],
-    )) as any[];
+    const isOwner = await this.isImageOwner(userId, imageId);
     try {
-      if (AuthenticateUser.length || isAdmin) {
-        const objName = AuthenticateUser[0].obj_id;
-        const deletedDB = await this.serviceImages.delete({ id: imageId });
+      if (isOwner || isAdmin) {
+        const remove = await this.serviceImages.findOne({
+          where: { id: imageId },
+        });
+        const objName = remove.obj_id;
+        const deletedDB = await this.serviceImages.delete(remove);
 
-        if (deletedDB.affected) {
-          const deletedStorage = await this.storage.removeObject(
-            MINIO_IMG_BUCKET,
-            objName,
+        if (remove.primary) {
+          const res = await this.serviceImages.query(
+            `
+				update ${N_IMAGES} set ${N_IMAGES}.primary = ?
+				where service_id = ? 
+				limit 1
+			`,
+            [true, remove.service_id],
           );
         }
+
+        if (deletedDB.affected) {
+          //  const deletedStorage =
+          this.storage.removeObject(MINIO_IMG_BUCKET, objName).catch();
+        }
+
         return {
           success: true,
           deletedId: imageId,
           message: 'deleted successfully',
         };
-      }
-      throw new ForbiddenException();
-    } catch (err) {
-      throw new HttpException(
-        {
-          success: false,
-          message: 'error while trying to delete image: ' + err?.code,
-        },
-        500,
+      } else throw new UnauthorizedException();
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'error while trying to delete image: ' + (error?.code || ''),
       );
     }
   }
@@ -176,12 +234,8 @@ export class ProvidersService {
     } catch (err) {
       console.error(err);
       await this.removeImgByObjId(objName);
-      throw new HttpException(
-        {
-          message: 'failed to upload object: ' + (err?.code || ''),
-          success: false,
-        },
-        500,
+      throw new InternalServerErrorException(
+        'failed to upload object: ' + (err?.code || ''),
       );
     }
   }
@@ -203,7 +257,7 @@ export class ProvidersService {
     serviceId: number,
     schedules: AddScheduleDto[],
   ) {
-    if (await this.isScheduleOwner(userId, serviceId)) {
+    if (await this.isServiceOwner(userId, serviceId)) {
       const res = await this.serviceSchedule.save(schedules);
       return { success: true, schedule: res };
     }
@@ -213,7 +267,7 @@ export class ProvidersService {
   async updateSchedule(userId: number, id: number, schedule: EditScheduleDto) {
     const serviceId = schedule.service_id;
 
-    if (await this.isScheduleOwner(userId, serviceId)) {
+    if (await this.isServiceOwner(userId, serviceId)) {
       const res = await this.serviceSchedule.update(
         {
           service_id: serviceId,
@@ -250,6 +304,7 @@ export class ProvidersService {
   getExtension(filename: string): string {
     filename = filename.toLowerCase();
     const extensionRegExp = /(?:\.([^.]+))?$/;
+    //  eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const extension: string = extensionRegExp.exec(filename)![1];
     if (extension) {
       return extension;

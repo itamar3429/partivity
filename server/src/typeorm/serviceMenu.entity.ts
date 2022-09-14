@@ -15,6 +15,7 @@ class ServiceMenu {
 
   @ManyToOne(() => Service, (service) => service.id, { cascade: true })
   @JoinColumn({ name: 'service_id' })
+  @Column({ name: 'service_id' })
   service_id: number;
 
   @Column({ nullable: false })

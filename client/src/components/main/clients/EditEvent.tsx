@@ -1,20 +1,30 @@
-import { Button, Stack, TextField } from "@mui/material";
+import { Button, Stack, TextField, Tooltip } from "@mui/material";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getEvent, updateEvent } from "../../../api/client/events";
+import {
+	getEvent,
+	removeEventService,
+	updateEvent,
+} from "../../../api/client/events";
 import Card from "../../helper/Card";
 import Template from "../template/Template";
+import AddService from "./AddService";
 import s from "./C.module.scss";
+import EventSubmitModal from "./EventSubmitModal";
+import Service from "./Service";
 
 function EditEvent() {
 	const [name, setName] = useState("");
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [date, setDate] = useState(new Date());
-	const [services, setServices] = useState([]);
+	const [services, setServices] = useState<any[]>([]);
 	const [loading, setLoading] = useState(false);
+	const [status, setStatus] = useState("");
+	const [showAddService, setShowAddService] = useState(false);
+	const [showSubmitEvent, setShowSubmitEvent] = useState(false);
 
 	const { eventId } = useParams();
 
@@ -34,6 +44,7 @@ function EditEvent() {
 				setDescription(event.description);
 				setDate(new Date(event.date));
 				setServices(event.services);
+				setStatus(event.status);
 			}
 		} catch (error) {
 			console.log(error);
@@ -41,8 +52,28 @@ function EditEvent() {
 		setLoading(false);
 	};
 
+	const onServiceDelete = async (eventServiceId: number) => {
+		const res = await removeEventService(eventServiceId);
+		if (res.success) {
+			setServices((pre) =>
+				pre.filter((x) => x.event_service_id !== eventServiceId)
+			);
+		} else {
+		}
+	};
+
+	const isNotBooked = status !== "booked";
+
 	return (
 		<Template>
+			{showAddService && isNotBooked && (
+				<AddService
+					onHide={() => setShowAddService(false)}
+					show={showAddService}
+					date={date}
+					setServices={setServices}
+				/>
+			)}
 			<Card title="edit event" className={s.card} loader={loading}>
 				<div>
 					<div
@@ -121,6 +152,10 @@ function EditEvent() {
 								/>
 							</LocalizationProvider>
 						</Stack>
+						<span>
+							<b>status: </b>
+							{status}
+						</span>
 
 						<div style={{ position: "relative" }}></div>
 					</div>
@@ -138,18 +173,21 @@ function EditEvent() {
 							className="button green outline"
 							type="submit"
 							onClick={async (e) => {
-								const res = await updateEvent(Number(eventId), {
-									date,
-									description,
-									name,
-									title,
-								});
-								if (res.success) {
-									console.log("updated");
-								} else {
-									console.log(res);
+								if (isNotBooked) {
+									const res = await updateEvent(Number(eventId), {
+										date,
+										description,
+										name,
+										title,
+									});
+									if (res.success) {
+										console.log("updated");
+									} else {
+										console.log(res);
+									}
 								}
 							}}
+							disabled={!isNotBooked}
 						>
 							Save
 						</button>
@@ -160,13 +198,64 @@ function EditEvent() {
 			<Card
 				title="event services"
 				loader={loading}
-				header_end={<Button>Add</Button>}
-				className={s.card}
+				header_end={
+					<Button
+						disabled={!isNotBooked}
+						onClick={() => isNotBooked && setShowAddService(true)}
+					>
+						Add
+					</Button>
+				}
+				className={s.card_bottom}
 			>
-				{!services.length && (
+				{services.map((service, i) => (
+					<Service
+						key={service.event_service_id}
+						service={service}
+						type={service.service}
+						onDelete={onServiceDelete}
+						booked={!isNotBooked}
+					/>
+				))}
+				{!services.length ? (
 					<p style={{ textAlign: "center", padding: 30 }}>no services</p>
+				) : (
+					<div
+						style={{
+							display: "flex",
+							justifyContent: "flex-end",
+							padding: "30px 20px",
+							height: "fit-content",
+						}}
+					>
+						<Tooltip
+							title={
+								isNotBooked
+									? "after submitting you cannot cancel the event"
+									: "event already booked"
+							}
+						>
+							<Button
+								color="success"
+								variant="contained"
+								disabled={!isNotBooked}
+								onClick={() => {
+									isNotBooked && setShowSubmitEvent(true);
+								}}
+							>
+								book
+							</Button>
+						</Tooltip>
+					</div>
 				)}
 			</Card>
+			{showSubmitEvent && isNotBooked && (
+				<EventSubmitModal
+					show
+					onHide={() => setShowSubmitEvent(false)}
+					services={services}
+				/>
+			)}
 		</Template>
 	);
 }

@@ -60,6 +60,20 @@ function EditImages() {
 		);
 	};
 
+	const handlePrimary = (id: number) => {
+		setImages((pre) =>
+			pre
+				.map((x) => {
+					x.primary = x.id === id;
+					return x;
+				})
+				.sort(
+					(a, b) =>
+						(b.primary ? 1 : 0) - (a.primary ? 1 : 0) || a.id - b.id
+				)
+		);
+	};
+
 	return (
 		<Template>
 			<Card title="edit images" className={s.images_card} loader={loading}>
@@ -71,6 +85,7 @@ function EditImages() {
 							image={image}
 							handleDelete={handleDelete}
 							setLoading={setLoading}
+							handlePrimary={handlePrimary}
 						/>
 					))}
 					{!images.length && (
@@ -118,7 +133,7 @@ function EditImages() {
 											if (res.success) {
 												setImages((pre) => [
 													...pre,
-													{ objId: res.objId, id: res.imageId },
+													{ obj_id: res.objId, id: res.imageId },
 												]);
 											}
 										}

@@ -17,6 +17,7 @@ class ServiceSchedule {
 
   @ManyToOne(() => Service, (service) => service.id, { cascade: true })
   @JoinColumn({ name: 'service_id' })
+  @Column({ name: 'service_id' })
   service_id: number;
 
   @Column({ type: 'timestamp' })
@@ -31,7 +32,10 @@ class ServiceSchedule {
   @Column()
   price: number;
 
-  static getName() {
+  @Column({ default: false })
+  booked: boolean;
+
+  static getName(): typeof NAME {
     return NAME;
   }
 }

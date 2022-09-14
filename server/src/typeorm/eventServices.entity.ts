@@ -1,5 +1,11 @@
-import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import EventPlan from './event.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import Event from './event.entity';
 import ServiceSchedule from './schedule.entity';
 
 const NAME = 'event_services' as const;
@@ -9,18 +15,16 @@ class EventServices {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => EventPlan, (event) => event.id, { cascade: true })
+  @ManyToOne(() => Event, (event) => event.id, { cascade: true })
   @JoinColumn({ name: 'event_id' })
+  @Column({ name: 'event_id' })
   event_id: number;
-
-  //   @ManyToOne(() => Service, (service) => service.id, { cascade: true })
-  //   @JoinColumn({ name: 'service_id' })
-  //   service_id: number;
 
   @ManyToOne(() => ServiceSchedule, (schedule) => schedule.id, {
     cascade: true,
   })
   @JoinColumn({ name: 'schedule_id' })
+  @Column({ name: 'schedule_id' })
   schedule_id: number;
 
   static getName() {

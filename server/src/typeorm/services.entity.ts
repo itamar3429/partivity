@@ -51,7 +51,7 @@ class Service {
   @Column({ default: false })
   deleted: boolean;
 
-  static getName() {
+  static getName(): typeof NAME {
     return NAME;
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IsDateString, IsString } from 'class-validator';
+import { IsDateString, IsNumber, IsString } from 'class-validator';
 
 @Injectable()
 export class AddEventDto {
@@ -14,4 +14,17 @@ export class AddEventDto {
 
   @IsDateString()
   date: string;
+}
+
+export class getServicesDto {
+  @IsDateString()
+  date: Date;
+}
+
+export class addEventServiceDto {
+  @IsNumber()
+  eventId: number;
+
+  @IsNumber()
+  scheduleId: number;
 }

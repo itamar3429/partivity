@@ -6,13 +6,14 @@ import {
   HttpException,
   Param,
   Post,
-  Request,
   UploadedFile,
   UseGuards,
   UseInterceptors,
   UsePipes,
   ValidationPipe,
   Put,
+  UnauthorizedException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthenticateProvider } from '../../auth/auth.guard';
@@ -80,26 +81,57 @@ export class ProvidersController {
     return { success: true, images };
   }
 
+  @Put('primary/image/:serviceId/:imageId')
+  async makePrimaryImage(
+    @Param('imageId') imageId: string,
+    @Param('serviceId') serviceId: string,
+    @User() user: TUser,
+  ) {
+    try {
+      const res = await this.service.changePrimaryImage(
+        user.id,
+        Number(imageId),
+        Number(serviceId),
+      );
+      return res;
+    } catch (error) {
+      console.log(error);
+
+      throw new InternalServerErrorException(
+        'error while switching primary image',
+      );
+    }
+  }
+
   @Post('service/image/:id')
   @UseInterceptors(FileInterceptor('file'))
   async addServiceImage(
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,
+    @User() user: TUser,
   ) {
     try {
-      const dbRes = await this.service.addImageToDB(
-        file.originalname,
-        Number(id),
-        this.service.getExtension(file.originalname),
-      );
-      await this.service.insertObj(dbRes.uuid, file.buffer);
-      return {
-        success: true,
-        message: 'file uploaded successfully',
-        objId: dbRes.uuid,
-        imageId: dbRes.imageId,
-      };
+      const isOwner = await this.service.isServiceOwner(user.id, Number(id));
+      if (isOwner) {
+        const dbRes = await this.service.addImageToDB(
+          file.originalname,
+          Number(id),
+          this.service.getExtension(file.originalname),
+        );
+        await this.service.insertObj(dbRes.uuid, file.buffer);
+        return {
+          success: true,
+          message: 'file uploaded successfully',
+          objId: dbRes.uuid,
+          imageId: dbRes.imageId,
+          primary: dbRes.primary,
+        };
+      } else {
+        throw new UnauthorizedException('user not allowed to post this image');
+      }
     } catch (err) {
+      console.log(err);
+
       throw new HttpException(
         {
           success: false,
@@ -116,8 +148,8 @@ export class ProvidersController {
   }
 
   @Delete('image/delete/:id')
-  deleteImage(@User() user: TUser, @Param('id') imgId: string) {
-    return this.service.deleteImage(
+  async deleteImage(@User() user: TUser, @Param('id') imgId: string) {
+    return await this.service.deleteImage(
       Number(imgId),
       Number(user.id),
       user.role === 'admin',

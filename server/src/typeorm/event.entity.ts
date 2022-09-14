@@ -6,15 +6,16 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import User from './users.entity';
-const NAME = 'event_plan' as const;
+const NAME = 'events' as const;
 
 @Entity({ name: NAME })
-class EventPlan {
+class Event {
   @PrimaryGeneratedColumn()
   id: number;
 
   @ManyToOne(() => User, (user) => user.id, { cascade: true })
   @JoinColumn({ name: 'user_id' })
+  @Column({ name: 'user_id' })
   user_id: number;
 
   @Column()
@@ -27,7 +28,7 @@ class EventPlan {
   description: string;
 
   @Column({ type: 'varchar', length: 20 })
-  status: 'pending' | 'open' | 'close';
+  status: 'pending' | 'open' | 'booked';
 
   @Column({ type: 'date' })
   date: Date;
@@ -37,4 +38,4 @@ class EventPlan {
   }
 }
 
-export default EventPlan;
+export default Event;

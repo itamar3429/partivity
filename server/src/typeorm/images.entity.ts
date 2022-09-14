@@ -16,16 +16,20 @@ class ServiceImages {
 
   @ManyToOne(() => Service, (service) => service.id, { cascade: true })
   @JoinColumn({ name: 'service_id' })
+  @Column({ name: 'service_id' })
   service_id: number;
 
   @Column()
   image: string;
 
   @Column({ nullable: false, name: 'obj_id' })
-  objId: string;
+  obj_id: string;
 
   @Column({ name: 'file_ext' })
   file_ext: string;
+
+  @Column({ default: false })
+  primary: boolean;
 
   static getName() {
     return NAME;

@@ -13,7 +13,7 @@ type TProps = {
 
 function Card(props: TProps) {
 	return (
-		<div className={`${props.className} ${s.card}`}>
+		<div className={`${props.className || ""} ${s.card}`}>
 			<div className={s.card_header}>
 				<h3 className="title-2">{props.title}</h3>
 				<div>{props.header_end}</div>

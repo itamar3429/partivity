@@ -41,6 +41,7 @@ function Register() {
 									);
 									navigate("/");
 								} else {
+									errorToast(login.message);
 								}
 							} else {
 								errorToast(res.message);

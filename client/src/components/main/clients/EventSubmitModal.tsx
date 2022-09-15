@@ -11,6 +11,7 @@ type TProps = {
 	onHide: () => void;
 	show: boolean;
 	services: any[];
+	onSuccess: Function;
 };
 
 function EventSubmitModal(props: TProps) {
@@ -47,6 +48,7 @@ function EventSubmitModal(props: TProps) {
 								const res = await bookEvent(Number(eventId));
 								if (res.success) {
 									successToast("event booked successfully");
+									props.onSuccess();
 								} else {
 									errorToast(res.message);
 								}

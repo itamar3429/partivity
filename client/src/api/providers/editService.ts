@@ -1,4 +1,5 @@
 import { api } from "../../config";
+import { defaultErrorMessage } from "../constants";
 import { services } from "./types";
 
 type TData = {
@@ -35,8 +36,10 @@ export default async function editService(data: TData, serviceId: number) {
 		const data = await res.json();
 		return data;
 	}
+	const date = await res.json().catch(() => ({}));
 	return {
 		success: false,
-		message: "something went wrong",
+		message: defaultErrorMessage,
+		...date,
 	};
 }

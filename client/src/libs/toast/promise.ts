@@ -1,4 +1,5 @@
 import { toast, ToastOptions } from "react-toastify";
+import { defaultErrorMessage } from "../../api/constants";
 
 export function promiseToast<T>(
 	promise: Promise<T>,
@@ -13,7 +14,7 @@ export function promiseToast<T>(
 			success,
 			error: {
 				render(props) {
-					return props.data || "something went wrong";
+					return props.data || defaultErrorMessage;
 				},
 			},
 		},

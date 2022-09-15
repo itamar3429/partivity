@@ -1,5 +1,6 @@
 // import { Block } from "@mui/icons-material";
 import {
+	Button,
 	DialogTitle,
 	// FormControl,
 	// InputLabel,
@@ -359,9 +360,9 @@ function EditService() {
 							justifyContent: "flex-end",
 						}}
 					>
-						<button className="button green outline" type="submit">
+						<Button color="success" variant="contained" type="submit">
 							Submit
-						</button>
+						</Button>
 					</div>
 				</form>
 			</Card>

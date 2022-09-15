@@ -62,6 +62,7 @@ function AddService(props: TProps) {
 			if (res.success) {
 				setDates(res.dates);
 			} else {
+				errorToast(res.message);
 			}
 		});
 	}, []);

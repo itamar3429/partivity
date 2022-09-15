@@ -176,8 +176,9 @@ function EditEvent() {
 							justifyContent: "flex-end",
 						}}
 					>
-						<button
-							className="button green outline"
+						<Button
+							color={"success"}
+							variant="contained"
 							type="submit"
 							onClick={async (e) => {
 								if (isNotBooked) {
@@ -198,7 +199,7 @@ function EditEvent() {
 							disabled={!isNotBooked}
 						>
 							Save
-						</button>
+						</Button>
 					</div>
 				</div>
 			</Card>
@@ -243,16 +244,18 @@ function EditEvent() {
 									: "event already booked"
 							}
 						>
-							<Button
-								color="success"
-								variant="contained"
-								disabled={!isNotBooked}
-								onClick={() => {
-									isNotBooked && setShowSubmitEvent(true);
-								}}
-							>
-								book
-							</Button>
+							<span>
+								<Button
+									color="success"
+									variant="contained"
+									disabled={!isNotBooked}
+									onClick={() => {
+										isNotBooked && setShowSubmitEvent(true);
+									}}
+								>
+									book
+								</Button>
+							</span>
 						</Tooltip>
 					</div>
 				)}
@@ -262,6 +265,7 @@ function EditEvent() {
 					show
 					onHide={() => setShowSubmitEvent(false)}
 					services={services}
+					onSuccess={() => setStatus("booked")}
 				/>
 			)}
 		</Template>

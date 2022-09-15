@@ -1,4 +1,5 @@
 import { api } from "../../config";
+import { defaultErrorMessage } from "../constants";
 
 export async function getImages(serviceId: string): Promise<
 	| {
@@ -18,7 +19,8 @@ export async function getImages(serviceId: string): Promise<
 		const data = await res.json();
 		return data;
 	}
-	return { success: false, message: "something went wrong" };
+	const date = await res.json().catch(() => ({}));
+	return { success: false, message: defaultErrorMessage, ...date };
 }
 
 export async function addServiceImage(
@@ -39,7 +41,12 @@ export async function addServiceImage(
 	if (res.ok) {
 		return await res.json();
 	}
-	return { success: false, message: "failed to upload image to the server" };
+	const date = await res.json().catch(() => ({}));
+	return {
+		success: false,
+		message: "failed to upload image to the server",
+		...date,
+	};
 }
 
 export async function deleteImages(imgId: number) {
@@ -51,7 +58,8 @@ export async function deleteImages(imgId: number) {
 		const data = await res.json();
 		return data;
 	}
-	return { success: false, message: "something went wrong" };
+	const date = await res.json().catch(() => ({}));
+	return { success: false, message: defaultErrorMessage, ...date };
 }
 
 export async function updatePrimaryImage(imgId: number, serviceId: number) {
@@ -66,5 +74,6 @@ export async function updatePrimaryImage(imgId: number, serviceId: number) {
 		const data = await res.json();
 		return data;
 	}
-	return { success: false, message: "something went wrong" };
+	const date = await res.json().catch(() => ({}));
+	return { success: false, message: defaultErrorMessage, ...date };
 }

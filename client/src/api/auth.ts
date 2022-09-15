@@ -1,4 +1,5 @@
 import { api } from "../config";
+import { defaultErrorMessage } from "./constants";
 
 export const apiRegister = async (
 	username: string,
@@ -18,11 +19,11 @@ export const apiRegister = async (
 			return res.json();
 		} else {
 			const data = await res.json().catch(() => ({}));
-			console.log(data);
 
 			return {
 				success: false,
-				message: "something went wrong",
+				message: defaultErrorMessage,
+				...data,
 			};
 		}
 	});
@@ -47,7 +48,7 @@ export const apiLogin = async (username: string, password: string) => {
 			}
 			return {
 				success: false,
-				message: "something went wrong",
+				message: defaultErrorMessage,
 				...data,
 			};
 		}
@@ -58,13 +59,16 @@ export const apiAuth = async () => {
 	return fetch(api.host + "/auth", {
 		credentials: "include",
 		mode: "cors",
-	}).then((res) => {
+	}).then(async (res) => {
 		if (res.ok) {
 			return res.json();
-		} else
+		} else {
+			const date = await res.json().catch(() => ({}));
 			return {
 				success: false,
-				message: "something went wrong",
+				message: defaultErrorMessage,
+				...date,
 			};
+		}
 	});
 };

@@ -1,4 +1,5 @@
 import { api } from "../../config";
+import { defaultErrorMessage } from "../constants";
 
 export type TSchedule = {
 	start: Date;
@@ -15,8 +16,10 @@ export async function getSchedule(serviceId: number) {
 	);
 	if (res.ok) {
 		return await res.json();
+	} else {
+		const data = await res.json().catch(() => ({}));
+		return { success: false, message: defaultErrorMessage, ...data };
 	}
-	return { success: false, message: "something went wrong" };
 }
 
 export async function addSchedules(serviceId: number, schedules: TSchedule[]) {
@@ -29,7 +32,8 @@ export async function addSchedules(serviceId: number, schedules: TSchedule[]) {
 	if (res.ok) {
 		return await res.json();
 	}
-	return { success: false, message: "something went wrong" };
+	const date = await res.json().catch(() => ({}));
+	return { success: false, message: defaultErrorMessage, ...date };
 }
 
 export async function editSchedules(id: number, schedule: Partial<TSchedule>) {
@@ -42,7 +46,8 @@ export async function editSchedules(id: number, schedule: Partial<TSchedule>) {
 	if (res.ok) {
 		return await res.json();
 	}
-	return { success: false, message: "something went wrong" };
+	const date = await res.json().catch(() => ({}));
+	return { success: false, message: defaultErrorMessage, ...date };
 }
 
 export async function deleteSchedule(id: number) {
@@ -54,5 +59,6 @@ export async function deleteSchedule(id: number) {
 	if (res.ok) {
 		return await res.json();
 	}
-	return { success: false, message: "something went wrong" };
+	const date = await res.json().catch(() => ({}));
+	return { success: false, message: defaultErrorMessage, ...date };
 }

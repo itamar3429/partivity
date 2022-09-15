@@ -1,11 +1,13 @@
 // import { Block } from "@mui/icons-material";
 import {
+	Button,
 	DialogTitle,
 	// FormControl,
 	// InputLabel,
 	// Select,
 	MenuItem,
 	TextField,
+	Tooltip,
 } from "@mui/material";
 import { Stack } from "@mui/system";
 import React, { useState } from "react";
@@ -203,52 +205,32 @@ function AddService() {
 								required
 							/>
 							<div style={{ position: "relative" }}>
-								<TextField
-									label="Description"
-									placeholder="Description"
-									value={description}
-									style={{ width: "90%", minWidth: "200px" }}
-									className={s["add-service-input"]}
-									onChange={(e) => {
-										const val = e.currentTarget.value;
-										setDescription(val);
-									}}
-									inputProps={{
-										inputMode: "text",
-										type: "text",
-										pattern: ".{15,}",
-										title: "required. at least 15 characters",
-										required: true,
-									}}
-									name="description"
-									required
-									multiline
-								/>
-								<TextField
-									value={description}
-									style={{
-										opacity: 0,
-										overflow: "hidden",
-										marginTop: 0,
-										position: "absolute",
-										width: "100%",
-										minWidth: "100%",
-										bottom: 0,
-										left: 0,
-										zIndex: -1,
-									}}
-									className={s["add-service-input"]}
-									inputProps={{
-										inputMode: "text",
-										type: "text",
-										pattern: ".{15,}",
-										title: "required. at least 15 characters",
-										hidden: true,
-									}}
-									name="description"
-									required
-									hidden
-								/>
+								<Tooltip
+									title="required. at least 15 characters"
+									placement="bottom-start"
+								>
+									<TextField
+										label="Description"
+										placeholder="Description"
+										value={description}
+										style={{ width: "90%", minWidth: "200px" }}
+										className={s["add-service-input"]}
+										onChange={(e) => {
+											const val = e.currentTarget.value;
+											setDescription(val);
+										}}
+										inputProps={{
+											inputMode: "text",
+											type: "text",
+											pattern: ".{15,}",
+											title: "required. at least 15 characters",
+											required: true,
+										}}
+										name="description"
+										required
+										multiline
+									/>
+								</Tooltip>
 							</div>
 						</Stack>
 					</div>
@@ -335,9 +317,9 @@ function AddService() {
 							justifyContent: "flex-end",
 						}}
 					>
-						<button className="button green outline" type="submit">
+						<Button color="success" variant="contained" type="submit">
 							Submit
-						</button>
+						</Button>
 					</div>
 				</form>
 			</Card>

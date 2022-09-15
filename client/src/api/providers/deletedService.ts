@@ -1,4 +1,5 @@
 import { api } from "../../config";
+import { defaultErrorMessage } from "../constants";
 
 export async function deleteService(serviceId: number) {
 	const res = await fetch(`${api.host}/providers/service/${serviceId}`, {
@@ -9,5 +10,6 @@ export async function deleteService(serviceId: number) {
 		const data = await res.json();
 		return data;
 	}
-	return { success: false, message: "something went wrong" };
+	const date = await res.json().catch(() => ({}));
+	return { success: false, message: defaultErrorMessage, ...date };
 }

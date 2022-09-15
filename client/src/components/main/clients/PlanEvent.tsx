@@ -1,4 +1,4 @@
-import { Stack, TextField, Tooltip } from "@mui/material";
+import { Button, Stack, TextField, Tooltip } from "@mui/material";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import React, { useState } from "react";
@@ -137,9 +137,9 @@ function PlanEvent() {
 							justifyContent: "flex-end",
 						}}
 					>
-						<button className="button green outline" type="submit">
+						<Button color="success" variant="contained" type="submit">
 							Create
-						</button>
+						</Button>
 					</div>
 				</form>
 			</Card>

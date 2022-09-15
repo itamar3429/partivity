@@ -1,4 +1,5 @@
 import { api } from "../../config";
+import { defaultErrorMessage } from "../constants";
 import { services } from "../providers/types";
 
 type TDetails = {
@@ -36,7 +37,7 @@ export async function addEvent(details: TDetails) {
 		return await res.json();
 	} else {
 		const data = await res.json().catch(() => ({}));
-		return { success: false, message: "something went wrong", ...data };
+		return { success: false, message: defaultErrorMessage, ...data };
 	}
 }
 
@@ -44,7 +45,7 @@ export async function getEvent(id: number) {
 	const res = await fetch(`${api.host}/event/${id}`, api.defOptions);
 	if (res.ok) {
 		return await res.json();
-	} else return { success: false, message: "something went wrong" };
+	} else return { success: false, message: defaultErrorMessage };
 }
 
 export async function getEvents() {
@@ -53,7 +54,7 @@ export async function getEvents() {
 		return await res.json();
 	} else {
 		const data = await res.json().catch(() => ({}));
-		return { success: false, message: "something went wrong", ...data };
+		return { success: false, message: defaultErrorMessage, ...data };
 	}
 }
 
@@ -68,7 +69,7 @@ export async function updateEvent(id: number, details: TDetails) {
 		return await res.json();
 	} else {
 		const data = await res.json().catch(() => ({}));
-		return { success: false, message: "something went wrong", ...data };
+		return { success: false, message: defaultErrorMessage, ...data };
 	}
 }
 
@@ -87,7 +88,7 @@ export async function getServicesOptions(
 		return await res.json();
 	} else {
 		const data = await res.json().catch(() => ({}));
-		return { success: false, message: "something went wrong", ...data };
+		return { success: false, message: defaultErrorMessage, ...data };
 	}
 }
 
@@ -99,7 +100,7 @@ export async function getAvailableDates(): Promise<
 		return await res.json();
 	} else {
 		const data = await res.json().catch(() => ({}));
-		return { success: false, message: "something went wrong", ...data };
+		return { success: false, message: defaultErrorMessage, ...data };
 	}
 }
 
@@ -120,7 +121,7 @@ export async function addEventService(eventService: {
 		return await res.json();
 	} else {
 		const data = await res.json().catch(() => ({}));
-		return { success: false, message: "something went wrong", ...data };
+		return { success: false, message: defaultErrorMessage, ...data };
 	}
 }
 
@@ -138,7 +139,7 @@ export async function removeEventService(
 		return await res.json();
 	} else {
 		const data = await res.json().catch(() => ({}));
-		return { success: false, message: "something went wrong", ...data };
+		return { success: false, message: defaultErrorMessage, ...data };
 	}
 }
 
@@ -150,6 +151,6 @@ export async function bookEvent(eventId: number) {
 	if (res.ok) return await res.json();
 	else {
 		const data = await res.json().catch(() => ({}));
-		return { success: false, message: "something went wrong", ...data };
+		return { success: false, message: defaultErrorMessage, ...data };
 	}
 }

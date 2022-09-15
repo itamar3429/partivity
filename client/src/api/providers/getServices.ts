@@ -1,4 +1,5 @@
 import { api } from "../../config";
+import { defaultErrorMessage } from "../constants";
 import { services } from "./types";
 
 export type TService = {
@@ -21,7 +22,7 @@ export default async function getServices() {
 		const data = await res.json();
 		return data;
 	}
-	return { success: false, message: "something went wrong" };
+	return { success: false, message: defaultErrorMessage };
 }
 
 export async function getService(serviceId: number) {
@@ -33,5 +34,6 @@ export async function getService(serviceId: number) {
 		const data = await res.json();
 		return data;
 	}
-	return { success: false, message: "something went wrong" };
+	const date = await res.json().catch(() => ({}));
+	return { success: false, message: defaultErrorMessage, ...date };
 }

@@ -1,4 +1,5 @@
 import { api } from "../../config";
+import { defaultErrorMessage } from "../constants";
 import { services } from "./types";
 
 type TData = {
@@ -34,9 +35,13 @@ export default async function addService(data: TData) {
 	if (res.ok) {
 		const data = await res.json();
 		return data;
+	} else {
+		const date = await res.json().catch(() => ({}));
+
+		return {
+			success: false,
+			message: defaultErrorMessage,
+			...date,
+		};
 	}
-	return {
-		success: false,
-		message: "something went wrong",
-	};
 }

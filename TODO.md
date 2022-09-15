@@ -1,12 +1,14 @@
 # client:
 
--  Client dashboard.
--  Add a booked events section for both providers and clients and add pending events section for clients.
+-  ---- Client dashboard.
+-  Add a booked events section for both providers.
 -  Add user menu (logout setting etc...)
+-  fix scheduler time difference - use dates libs to do it
 -  Service/menu landing page(info about the service)
 -  Create invite page for client.
 -  Enrich header features/gestures
 -  Become provider page
+
 -  Admin provider application review/reject/authorize page
 -  Admin suspend provider activity
 
@@ -17,6 +19,8 @@
 
 # both (client/server):
 
--  Provider food menu add/edit/delete.
+-  Provider food menu (CRUD).
 -  Verify event services dates are the same for all event services schedule.
 -  Enable address for more services or add ability to set coordinates and max radius (to act as location restriction, only for delivering services like food, music and more)
+
+--- means done;

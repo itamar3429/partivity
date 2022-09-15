@@ -8,11 +8,19 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Button, TextField } from "@mui/material";
 import { DesktopTimePicker } from "@mui/x-date-pickers";
+import { removeTZOffset } from "../../../../libs/dates";
 
 type TProps = {
 	show?: boolean;
 	hide: Function;
-	onSubmit: Function;
+	onSubmit: (
+		title: string,
+		price: number,
+		dateFrom: Date,
+		dateTo: Date,
+		timeFrom: Date,
+		timeTo: Date
+	) => any;
 	from?: Date;
 	to?: Date;
 	title?: string;
@@ -119,8 +127,12 @@ function AddEvent(props: TProps) {
 							props.onSubmit(
 								title,
 								price,
-								new Date(from.toISOString().split("T")[0]),
-								new Date(to.toISOString().split("T")[0]),
+								new Date(
+									removeTZOffset(from).toISOString().split("T")[0]
+								),
+								new Date(
+									removeTZOffset(to).toISOString().split("T")[0]
+								),
 								new Date(timeStart),
 								new Date(timeEnd)
 							);

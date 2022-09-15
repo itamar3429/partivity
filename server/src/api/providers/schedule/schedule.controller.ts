@@ -7,14 +7,17 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { TUser, User } from '../../../decorators/user.decorator';
 import { ScheduleService } from './schedule.service';
 import { AddScheduleDto, EditScheduleDto } from './schedule.dto';
+import { AuthenticateProvider } from '../../../auth/auth.guard';
 
 @Controller('providers/schedule')
+@UseGuards(AuthenticateProvider)
 export class ScheduleController {
   constructor(private readonly service: ScheduleService) {}
 
@@ -44,6 +47,8 @@ export class ScheduleController {
       const res = await this.service.addSchedules(userId, serviceId, schedules);
       return res;
     } catch (error) {
+      console.log(error);
+
       return new InternalServerErrorException(
         'error while trying to add service schedule',
       );

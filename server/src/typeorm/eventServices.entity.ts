@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import Event from './event.entity';
 import ServiceSchedule from './schedule.entity';
+import User from './users.entity';
 
 const NAME = 'event_services' as const;
 
@@ -19,6 +20,11 @@ class EventServices {
   @JoinColumn({ name: 'event_id' })
   @Column({ name: 'event_id' })
   event_id: number;
+
+  @ManyToOne(() => User, (user) => user.id, { cascade: true })
+  @JoinColumn({ name: 'user_id' })
+  @Column({ name: 'user_id' })
+  user_id: number;
 
   @ManyToOne(() => ServiceSchedule, (schedule) => schedule.id, {
     cascade: true,

@@ -14,3 +14,14 @@ export async function getEvents() {
 		return { success: false, message: defaultErrorMessage, ...data };
 	}
 }
+
+export async function getDashboard() {
+	const res = await fetch(`${api.host}/dashboard`, api.defOptions);
+
+	if (res.ok) {
+		return await res.json();
+	} else {
+		const data = await res.json().catch(() => ({}));
+		return { success: false, message: defaultErrorMessage, ...data };
+	}
+}

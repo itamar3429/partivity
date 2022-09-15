@@ -1,5 +1,4 @@
 import {
-  HttpException,
   Inject,
   Injectable,
   InternalServerErrorException,
@@ -8,7 +7,6 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import ServiceImages from '../../typeorm/images.entity';
 import { Repository } from 'typeorm';
-import { addServiceDto } from './providers.dto';
 import Service from '../../typeorm/services.entity';
 import { MINIO_CONNECTION } from 'nestjs-minio';
 import { Client } from 'minio';
@@ -28,29 +26,6 @@ export class ProvidersService {
     @Inject(MINIO_CONNECTION) private readonly storage: Client,
   ) {}
 
-  async isServiceOwner(userId: number, serviceId: number) {
-    return !!(await this.serviceRepo.findBy({ user_id: userId, id: serviceId }))
-      .length;
-  }
-
-  async isImageOwner(userId: number, imageId: number) {
-    return !!(
-      await this.serviceImages
-        .createQueryBuilder(N_IMAGES)
-        .innerJoin(
-          Service,
-          N_SERVICES,
-          `${N_SERVICES}.id = ${N_IMAGES}.service_id
-			 AND ${N_SERVICES}.user_id = ${userId}
-	 		`,
-        )
-        .where({
-          id: imageId,
-        })
-        .getMany()
-    ).length;
-  }
-
   async isFirstImage(serviceId: number) {
     return !(await this.serviceImages.findOne({
       where: { service_id: serviceId },
@@ -58,11 +33,12 @@ export class ProvidersService {
   }
 
   async addImage(userId: number, serviceId: number, file: Express.Multer.File) {
-    const isOwner = await this.isServiceOwner(userId, Number(serviceId));
+    const isOwner = await this.isServiceOwner(userId, serviceId);
     if (isOwner) {
       const dbRes = await this.addImageToDB(
+        userId,
+        serviceId,
         file.originalname,
-        Number(serviceId),
         this.getExtension(file.originalname),
       );
       if (!(dbRes instanceof InternalServerErrorException)) {
@@ -90,7 +66,7 @@ export class ProvidersService {
     const isOwner = await this.isServiceOwner(userId, serviceId);
     if (isOwner) {
       const res = await this.serviceImages.find({
-        where: { service_id: Number(serviceId) },
+        where: { service_id: serviceId, user_id: userId },
         select: {
           obj_id: true,
           id: true,
@@ -116,18 +92,15 @@ export class ProvidersService {
         `
 			UPDATE ${N_IMAGES} set 
 			${N_IMAGES}.primary = (${N_IMAGES}.id = ?) 
-			WHERE ${N_IMAGES}.service_id = ?`,
-        [imageId, serviceId],
+			WHERE ${N_IMAGES}.service_id = ?
+				AND ${N_IMAGES}.USER_id = ?`,
+        [imageId, serviceId, userId],
       );
 
       return { success: !!res.changedRows };
     } else {
       return new UnauthorizedException('user not allowed');
     }
-  }
-
-  async removeImgByObjId(objId: string) {
-    await this.serviceImages.delete({ obj_id: objId });
   }
 
   async deleteImage(imageId: number, userId: number, isAdmin: boolean) {
@@ -165,7 +138,12 @@ export class ProvidersService {
     }
   }
 
-  private async addImageToDB(filename: string, serviceId: number, ext: string) {
+  private async addImageToDB(
+    userId: number,
+    serviceId: number,
+    filename: string,
+    ext: string,
+  ) {
     try {
       const uuid = this.genObjId();
       const imageInstance = this.serviceImages.create({
@@ -174,6 +152,7 @@ export class ProvidersService {
         obj_id: uuid,
         file_ext: ext,
         primary: await this.isFirstImage(serviceId),
+        user_id: userId,
       });
       const res = await this.serviceImages.save(imageInstance);
 
@@ -201,8 +180,8 @@ export class ProvidersService {
 
       return object;
     } catch (err) {
-      console.error(err);
       await this.removeImgByObjId(objName);
+
       return new InternalServerErrorException(
         'Failed to upload object to storage',
       );
@@ -227,5 +206,21 @@ export class ProvidersService {
         return '';
       }
     }
+  }
+
+  private async isServiceOwner(userId: number, serviceId: number) {
+    return !!(await this.serviceRepo.findOne({
+      where: { user_id: userId, id: serviceId },
+    }));
+  }
+
+  private async isImageOwner(userId: number, imageId: number) {
+    return !!(await this.serviceImages.findOne({
+      where: { user_id: userId, id: imageId },
+    }));
+  }
+
+  private async removeImgByObjId(objId: string) {
+    await this.serviceImages.delete({ obj_id: objId });
   }
 }

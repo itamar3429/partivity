@@ -23,25 +23,26 @@ export class ScheduleService {
   }
 
   private async isScheduleOwner(userId: number, id: number) {
-    const isOwner = !!(
-      await this.serviceSchedule.query(
-        `select count(*) as count from ${N_SCHEDULE} 
- 		 	inner join ${N_SERVICES} on ${N_SERVICES}.id = service_id
-  			where user_id = ? and ${N_SCHEDULE}.id = ?`,
-        [userId, id],
-      )
-    )[0].count;
+    const isOwner = !!(await this.serviceSchedule.findOne({
+      where: { user_id: userId, id },
+    }));
     return isOwner;
   }
 
   async getSchedule(userId: number, serviceId: number) {
-    const res = await this.serviceSchedule.query(
-      ` SELECT ${N_SCHEDULE}.* FROM ${N_SCHEDULE}
-		INNER JOIN ${N_SERVICES} on ${N_SERVICES}.id = service_id 
-		WHERE service_id = ? AND user_id = ?
-		`,
-      [serviceId, userId],
-    );
+    const res = await this.serviceSchedule.find({
+      where: {
+        service_id: serviceId,
+        user_id: userId,
+      },
+    });
+    //  query(
+    //    ` SELECT ${N_SCHEDULE}.* FROM ${N_SCHEDULE}
+    // 	INNER JOIN ${N_SERVICES} on ${N_SERVICES}.id = service_id
+    // 	WHERE service_id = ? AND user_id = ?
+    // 	`,
+    //    [serviceId, userId],
+    //  );
 
     return { success: true, schedules: res };
   }
@@ -53,7 +54,18 @@ export class ScheduleService {
   ) {
     const isOwner = await this.isServiceOwner(userId, serviceId);
     if (isOwner) {
-      const res = await this.serviceSchedule.save(schedules);
+      // const res = await this.serviceSchedule.save({
+      //   ...schedules,
+      //   user_id: userId,
+      //   service_id: serviceId,
+      // });
+      const res = await this.serviceSchedule.save(
+        schedules.map((schedule: ServiceSchedule) => ({
+          ...schedule,
+          user_id: userId,
+          service_id: serviceId,
+        })),
+      );
       return { success: true, schedule: res };
     } else
       return new UnauthorizedException(
@@ -64,11 +76,13 @@ export class ScheduleService {
   async updateSchedule(userId: number, id: number, schedule: EditScheduleDto) {
     const serviceId = schedule.service_id;
 
-    if (await this.isServiceOwner(userId, serviceId)) {
+    const isOwner = await this.isServiceOwner(userId, serviceId);
+    if (isOwner) {
       const res = await this.serviceSchedule.update(
         {
           service_id: serviceId,
           id,
+          user_id: userId,
         },
         schedule,
       );
@@ -84,7 +98,11 @@ export class ScheduleService {
   async deleteSchedule(userId: number, id: number) {
     const isOwner = await this.isScheduleOwner(userId, id);
     if (isOwner) {
-      const res = await this.serviceSchedule.delete({ id, booked: false });
+      const res = await this.serviceSchedule.delete({
+        id,
+        booked: false,
+        user_id: userId,
+      });
 
       const success = !!res.affected;
       return {

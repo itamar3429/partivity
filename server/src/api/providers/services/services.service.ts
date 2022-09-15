@@ -21,15 +21,16 @@ export class ServicesService {
   ) {}
 
   async isServiceOwner(userId: number, serviceId: number) {
-    return !!(await this.serviceRepo.findBy({ user_id: userId, id: serviceId }))
-      .length;
+    return !!(await this.serviceRepo.findOne({
+      where: { user_id: userId, id: serviceId },
+    }));
   }
 
   async getServices(userId: number) {
     const services = await this.serviceRepo.query(
       `SELECT ${N_SERVICES}.*, JSON_ARRAYAGG(obj_id) AS images FROM ${N_SERVICES} 
 	 LEFT JOIN ${N_IMAGES} ON service_id = ${N_SERVICES}.id
-	 WHERE user_id = ?
+	 WHERE ${N_SERVICES}.user_id = ?
 	 AND deleted = false
 	 GROUP BY ${N_SERVICES}.id`,
       [userId],
@@ -42,7 +43,7 @@ export class ServicesService {
     const service = await this.serviceRepo.query(
       `SELECT ${N_SERVICES}.*, JSON_ARRAYAGG(obj_id) AS images FROM ${N_SERVICES} 
 			LEFT JOIN ${N_IMAGES} ON service_id = ${N_SERVICES}.id
-			WHERE user_id = ?
+			WHERE ${N_SERVICES}.user_id = ?
 				AND ${N_SERVICES}.id = ?
 			GROUP BY ${N_SERVICES}.id`,
       [userId, serviceId],

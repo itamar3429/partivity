@@ -2,3 +2,22 @@
 	margin-top: 50px;
 	margin-bottom: 50px;
 }
+
+.events {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 30px 10px;
+	gap: 30px;
+	.event {
+		display: flex;
+		flex-direction: column;
+		justify-content: stretch;
+		align-items: center;
+		padding: 10px;
+		border: 1px solid gray;
+		border-radius: 10px;
+		min-width: 300px;
+		text-align: center;
+		flex: 1;
+	}
+}

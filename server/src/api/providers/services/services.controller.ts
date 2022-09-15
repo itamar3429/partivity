@@ -9,12 +9,15 @@ import {
   ValidationPipe,
   Put,
   InternalServerErrorException,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthenticateProvider } from '../../../auth/auth.guard';
 import { TUser, User } from '../../../decorators/user.decorator';
 import { addServiceDto } from './service.dto';
 import { ServicesService } from './services.service';
 
 @Controller('providers')
+@UseGuards(AuthenticateProvider)
 export class ServicesController {
   constructor(private readonly service: ServicesService) {}
 

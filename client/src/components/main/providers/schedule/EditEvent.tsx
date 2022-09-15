@@ -9,6 +9,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Button, TextField } from "@mui/material";
 import { DesktopTimePicker } from "@mui/x-date-pickers";
 import { TSchedule } from "../../../../api/providers/schedule";
+import { removeTZOffset } from "../../../../libs/dates";
 
 type TProps = {
 	show?: boolean;
@@ -100,8 +101,8 @@ function EditEvent(props: TProps) {
 				<div className={s.submit_btn}>
 					<Button
 						onClick={() => {
-							const start = new Date(date);
-							const end = new Date(date);
+							const start = removeTZOffset(date);
+							const end = removeTZOffset(date);
 							start.setHours(timeStart.getHours());
 							start.setMinutes(timeStart.getMinutes());
 

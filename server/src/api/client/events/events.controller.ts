@@ -6,14 +6,17 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { Authenticate } from '../../../auth/auth.guard';
 import { TUser, User } from '../../../decorators/user.decorator';
 import { AddEventDto } from './events.dto';
 import { EventsService } from './events.service';
 
 @Controller()
+@UseGuards(Authenticate)
 export class EventsController {
   constructor(private readonly service: EventsService) {}
 

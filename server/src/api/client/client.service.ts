@@ -46,7 +46,7 @@ export class ClientService {
     )[0].count;
   }
 
-  async getEventServices(eventIds: number[]) {
+  async getEventServices(eventIds: number[], userId: number) {
     const res = await this.eventServices
       .createQueryBuilder(N_EVENT_S)
       .select([
@@ -75,6 +75,7 @@ export class ClientService {
       )
       .where({
         event_id: In(eventIds),
+        user_id: userId,
       })
       .groupBy(`${N_EVENT_S}.id`)
       .getRawMany();
@@ -102,10 +103,10 @@ export class ClientService {
         `${N_SERVICES}.title as service_title`,
         `${N_IMAGES}.obj_id as image`,
       ])
-      .leftJoin(
+      .innerJoin(
         Service,
         N_SERVICES,
-        `${N_SCHEDULE}.service_id = ${N_SERVICES}.id`,
+        `${N_SCHEDULE}.service_id = ${N_SERVICES}.id AND ${N_SERVICES}.deleted = FALSE`,
       )
       .leftJoin(
         ServiceImages,
@@ -128,8 +129,10 @@ export class ClientService {
 			(
 				select distinct DATE_FORMAT(start, '%Y-%c-%d') 
 				as start from ${N_SCHEDULE} 
+				INNER JOIN ${N_SERVICES} ON ${N_SERVICES}.id = ${N_SCHEDULE}.service_id
 				where start > ? 
-					AND booked = false
+					AND booked = FALSE
+					AND ${N_SERVICES}.deleted = FALSE
 			)
 			${N_SCHEDULE}_temp
 		`,
@@ -137,7 +140,7 @@ export class ClientService {
     );
 
     const dates = res[0].dates;
-    return { success: true, dates };
+    return { success: true, dates: dates || [] };
   }
 
   async addEventService(userId: number, eventService: addEventServiceDto) {
@@ -146,8 +149,9 @@ export class ClientService {
       await this.eventServices.save({
         event_id: eventService.eventId,
         schedule_id: eventService.scheduleId,
+        user_id: userId,
       });
-      const res = await this.getEventServices([eventService.eventId]);
+      const res = await this.getEventServices([eventService.eventId], userId);
       return { success: true, services: res };
     } else {
       return new UnauthorizedException('user not allowed to change this event');
@@ -158,7 +162,10 @@ export class ClientService {
     const isOwner = await this.isEventServiceOwner(userId, eventServiceId);
 
     if (isOwner) {
-      const res = await this.eventServices.delete({ id: eventServiceId });
+      const res = await this.eventServices.delete({
+        id: eventServiceId,
+        user_id: userId,
+      });
       const success = !!res.affected;
       return {
         success: success,
@@ -173,7 +180,45 @@ export class ClientService {
     }
   }
 
-  async checkEventServicesNotBooked(eventId: number) {
+  async setBooked(scheduleIds: number[]) {
+    return await this.schedule.update(
+      { id: In(scheduleIds) },
+      {
+        booked: true,
+      },
+    );
+  }
+
+  async bookEvent(userId: number, eventId: number) {
+    const isOwner = await this.isEventOwner(userId, eventId);
+    if (isOwner) {
+      const { eventServices, booked } = await this.checkEventServicesNotBooked(
+        eventId,
+      );
+      if (!booked) {
+        await this.setBooked(
+          eventServices.map((schedule) => schedule.schedule_id),
+        );
+        this.events.update(
+          { id: eventId, user_id: userId },
+          {
+            status: 'booked',
+          },
+        );
+        return { success: true };
+      } else {
+        return {
+          success: false,
+          message: 'some of the services are booked',
+          bookedServices: eventServices.filter((row) => row.booked),
+        };
+      }
+    } else {
+      return new UnauthorizedException('user unauthorized');
+    }
+  }
+
+  private async checkEventServicesNotBooked(eventId: number) {
     const res = await this.eventServices
       .createQueryBuilder(N_EVENT_S)
       .select([
@@ -198,43 +243,5 @@ export class ClientService {
       return row;
     });
     return { booked: isBooked, eventServices: eventServices };
-  }
-
-  async setBooked(scheduleIds: number[]) {
-    return await this.schedule.update(
-      { id: In(scheduleIds) },
-      {
-        booked: true,
-      },
-    );
-  }
-
-  async bookEvent(userId: number, eventId: number) {
-    const isOwner = await this.isEventOwner(userId, eventId);
-    if (isOwner) {
-      const { eventServices, booked } = await this.checkEventServicesNotBooked(
-        eventId,
-      );
-      if (!booked) {
-        await this.setBooked(
-          eventServices.map((schedule) => schedule.schedule_id),
-        );
-        this.events.update(
-          { id: eventId },
-          {
-            status: 'booked',
-          },
-        );
-        return { success: true };
-      } else {
-        return {
-          success: false,
-          message: 'some of the services are booked',
-          bookedServices: eventServices.filter((row) => row.booked),
-        };
-      }
-    } else {
-      return new UnauthorizedException('user unauthorized');
-    }
   }
 }

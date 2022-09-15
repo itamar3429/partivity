@@ -28,7 +28,7 @@ export class EventsService {
     if (events.length) {
       const eventIds = events.map((e) => e.id);
 
-      const services = await this.getEventServices(eventIds);
+      const services = await this.getEventServices(eventIds, userId);
 
       const res = (events as (Event & { services: EventServices[] })[]).map(
         (e) => {
@@ -52,7 +52,7 @@ export class EventsService {
     });
 
     if (event) {
-      const services = await this.getEventServices([event.id]);
+      const services = await this.getEventServices([event.id], userId);
 
       const res = { ...event, services };
       return { success: true, event: res };
@@ -60,7 +60,7 @@ export class EventsService {
       return new UnauthorizedException('User not allowed to get this event');
   }
 
-  private async getEventServices(eventIds: number[]) {
+  private async getEventServices(eventIds: number[], userId: number) {
     const res = await this.eventServices
       .createQueryBuilder(N_EVENT_S)
       .select([
@@ -89,6 +89,7 @@ export class EventsService {
       )
       .where({
         event_id: In(eventIds),
+        user_id: userId,
       })
       .groupBy(`${N_EVENT_S}.id`)
       .getRawMany();

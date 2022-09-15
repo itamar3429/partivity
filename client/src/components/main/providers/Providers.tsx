@@ -5,6 +5,8 @@ import Card from "../../helper/Card";
 import Template from "../template/Template";
 import Service from "./Service";
 import s from "./P.module.scss";
+import { errorToast } from "../../../libs/toast/error";
+import { successToast } from "../../../libs/toast/success";
 
 function Providers() {
 	const [services, setServices] = useState<TService[]>([]);
@@ -13,6 +15,8 @@ function Providers() {
 		getServices().then((res) => {
 			if (res.success) {
 				setServices(res.services);
+			} else {
+				errorToast(res.message);
 			}
 		});
 	}, []);
@@ -20,7 +24,10 @@ function Providers() {
 	const deleteServiceById = async (serviceId: number) => {
 		const res = await deleteService(serviceId);
 		if (res.success) {
+			successToast("service deleted successfully");
 			setServices((pre) => pre.filter((x) => x.id !== serviceId));
+		} else {
+			errorToast(res.message);
 		}
 	};
 	return (

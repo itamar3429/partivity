@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import {
-  IsDateString,
   IsEnum,
   IsNumber,
   IsString,
   Length,
   ValidateIf,
 } from 'class-validator';
-import { serviceEnum, TServices } from '../../typeorm/dto/Services.dto';
+import { serviceEnum, TServices } from '../../../typeorm/dto/Services.dto';
 
 @Injectable()
 export class addServiceDto {

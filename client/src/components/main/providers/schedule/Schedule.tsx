@@ -20,6 +20,8 @@ import {
 	TSchedule,
 } from "../../../../api/providers/schedule";
 import EditEvent from "./EditEvent";
+import { errorToast } from "../../../../libs/toast/error";
+import { successToast } from "../../../../libs/toast/success";
 
 const locales = {
 	"en-US": import("date-fns/locale/en-US"),
@@ -63,6 +65,8 @@ function Schedule() {
 				return x;
 			});
 			setEvents(events);
+		} else {
+			errorToast(res.message);
 		}
 	};
 
@@ -97,7 +101,9 @@ function Schedule() {
 		if (res.success) {
 			reloadSchedule();
 			setShowAdd(false);
+			successToast("event schedule added successfully");
 		} else {
+			errorToast(res.message);
 		}
 	};
 
@@ -124,7 +130,9 @@ function Schedule() {
 		if (res.success) {
 			reloadSchedule();
 			setShowEdit(false);
+			successToast("schedule edited successfully");
 		} else {
+			errorToast(res.message);
 		}
 	};
 
@@ -134,7 +142,9 @@ function Schedule() {
 			setEvents((pre) => pre.filter((event) => event.id !== id));
 			setShowEdit(false);
 			setEditId(0);
+			successToast("schedule deleted successfully");
 		} else {
+			errorToast(res.message);
 		}
 	};
 

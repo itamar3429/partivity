@@ -6,6 +6,9 @@
 -  Service/menu landing page(info about the service)
 -  Create invite page for client.
 -  Enrich header features/gestures
+-  Become provider page
+-  Admin provider application review/reject/authorize page
+-  Admin suspend provider activity
 
 # server:
 

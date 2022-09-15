@@ -8,6 +8,8 @@ import {
 	removeEventService,
 	updateEvent,
 } from "../../../api/client/events";
+import { errorToast } from "../../../libs/toast/error";
+import { successToast } from "../../../libs/toast/success";
 import Card from "../../helper/Card";
 import Template from "../template/Template";
 import AddService from "./AddService";
@@ -45,9 +47,12 @@ function EditEvent() {
 				setDate(new Date(event.date));
 				setServices(event.services);
 				setStatus(event.status);
+			} else {
+				errorToast(res.message);
 			}
 		} catch (error) {
 			console.log(error);
+			errorToast("something went wrong try again later");
 		}
 		setLoading(false);
 	};
@@ -58,7 +63,9 @@ function EditEvent() {
 			setServices((pre) =>
 				pre.filter((x) => x.event_service_id !== eventServiceId)
 			);
+			successToast("event service deleted successfully");
 		} else {
+			errorToast(res.message);
 		}
 	};
 
@@ -181,9 +188,10 @@ function EditEvent() {
 										title,
 									});
 									if (res.success) {
-										console.log("updated");
+										successToast("event updated successfully");
 									} else {
 										console.log(res);
+										errorToast(res.message);
 									}
 								}
 							}}

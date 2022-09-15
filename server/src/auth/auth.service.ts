@@ -12,8 +12,7 @@ export class AuthService {
     if (user && (await compare(pass, user.password))) {
       const { password, ...result } = user;
       return result;
-    }
-    return null;
+    } else return null;
   }
 
   async createUser(user: RegisterDto) {
@@ -41,6 +40,15 @@ export class AuthService {
       );
     emailExists &&
       message.push('email already exists please choose a different email');
+
+    /**
+    let message = '';
+    if (usernameExists)
+      message = 'username already exists please choose a different username\n';
+
+    if (emailExists)
+      message += 'email already exists please choose a different email\n'; */
+
     return {
       message,
       success: false,

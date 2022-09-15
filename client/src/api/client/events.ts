@@ -34,7 +34,10 @@ export async function addEvent(details: TDetails) {
 	});
 	if (res.ok) {
 		return await res.json();
-	} else return { success: false, message: "something went wrong" };
+	} else {
+		const data = await res.json().catch(() => ({}));
+		return { success: false, message: "something went wrong", ...data };
+	}
 }
 
 export async function getEvent(id: number) {
@@ -48,7 +51,10 @@ export async function getEvents() {
 	const res = await fetch(`${api.host}/events`, api.defOptions);
 	if (res.ok) {
 		return await res.json();
-	} else return { success: false, message: "something went wrong" };
+	} else {
+		const data = await res.json().catch(() => ({}));
+		return { success: false, message: "something went wrong", ...data };
+	}
 }
 
 export async function updateEvent(id: number, details: TDetails) {
@@ -60,7 +66,10 @@ export async function updateEvent(id: number, details: TDetails) {
 	});
 	if (res.ok) {
 		return await res.json();
-	} else return { success: false, message: "something went wrong" };
+	} else {
+		const data = await res.json().catch(() => ({}));
+		return { success: false, message: "something went wrong", ...data };
+	}
 }
 
 export async function getServicesOptions(
@@ -76,7 +85,10 @@ export async function getServicesOptions(
 	);
 	if (res.ok) {
 		return await res.json();
-	} else return { success: false, message: "something went wrong" };
+	} else {
+		const data = await res.json().catch(() => ({}));
+		return { success: false, message: "something went wrong", ...data };
+	}
 }
 
 export async function getAvailableDates(): Promise<
@@ -85,7 +97,10 @@ export async function getAvailableDates(): Promise<
 	const res = await fetch(`${api.host}/dates`, api.defOptions);
 	if (res.ok) {
 		return await res.json();
-	} else return { success: false, message: "something went wrong" };
+	} else {
+		const data = await res.json().catch(() => ({}));
+		return { success: false, message: "something went wrong", ...data };
+	}
 }
 
 export async function addEventService(eventService: {
@@ -103,7 +118,10 @@ export async function addEventService(eventService: {
 	});
 	if (res.ok) {
 		return await res.json();
-	} else return { success: false, message: "something went wrong" };
+	} else {
+		const data = await res.json().catch(() => ({}));
+		return { success: false, message: "something went wrong", ...data };
+	}
 }
 
 export async function removeEventService(
@@ -118,7 +136,10 @@ export async function removeEventService(
 	});
 	if (res.ok) {
 		return await res.json();
-	} else return { success: false, message: "something went wrong" };
+	} else {
+		const data = await res.json().catch(() => ({}));
+		return { success: false, message: "something went wrong", ...data };
+	}
 }
 
 export async function bookEvent(eventId: number) {
@@ -127,5 +148,8 @@ export async function bookEvent(eventId: number) {
 		method: "PUT",
 	});
 	if (res.ok) return await res.json();
-	return { success: false, message: "something went wrong" };
+	else {
+		const data = await res.json().catch(() => ({}));
+		return { success: false, message: "something went wrong", ...data };
+	}
 }

@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import addService from "../../../api/providers/addService";
 import { services } from "../../../api/providers/types";
 import { useDispatch } from "../../../app/hooks";
+import { errorToast } from "../../../libs/toast/error";
 import Card from "../../helper/Card";
 import { TransitionRedirect } from "../../helper/Link";
 // import Filler from "../../helper/Filler";
@@ -67,8 +68,13 @@ function AddService() {
 									dispatch,
 									navigate
 								);
+							} else {
+								console.log(res);
+								errorToast(
+									res.message ||
+										"unknown error while trying to create a service"
+								);
 							}
-							console.log(res);
 
 							setLoading(false);
 						});

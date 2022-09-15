@@ -21,6 +21,7 @@ export const generalSlice = createSlice({
 		page: "",
 		user: { connected: false } as TUser,
 		authenticated: false,
+		lastAuth: new Date().toISOString(),
 	},
 	name: "General",
 	reducers: {
@@ -30,6 +31,7 @@ export const generalSlice = createSlice({
 		setUser(state, action: TAction<TUser>) {
 			state.user = action.payload;
 			state.authenticated = true;
+			state.lastAuth = new Date().toISOString();
 		},
 	},
 });

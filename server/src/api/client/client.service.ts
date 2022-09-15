@@ -46,59 +46,6 @@ export class ClientService {
     )[0].count;
   }
 
-  async getEventsByUser(userId: number) {
-    const events = await this.events.findBy({ user_id: userId });
-    if (events.length) {
-      const eventIds = events.map((e) => e.id);
-
-      const services = await this.getEventServices(eventIds);
-      //  await this.eventServices.find({
-      //   where: {
-      //     event_id: In(events.map((e) => e.id)),
-      //   },
-      // });
-
-      const res = (events as (Event & { services: EventServices[] })[]).map(
-        (e) => {
-          e.services = services.filter((s) => (s.event_id = e.id));
-
-          return e;
-        },
-      );
-
-      return res;
-    }
-    return [];
-  }
-
-  async getEvent(userId: number, eventId: number) {
-    const event = await this.events.findOne({
-      where: {
-        id: eventId,
-        user_id: userId,
-      },
-    });
-
-    if (event) {
-      const services = await this.getEventServices([event.id]);
-
-      return { ...event, services };
-    } else throw new UnauthorizedException();
-  }
-
-  //   async getEventServices(eventIds: number[]) {
-  //     const res = await this.eventServices.find({
-  //       where: {
-  //         event_id: In(eventIds),
-  //       },
-  //       relations: {
-  //         schedule_id: true,
-  //       },
-  //     });
-
-  //     return res;
-  //   }
-
   async getEventServices(eventIds: number[]) {
     const res = await this.eventServices
       .createQueryBuilder(N_EVENT_S)
@@ -129,78 +76,10 @@ export class ClientService {
       .where({
         event_id: In(eventIds),
       })
-      .groupBy(`${N_EVENT_S}.id, ${N_SERVICES}.id`)
+      .groupBy(`${N_EVENT_S}.id`)
       .getRawMany();
 
     return res;
-  }
-
-  async addEvent(userId: number, event: AddEventDto) {
-    const res = await this.events.save({
-      description: event.description,
-      name: event.name,
-      status: 'pending',
-      title: event.title,
-      user_id: userId,
-      date: new Date(event.date),
-    });
-    delete res.user_id;
-    return { success: true, event: res };
-  }
-
-  async updateEvent(userId: number, eventId: number, event: AddEventDto) {
-    const res = await this.events.update(
-      {
-        user_id: userId,
-        id: eventId,
-      },
-      {
-        description: event.description,
-        name: event.name,
-        status: 'pending',
-        title: event.title,
-        user_id: userId,
-        date: new Date(event.date),
-      },
-    );
-    return { success: !!res.affected };
-  }
-
-  async getEventsByUserOld(userId: number) {
-    return this.events.query(
-      `
-	SELECT ${N_EVENTS}.*, 
-	JSON_ARRAYAGG(JSON_OBJECT(
-	  'id', ${N_EVENT_S}.id,
-	  'event_id',${N_EVENT_S}.event_id,
-	  'service_id',${N_EVENT_S}.service_id
-	  )) as event_services
-	 from ${N_EVENTS} 
-	LEFT JOIN ${N_EVENT_S} ON event_id = ${N_EVENTS}.id
-	WHERE user_id = ?
-	GROUP BY ${N_EVENTS}.id
-	`,
-      [userId],
-    );
-  }
-
-  async getEventOld(userId: number, eventId: number) {
-    return this.events.query(
-      `
-		SELECT ${N_EVENTS}.*, 
-		JSON_ARRAYAGG(JSON_OBJECT(
-		  'id', ${N_EVENT_S}.id,
-		  'event_id',${N_EVENT_S}.event_id,
-		  'service_id',${N_EVENT_S}.service_id
-		  )) as event_services
-		 from ${N_EVENTS} 
-		LEFT JOIN ${N_EVENT_S} ON event_id = ${N_EVENTS}.id
-		WHERE user_id = ?
-		AND ${N_EVENTS}.id = ?
-		GROUP BY ${N_EVENTS}.id
-	 `,
-      [userId, eventId],
-    );
   }
 
   async getServiceOptions(date: Date) {
@@ -243,14 +122,22 @@ export class ClientService {
   }
 
   async getDates() {
-    const dates = await this.schedule.query(
+    const res = await this.schedule.query(
       `
-		SELECT JSON_ARRAYAGG(start) as dates from (select distinct DATE_FORMAT(start, '%Y-%c-%d') as start from ${N_SCHEDULE} where start > ?)  ${N_SCHEDULE}_temp
+		SELECT JSON_ARRAYAGG(start) as dates from 
+			(
+				select distinct DATE_FORMAT(start, '%Y-%c-%d') 
+				as start from ${N_SCHEDULE} 
+				where start > ? 
+					AND booked = false
+			)
+			${N_SCHEDULE}_temp
 		`,
       [new Date()],
     );
 
-    return dates[0].dates;
+    const dates = res[0].dates;
+    return { success: true, dates };
   }
 
   async addEventService(userId: number, eventService: addEventServiceDto) {
@@ -260,9 +147,10 @@ export class ClientService {
         event_id: eventService.eventId,
         schedule_id: eventService.scheduleId,
       });
-      return await this.getEventServices([eventService.eventId]);
+      const res = await this.getEventServices([eventService.eventId]);
+      return { success: true, services: res };
     } else {
-      throw new UnauthorizedException('user not allowed to change this event');
+      return new UnauthorizedException('user not allowed to change this event');
     }
   }
 
@@ -271,9 +159,15 @@ export class ClientService {
 
     if (isOwner) {
       const res = await this.eventServices.delete({ id: eventServiceId });
-      return { success: !!res.affected };
+      const success = !!res.affected;
+      return {
+        success: success,
+        message: success
+          ? 'Event service deleted successfully'
+          : 'Failed to delete event service',
+      };
     } else {
-      throw new UnauthorizedException(
+      return new UnauthorizedException(
         'user unauthorized to perform this action',
       );
     }
@@ -340,7 +234,7 @@ export class ClientService {
         };
       }
     } else {
-      throw new UnauthorizedException('user unauthorized');
+      return new UnauthorizedException('user unauthorized');
     }
   }
 }

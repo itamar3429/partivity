@@ -9,6 +9,7 @@ import Card from "../../helper/Card";
 import Template from "../template/Template";
 import EditImageItem from "./EditImageItem";
 import s from "./P.module.scss";
+import { errorToast } from "../../../libs/toast/error";
 
 function parseFileName(str: string, len: number) {
 	const dotIndex = str.lastIndexOf(".");
@@ -42,6 +43,8 @@ function EditImages() {
 		getImages(serviceId).then((res) => {
 			if (res.success) {
 				setImages(res.images);
+			} else {
+				errorToast(res.message);
 			}
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -135,6 +138,8 @@ function EditImages() {
 													...pre,
 													{ obj_id: res.objId, id: res.imageId },
 												]);
+											} else {
+												errorToast(res.message);
 											}
 										}
 									} catch (err) {

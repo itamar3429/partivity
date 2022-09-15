@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { apiLogin, apiRegister } from "../../api/auth";
 import { useDispatch } from "../../app/hooks";
 import { setUser } from "../../app/slices/general.slice";
+import { errorToast } from "../../libs/toast/error";
 import CustomLink from "../helper/Link";
 
 function Register() {
@@ -28,21 +29,22 @@ function Register() {
 			<div id="register-content" ref={content}>
 				<form
 					className="register-form right"
-					onSubmit={(e) => {
+					onSubmit={async (e) => {
 						e.preventDefault();
 						if (password === verifyPass) {
-							apiRegister(username, email, password).then((res) => {
-								if (res.success) {
-									apiLogin(username, password).then((res) => {
-										if (res.success) {
-											dispatch(
-												setUser({ ...res.user, connected: true })
-											);
-											navigate("/");
-										}
-									});
+							const res = await apiRegister(username, email, password);
+							if (res.success) {
+								const login = await apiLogin(username, password);
+								if (login.success) {
+									dispatch(
+										setUser({ ...login.user, connected: true })
+									);
+									navigate("/");
+								} else {
 								}
-							});
+							} else {
+								errorToast(res.message);
+							}
 						}
 					}}
 				>

@@ -22,7 +22,7 @@ type TData = {
 };
 
 export default async function addService(data: TData) {
-	const res = await fetch(api.host + "/providers/add", {
+	const res = await fetch(api.host + "/providers/service", {
 		method: "post",
 		headers: {
 			"Content-Type": "application/json",

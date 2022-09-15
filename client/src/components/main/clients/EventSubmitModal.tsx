@@ -3,6 +3,8 @@ import React from "react";
 import { Modal } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { bookEvent } from "../../../api/client/events";
+import { errorToast } from "../../../libs/toast/error";
+import { successToast } from "../../../libs/toast/success";
 import Card from "../../helper/Card";
 
 type TProps = {
@@ -44,10 +46,11 @@ function EventSubmitModal(props: TProps) {
 							onClick={async () => {
 								const res = await bookEvent(Number(eventId));
 								if (res.success) {
-									console.log("service booked");
+									successToast("event booked successfully");
 								} else {
-									console.log(res);
+									errorToast(res.message);
 								}
+								props.onHide();
 							}}
 						>
 							book

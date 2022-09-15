@@ -13,6 +13,7 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 import editService from "../../../api/providers/editService";
 import { getService } from "../../../api/providers/getServices";
 import { useDispatch } from "../../../app/hooks";
+import { errorToast } from "../../../libs/toast/error";
 import Card from "../../helper/Card";
 import { TransitionRedirect } from "../../helper/Link";
 import Template from "../template/Template";
@@ -53,6 +54,8 @@ function EditService() {
 				setCity(service.city || "");
 				setAddress(service.address || "");
 				setName(service.name || "");
+			} else {
+				errorToast(res.message || "error fetching service data");
 			}
 			setLoading(false);
 		});
@@ -94,6 +97,8 @@ function EditService() {
 
 							if (res.success) {
 								TransitionRedirect("/providers/", dispatch, navigate);
+							} else {
+								errorToast(res.message);
 							}
 							setLoading(false);
 						});

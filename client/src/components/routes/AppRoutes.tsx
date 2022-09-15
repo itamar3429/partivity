@@ -29,6 +29,7 @@ import IsClient from "../auth/authMiddleware/IsClient";
  */
 const AppRoutes = () => {
 	GetUserInfo();
+
 	return (
 		<Routes>
 			<Route

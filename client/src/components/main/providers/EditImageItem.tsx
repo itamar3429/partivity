@@ -10,6 +10,8 @@ import LooksTwoIcon from "@mui/icons-material/LooksTwo";
 import { api } from "../../../config";
 import s from "./P.module.scss";
 import { useParams } from "react-router-dom";
+import { errorToast } from "../../../libs/toast/error";
+import { successToast } from "../../../libs/toast/success";
 
 type TProps = {
 	image: {
@@ -57,6 +59,11 @@ function EditImageItem(props: TProps) {
 									(res) => {
 										if (res.success) {
 											props.handlePrimary(id);
+											successToast(
+												"primary image updated successfully"
+											);
+										} else {
+											errorToast(res.message);
 										}
 										props.setLoading(false);
 									},
@@ -77,7 +84,10 @@ function EditImageItem(props: TProps) {
 							deleteImages(id).then(
 								(res) => {
 									if (res.success) {
+										successToast("image deleted successfully");
 										props.handleDelete(id);
+									} else {
+										errorToast(res.message);
 									}
 									props.setLoading(false);
 								},

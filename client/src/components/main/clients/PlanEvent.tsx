@@ -10,6 +10,7 @@ import { addEvent } from "../../../api/client/events";
 import { useDispatch } from "../../../app/hooks";
 import { useNavigate } from "react-router-dom";
 import { TransitionRedirect } from "../../helper/Link";
+import { errorToast } from "../../../libs/toast/error";
 // name title description status
 function PlanEvent() {
 	const [name, setName] = useState("");
@@ -40,6 +41,7 @@ function PlanEvent() {
 							);
 						} else {
 							console.log(res);
+							errorToast(res.message);
 						}
 					}}
 				>

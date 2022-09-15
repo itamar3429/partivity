@@ -1,4 +1,10 @@
-import { Controller, Get, Param, Post, Query, Response } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Response,
+} from '@nestjs/common';
 import { MinioService } from './minio.service';
 import express from 'express';
 
@@ -14,6 +20,10 @@ export class MinioController {
     @Response() res: express.Response,
   ) {
     const object = await this.service.getObj(objName);
-    object.pipe(res);
+    if (!(object instanceof NotFoundException)) {
+      object.pipe(res);
+    } else {
+      return object;
+    }
   }
 }

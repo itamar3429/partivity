@@ -15,8 +15,10 @@ import {
 	TServiceOptions,
 } from "../../../api/client/events";
 import AddServiceItem from "./AddServiceItem";
-import { getDateString } from "../../../libs/dates";
+import { getDateString, removeTZOffset } from "../../../libs/dates";
 import { useParams } from "react-router-dom";
+import { errorToast } from "../../../libs/toast/error";
+import { successToast } from "../../../libs/toast/success";
 
 type TProps = {
 	onHide: () => void;
@@ -34,7 +36,7 @@ export type TServiceOption = TServiceOptions & {
 
 function AddService(props: TProps) {
 	const [service, setService] = useState(0);
-	const [date, setDate] = useState(props.date);
+	const [date, setDate] = useState(new Date(props.date));
 	const [serviceType, setServiceType] = useState("");
 	const [serviceOptions, setServiceOptions] = useState<TServiceOption[]>([]);
 	const [serviceTypeOptions, setServiceTypeOptions] = useState<TOption[]>([]);
@@ -52,7 +54,7 @@ function AddService(props: TProps) {
 	);
 
 	useEffect(() => {
-		loadServiceOptions(date);
+		loadServiceOptions(removeTZOffset(date));
 	}, [date]);
 
 	useEffect(() => {
@@ -108,6 +110,7 @@ function AddService(props: TProps) {
 			if (res.success) {
 				setServiceOptions(res.services as any);
 			} else {
+				errorToast(res.message);
 			}
 		} catch (error) {}
 		setLoading(false);
@@ -156,10 +159,8 @@ function AddService(props: TProps) {
 							shouldDisableDate={(date) => {
 								const include = !dates.some((d) => {
 									return (
-										getDateString(
-											date.getTime() -
-												date.getTimezoneOffset() * 60000
-										) === getDateString(d)
+										getDateString(removeTZOffset(date)) ===
+										getDateString(removeTZOffset(new Date(d)))
 									);
 								});
 								return include;
@@ -228,6 +229,9 @@ function AddService(props: TProps) {
 								if (res.success) {
 									props.setServices(res.services);
 									props.onHide();
+									successToast("event service added successfully");
+								} else {
+									errorToast(res.message);
 								}
 								setLoading(false);
 							}

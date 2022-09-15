@@ -11,14 +11,20 @@ export const apiRegister = async (
 		headers: {
 			"Content-Type": "application/json",
 		},
-	}).then((res) => {
+	}).then(async (res) => {
+		console.log(res);
+
 		if (res.ok) {
 			return res.json();
-		} else
+		} else {
+			const data = await res.json().catch(() => ({}));
+			console.log(data);
+
 			return {
 				success: false,
 				message: "something went wrong",
 			};
+		}
 	});
 };
 
@@ -31,16 +37,23 @@ export const apiLogin = async (username: string, password: string) => {
 		},
 		credentials: "include",
 		mode: "cors",
-	}).then((res) => {
+	}).then(async (res) => {
 		if (res.ok) {
 			return res.json();
-		} else
+		} else {
+			const data = await res.json().catch(() => ({}));
+			if (data.message === "Unauthorized") {
+				data.message = "one or more of your credentials is incorrect";
+			}
 			return {
 				success: false,
 				message: "something went wrong",
+				...data,
 			};
+		}
 	});
 };
+
 export const apiAuth = async () => {
 	return fetch(api.host + "/auth", {
 		credentials: "include",

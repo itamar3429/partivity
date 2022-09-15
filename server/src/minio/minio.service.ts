@@ -1,4 +1,10 @@
-import { HttpException, Inject, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { MINIO_CONNECTION } from 'nestjs-minio';
 import { Client } from 'minio';
 import { MINIO_IMG_BUCKET } from './constants';
@@ -12,15 +18,10 @@ export class MinioService {
       const object = await this.storage.getObject(MINIO_IMG_BUCKET, objName);
       return object;
     } catch (err) {
-      throw new HttpException(
-        {
-          message: 'failed to retrieve object: ' + (err?.code || ''),
-          success: false,
-        },
-        404,
-      );
+      return new NotFoundException('Object/File not found');
     }
   }
+
   async insertObj(objName: string, buffer: Buffer) {
     try {
       const object = await this.storage.putObject(
@@ -31,13 +32,7 @@ export class MinioService {
 
       return object;
     } catch (err) {
-      throw new HttpException(
-        {
-          message: 'failed to upload object: ' + (err?.code || ''),
-          success: false,
-        },
-        500,
-      );
+      return new InternalServerErrorException('Failed to upload object/file');
     }
   }
 

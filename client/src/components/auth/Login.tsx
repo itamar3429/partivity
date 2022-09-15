@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { apiLogin } from "../../api/auth";
 import { useDispatch } from "../../app/hooks";
 import { setUser } from "../../app/slices/general.slice";
+import { errorToast } from "../../libs/toast/error";
 import CustomLink from "../helper/Link";
 
 function Login() {
@@ -31,6 +32,8 @@ function Login() {
 							if (res.success) {
 								dispatch(setUser({ ...res.user, connected: true }));
 								navigate("/");
+							} else {
+								errorToast(res.message || "failed to login");
 							}
 						});
 					}}

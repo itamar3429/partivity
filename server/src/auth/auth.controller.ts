@@ -10,9 +10,9 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto } from './auth.dto';
-import express from 'express';
 import { LocalAuthGuard } from './guard.local';
 import { Authenticate } from './auth.guard';
+import { TUser, User } from '../decorators/user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -21,8 +21,8 @@ export class AuthController {
   @UsePipes(ValidationPipe)
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Body() body: LoginDto, @Request() req: express.Request) {
-    const { password, id, ...user } = req.user as any;
+  async login(@Body() body: LoginDto, @User() reqUser: TUser) {
+    const { password, id, ...user } = reqUser;
     return { success: true, user };
   }
 
@@ -34,8 +34,8 @@ export class AuthController {
 
   @UseGuards(Authenticate)
   @Get()
-  protected(@Request() req: express.Request) {
-    const { password, id, ...user } = req.user as any;
+  protected(@User() reqUser: TUser) {
+    const { password, id, ...user } = reqUser as any;
     return { success: true, user };
   }
 }

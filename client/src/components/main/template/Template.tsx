@@ -102,7 +102,7 @@ function Template(props: React.PropsWithChildren<TProps>) {
 					</NavList>
 				</div>
 				<div className={s.nav_btn}>
-					<IconButton onClick={toggleNav}>
+					<IconButton onClick={toggleNav} aria-label="toggle nav">
 						{!showNav ? <MenuIcon></MenuIcon> : <CloseIcon></CloseIcon>}
 					</IconButton>
 				</div>
@@ -114,6 +114,7 @@ function Template(props: React.PropsWithChildren<TProps>) {
 						<IconButton
 							className={s.show_wide_narrow}
 							onClick={toggleNavWide}
+							aria-label="toggle wide nav"
 						>
 							{!showWide ? (
 								<KeyboardArrowRightIcon />

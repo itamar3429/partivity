@@ -12,7 +12,9 @@ function SetPage({ page, children }: { page: string; children: ReactNode }) {
 	const currPage = useSelector((state) => state.general.page);
 
 	if (currPage !== page) {
-		dispatch(setPage(page));
+		setTimeout(() => {
+			dispatch(setPage(page));
+		}, 0);
 	}
 
 	return <>{children}</>;

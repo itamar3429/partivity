@@ -54,7 +54,7 @@ function AddService(props: TProps) {
 	);
 
 	useEffect(() => {
-		loadServiceOptions(date);
+		loadServiceOptions(removeTZOffset(date));
 	}, [date]);
 
 	useEffect(() => {

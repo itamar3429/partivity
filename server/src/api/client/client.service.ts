@@ -88,11 +88,14 @@ export class ClientService {
     let end = new Date(new Date(date).toISOString().split('T')[0]);
     //  end.setDate(end.getDate() + 1);
     const now = new Date(new Date().toISOString().split('T')[0]);
+
     if (start.getTime() < now.getTime()) {
       start = now;
       end = new Date(now);
     }
     end.setHours(end.getHours() + 12 * 3);
+    start.setHours(start.getHours() - 12 * 2);
+
     const res = await this.schedule
       .createQueryBuilder(N_SCHEDULE)
       .select([

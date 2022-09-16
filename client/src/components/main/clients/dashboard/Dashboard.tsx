@@ -31,8 +31,8 @@ function Dashboard() {
 			{!!pending.length && (
 				<Card title="pending events" className={s.pending_card}>
 					<div className={s.events}>
-						{pending.map((e) => (
-							<Event buttonText="edit" event={e} />
+						{pending.map((e, i) => (
+							<Event buttonText="edit" event={e} key={i} />
 						))}{" "}
 					</div>
 				</Card>
@@ -40,8 +40,8 @@ function Dashboard() {
 			{!!booked.length && (
 				<Card title="booked events" className={s.pending_card}>
 					<div className={s.events}>
-						{booked.map((e) => (
-							<Event event={e} buttonText="view" />
+						{booked.map((e, i) => (
+							<Event event={e} buttonText="view" key={i} />
 						))}{" "}
 					</div>
 				</Card>
@@ -49,8 +49,8 @@ function Dashboard() {
 			{!!old.length && (
 				<Card title="old events" className={s.pending_card}>
 					<div className={s.events}>
-						{old.map((e) => (
-							<Event event={e} buttonText="view" />
+						{old.map((e, i) => (
+							<Event event={e} buttonText="view" key={i} />
 						))}
 					</div>
 				</Card>

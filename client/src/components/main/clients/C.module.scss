@@ -53,26 +53,27 @@ $blue: #07f;
 				position: absolute;
 				top: 0;
 				left: 0;
-				opacity: 0;
+				opacity: 1;
 				width: 100%;
 				height: 200px;
-				color: white;
-				transition: opacity 1s;
+				color: black;
+				transition: all 1s;
 				text-align: center;
+				background-color: rgba(39, 39, 39, 0.137);
 
 				.name {
 					font-size: 24px;
-					color: white;
+					color: black;
 				}
 
 				.title {
 					font-size: 22px;
-					color: white;
+					color: black;
 				}
 
 				.date {
 					font-size: 22px;
-					color: white;
+					color: black;
 				}
 			}
 
@@ -80,6 +81,11 @@ $blue: #07f;
 				.details {
 					opacity: 1;
 					background-color: rgba(39, 39, 39, 0.374);
+					.name,
+					.title,
+					.date {
+						color: white;
+					}
 				}
 
 				.img {

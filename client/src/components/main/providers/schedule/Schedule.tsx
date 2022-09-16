@@ -80,17 +80,17 @@ function Schedule() {
 	) => {
 		const scheduleArr = [];
 		while (dateFrom.getTime() <= dateTo.getTime()) {
-			const currDateFrom = new Date(dateFrom);
-			const currDateTo = new Date(dateFrom);
-			currDateFrom.setHours(timeFrom.getHours());
-			currDateFrom.setMinutes(timeFrom.getMinutes());
-			currDateTo.setHours(timeTo.getHours());
-			currDateTo.setMinutes(timeTo.getMinutes());
-			if (currDateFrom.getTime() > currDateTo.getTime())
-				currDateTo.setDate(currDateTo.getDate() + 1);
+			const currDateStart = new Date(dateFrom);
+			const currDateEnd = new Date(dateFrom);
+			currDateStart.setHours(timeFrom.getHours());
+			currDateStart.setMinutes(timeFrom.getMinutes());
+			currDateEnd.setHours(timeTo.getHours());
+			currDateEnd.setMinutes(timeTo.getMinutes());
+			if (currDateStart.getTime() > currDateEnd.getTime())
+				currDateEnd.setDate(currDateEnd.getDate() + 1);
 			scheduleArr.push({
-				start: currDateFrom,
-				end: currDateTo,
+				start: currDateStart,
+				end: currDateEnd,
 				title,
 				price,
 				service_id: serviceId,

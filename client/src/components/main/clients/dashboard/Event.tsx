@@ -22,7 +22,7 @@ function Event(props: TProps) {
 		<div className={s.event}>
 			<h3>{event.name}</h3>
 			<h4>{event.title}</h4>
-			<h6>{event.description}</h6>
+			<span>{event.description}</span>
 			<p>
 				<b>date: </b> {event.date}
 			</p>

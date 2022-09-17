@@ -94,6 +94,7 @@ function Schedule() {
 				title,
 				price,
 				service_id: serviceId,
+				booked: false,
 			});
 			dateFrom.setDate(dateFrom.getDate() + 1);
 		}
@@ -185,7 +186,9 @@ function Schedule() {
 						events={events}
 						startAccessor="start"
 						endAccessor="end"
-						titleAccessor={(e) => e.title || "empty title"}
+						titleAccessor={(e) =>
+							(e.title || "empty title") + (e.booked ? " - booked" : "")
+						}
 						style={{
 							height: 500,
 						}}
@@ -208,6 +211,27 @@ function Schedule() {
 								timeEnd: timeEnd,
 							});
 							setShowAdd(true);
+						}}
+						eventPropGetter={(event) => {
+							if (new Date(event.start).getTime() < Date.now()) {
+								return {
+									style: {
+										backgroundColor: "gray",
+									},
+								};
+							}
+							if (event.booked) {
+								return {
+									style: {
+										backgroundColor: "green",
+									},
+								};
+							}
+							return {
+								style: {
+									backgroundColor: "#1976d2",
+								},
+							};
 						}}
 						popup
 					/>

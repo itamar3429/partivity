@@ -7,6 +7,7 @@ export type TSchedule = {
 	service_id: number;
 	title: string;
 	price: number;
+	booked: boolean;
 };
 
 export async function getSchedule(serviceId: number) {
@@ -61,4 +62,16 @@ export async function deleteSchedule(id: number) {
 	}
 	const date = await res.json().catch(() => ({}));
 	return { success: false, message: defaultErrorMessage, ...date };
+}
+
+export async function getUpcomingEvents() {
+	const res = await fetch(
+		`${api.host}/providers/schedule/upcoming`,
+		api.defOptions
+	);
+	if (res.ok) return await res.json();
+	else {
+		const data = await res.json().catch(() => ({}));
+		return { success: false, message: defaultErrorMessage, ...data };
+	}
 }

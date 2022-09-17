@@ -2,11 +2,15 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import ServiceSchedule from '../../../typeorm/schedule.entity';
 import Service from '../../../typeorm/services.entity';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { AddScheduleDto, EditScheduleDto } from './schedule.dto';
+import Event from '../../../typeorm/event.entity';
+import EventServices from '../../../typeorm/eventServices.entity';
 
 const N_SERVICES = Service.getName();
 const N_SCHEDULE = ServiceSchedule.getName();
+const N_EVENTS = Event.getName();
+const N_EVENT_S = EventServices.getName();
 
 @Injectable()
 export class ScheduleService {
@@ -36,13 +40,6 @@ export class ScheduleService {
         user_id: userId,
       },
     });
-    //  query(
-    //    ` SELECT ${N_SCHEDULE}.* FROM ${N_SCHEDULE}
-    // 	INNER JOIN ${N_SERVICES} on ${N_SERVICES}.id = service_id
-    // 	WHERE service_id = ? AND user_id = ?
-    // 	`,
-    //    [serviceId, userId],
-    //  );
 
     return { success: true, schedules: res };
   }
@@ -54,16 +51,12 @@ export class ScheduleService {
   ) {
     const isOwner = await this.isServiceOwner(userId, serviceId);
     if (isOwner) {
-      // const res = await this.serviceSchedule.save({
-      //   ...schedules,
-      //   user_id: userId,
-      //   service_id: serviceId,
-      // });
       const res = await this.serviceSchedule.save(
         schedules.map((schedule: ServiceSchedule) => ({
           ...schedule,
           user_id: userId,
           service_id: serviceId,
+          booked: false,
         })),
       );
       return { success: true, schedule: res };
@@ -116,5 +109,47 @@ export class ScheduleService {
         'user not authorized to delete this schedule',
       );
     }
+  }
+
+  async getUpcomingEvents(userId: number) {
+    const res = await this.serviceSchedule
+      .createQueryBuilder(N_SCHEDULE)
+      .select([
+        `${N_SCHEDULE}.*`,
+        `${N_SCHEDULE}.id as schedule_id`,
+        `${N_SCHEDULE}.title as schedule_title`,
+        `${N_SERVICES}.*`,
+        `${N_SERVICES}.id as service_id`,
+        `${N_SERVICES}.title as service_title`,
+        `${N_EVENTS}.name as event_name`,
+        `${N_EVENTS}.title as event_title`,
+        `${N_EVENTS}.description as event_description`,
+        `${N_EVENTS}.id as event_id`,
+      ])
+      .innerJoin(
+        Service,
+        N_SERVICES,
+        `${N_SERVICES}.id = ${N_SCHEDULE}.service_id`,
+      )
+      .innerJoin(
+        EventServices,
+        N_EVENT_S,
+        `${N_EVENT_S}.schedule_id = ${N_SCHEDULE}.id`,
+      )
+      .innerJoin(Event, N_EVENTS, `${N_EVENTS}.id = ${N_EVENT_S}.event_id`)
+      .where({
+        user_id: userId,
+        booked: true,
+        start: Between(
+          new Date(),
+          new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+        ),
+      })
+      .getRawMany();
+
+    return {
+      success: true,
+      events: res,
+    };
   }
 }

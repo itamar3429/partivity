@@ -157,3 +157,32 @@
 	.file-input {
 	}
 }
+
+.upcoming_container {
+	display: flex;
+	flex-direction: column;
+	width: fit-content;
+	border-radius: 10;
+	border: 2px solid #f1f1f1;
+	margin: 20px;
+	border-radius: 10px;
+
+	.upcoming_item {
+		&:not(:last-child) {
+			border-bottom: 1px solid #f1f1f1;
+		}
+
+		.info {
+			padding: 10px 30px;
+		}
+
+		.button {
+			border-left: 1px solid #f1f1f1;
+			padding: 0 30px;
+		}
+
+		display: flex;
+		justify-content: space-between;
+		gap: 30px;
+	}
+}

@@ -12,7 +12,7 @@ import {
 import { Stack } from "@mui/system";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import addService from "../../../api/providers/addService";
+import { addService } from "../../../api/providers/service";
 import { services } from "../../../api/providers/types";
 import { useDispatch } from "../../../app/hooks";
 import { errorToast } from "../../../libs/toast/error";

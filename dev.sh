@@ -1,4 +1,4 @@
 #! /bin/bash
 
-docker-compose -f docker-compose.dev.yml build
-docker-compose -f docker-compose.dev.yml up --force-recreate
+docker compose build
+docker compose up

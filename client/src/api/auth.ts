@@ -55,6 +55,26 @@ export const apiLogin = async (username: string, password: string) => {
 	});
 };
 
+export const apiLogout = async () => {
+	const res = await fetch(api.host + "/auth/logout", {
+		method: "POST",
+		...api.defOptions,
+	});
+	if (res.ok) {
+		return await res.json();
+	} else {
+		const data = await res.json().catch(() => ({}));
+		if (data.message === "Unauthorized") {
+			data.message = "you need to be logged in first";
+		}
+		return {
+			success: false,
+			message: defaultErrorMessage,
+			...data,
+		};
+	}
+};
+
 export const apiAuth = async () => {
 	return fetch(api.host + "/auth", {
 		credentials: "include",

@@ -14,6 +14,7 @@ export type TUser = {
 	email: string;
 	role: TRole;
 	connected: boolean;
+	image: string;
 };
 
 export const generalSlice = createSlice({
@@ -33,9 +34,12 @@ export const generalSlice = createSlice({
 			state.authenticated = true;
 			state.lastAuth = new Date().toISOString();
 		},
+		removeUser(state) {
+			state.user = { connected: false } as TUser;
+		},
 	},
 });
 
-export const { setPage, setUser } = generalSlice.actions;
+export const { setPage, setUser, removeUser } = generalSlice.actions;
 
 export default generalSlice.reducer;

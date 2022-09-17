@@ -28,33 +28,68 @@ function Dashboard() {
 	};
 	return (
 		<Template>
-			{!!pending.length && (
-				<Card title="pending events" className={s.pending_card}>
+			<Card title="pending events" className={s.pending_card}>
+				{!!pending.length && (
 					<div className={s.events}>
 						{pending.map((e, i) => (
 							<Event buttonText="edit" event={e} key={i} />
 						))}{" "}
 					</div>
-				</Card>
-			)}
-			{!!booked.length && (
-				<Card title="booked events" className={s.pending_card}>
+				)}
+				{!pending.length && (
+					<div
+						style={{
+							textAlign: "center",
+							padding: 50,
+							fontSize: 24,
+						}}
+					>
+						no pending events
+					</div>
+				)}
+			</Card>
+
+			<Card title="booked events" className={s.pending_card}>
+				{!!booked.length && (
 					<div className={s.events}>
 						{booked.map((e, i) => (
 							<Event event={e} buttonText="view" key={i} />
 						))}{" "}
 					</div>
-				</Card>
-			)}
-			{!!old.length && (
-				<Card title="old events" className={s.pending_card}>
+				)}
+				{!booked.length && (
+					<div
+						style={{
+							textAlign: "center",
+							padding: 50,
+							fontSize: 24,
+						}}
+					>
+						no booked events
+					</div>
+				)}
+			</Card>
+
+			<Card title="old events" className={s.pending_card}>
+				{!!old.length && (
 					<div className={s.events}>
 						{old.map((e, i) => (
 							<Event event={e} buttonText="view" key={i} />
 						))}
 					</div>
-				</Card>
-			)}
+				)}
+				{!old.length && (
+					<div
+						style={{
+							textAlign: "center",
+							padding: 50,
+							fontSize: 24,
+						}}
+					>
+						no old events
+					</div>
+				)}
+			</Card>
 		</Template>
 	);
 }

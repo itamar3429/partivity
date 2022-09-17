@@ -4,6 +4,7 @@ import {
   Get,
   Post,
   Request,
+  Response,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -13,6 +14,7 @@ import { LoginDto, RegisterDto } from './auth.dto';
 import { LocalAuthGuard } from './guard.local';
 import { Authenticate } from './auth.guard';
 import { TUser, User } from '../decorators/user.decorator';
+import { Response as E_Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -24,6 +26,16 @@ export class AuthController {
   async login(@Body() body: LoginDto, @User() reqUser: TUser) {
     const { password, id, ...user } = reqUser;
     return { success: true, user };
+  }
+
+  @UseGuards(Authenticate)
+  @Post('logout')
+  async logout(@Request() req: Express.Request, @Response() res: E_Response) {
+    console.log('logging out', req.user);
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    req.logout(() => {});
+    res.json({ success: true });
+    //  return { success: true };
   }
 
   @UsePipes(ValidationPipe)

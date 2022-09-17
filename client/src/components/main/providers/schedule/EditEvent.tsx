@@ -57,7 +57,7 @@ function EditEvent(props: TProps) {
 						/>
 					</div>
 					<div className={s.input_group}>
-						<label htmlFor="date">date from:</label>
+						<label htmlFor="date">date:</label>
 						<LocalizationProvider dateAdapter={AdapterDateFns}>
 							<DesktopDatePicker
 								renderInput={(params) => <TextField {...params} />}
@@ -72,7 +72,7 @@ function EditEvent(props: TProps) {
 					</div>
 
 					<div className={s.input_group}>
-						<label htmlFor="time-from">time from:</label>
+						<label htmlFor="time-from">time start:</label>
 						<LocalizationProvider dateAdapter={AdapterDayjs}>
 							<DesktopTimePicker
 								label="Time From"
@@ -85,7 +85,7 @@ function EditEvent(props: TProps) {
 						</LocalizationProvider>
 					</div>
 					<div className={s.input_group}>
-						<label htmlFor="time-to">time to:</label>
+						<label htmlFor="time-to">time end:</label>
 						<LocalizationProvider dateAdapter={AdapterDayjs}>
 							<DesktopTimePicker
 								label="Time To"
@@ -97,9 +97,14 @@ function EditEvent(props: TProps) {
 							/>
 						</LocalizationProvider>
 					</div>
+					<div className={s.input_group}>
+						<label htmlFor="time-to">status:</label>
+						<div>{props.schedule.booked ? "booked" : "pending"}</div>
+					</div>
 				</div>
 				<div className={s.submit_btn}>
 					<Button
+						disabled={props.schedule.booked}
 						onClick={() => {
 							const start = removeTZOffset(date);
 							const end = removeTZOffset(date);
@@ -126,6 +131,7 @@ function EditEvent(props: TProps) {
 						onClick={() => {
 							props.onDelete(eventId);
 						}}
+						disabled={props.schedule.booked}
 					>
 						Delete
 					</Button>

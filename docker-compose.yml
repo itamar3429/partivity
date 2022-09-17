@@ -14,16 +14,19 @@ services:
          - 3306:3306
       volumes: # not working need to checkout why that is
          - ./init:/docker-entrypoint-initdb.d
+         - mysql:/var/lib/mysql
    s3:
-      image: minio/minio
+      image: minio/minio:latest
+      command: server /data
       ports:
          - "9000:9000"
       volumes:
-         - ~/volumes/partivity/minio:/data
+         - s3:/data
       environment:
-         MINIO_ACCESS_KEY: minio_secret_key
-         MINIO_SECRET_KEY: minio_secret_key
-      command: server /data
+         MINIO_ROOT_USER: minio_secret_key
+         MINIO_ROOT_PASSWORD: minio_secret_key
+         #  MINIO_ACCESS_KEY: minio_secret_key
+         #  MINIO_SECRET_KEY: minio_secret_key
    static:
       image: partivity-static
       build:
@@ -31,6 +34,7 @@ services:
          dockerfile: ./Dockerfile.dev
       environment:
          NODE_ENV: development
+         WATCHPACK_POLLING: true
       ports:
          - 3000:3000
       volumes:
@@ -57,3 +61,6 @@ services:
          - 5000:5000
       volumes:
          - ./server:/app
+volumes:
+   s3:
+   mysql:

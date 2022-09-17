@@ -19,6 +19,7 @@ import ForClient from "../../auth/authExclude/ForClient";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Filler from "../../helper/Filler";
 import s from "./T.module.scss";
+import UserMenu from "./UserMenu";
 
 type TProps = {};
 
@@ -124,7 +125,7 @@ function Template(props: React.PropsWithChildren<TProps>) {
 						</IconButton>
 						some feature go here
 					</div>
-					<div className={s.header_right}>user menu</div>
+					<UserMenu></UserMenu>
 				</div>
 				<div className={s.page_content}>
 					<Filler></Filler>

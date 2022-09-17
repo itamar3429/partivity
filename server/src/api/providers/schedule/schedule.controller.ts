@@ -21,6 +21,18 @@ import { AuthenticateProvider } from '../../../auth/auth.guard';
 export class ScheduleController {
   constructor(private readonly service: ScheduleService) {}
 
+  @Get('upcoming')
+  async getUpcomingEvents(@User() user: TUser) {
+    try {
+      const res = await this.service.getUpcomingEvents(user.id);
+      return res;
+    } catch (error) {
+      return new InternalServerErrorException(
+        'Failed to retrieve upcoming events',
+      );
+    }
+  }
+
   @Get(':service_id')
   async getSchedule(
     @User() user: TUser,
@@ -47,8 +59,6 @@ export class ScheduleController {
       const res = await this.service.addSchedules(userId, serviceId, schedules);
       return res;
     } catch (error) {
-      console.log(error);
-
       return new InternalServerErrorException(
         'error while trying to add service schedule',
       );

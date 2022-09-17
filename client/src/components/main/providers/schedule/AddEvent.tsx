@@ -65,12 +65,12 @@ function AddEvent(props: TProps) {
 						/>
 					</div>
 					<div className={s.input_group}>
-						<label htmlFor="title">date from:</label>
+						<label htmlFor="title">date start:</label>
 						<LocalizationProvider dateAdapter={AdapterDateFns}>
 							<DesktopDatePicker
 								renderInput={(params) => <TextField {...params} />}
 								inputFormat="dd/MM/yyyy"
-								label="Date From"
+								label="Date Start"
 								value={from}
 								onChange={(value) => {
 									setFrom(value || new Date());
@@ -80,12 +80,12 @@ function AddEvent(props: TProps) {
 						</LocalizationProvider>
 					</div>
 					<div className={s.input_group}>
-						<label htmlFor="title">date to:</label>
+						<label htmlFor="title">date end:</label>
 						<LocalizationProvider dateAdapter={AdapterDateFns}>
 							<DesktopDatePicker
 								renderInput={(params) => <TextField {...params} />}
 								inputFormat="dd/MM/yyyy"
-								label="Date To"
+								label="Date End"
 								value={to}
 								onChange={(value) => {
 									setTo(value || new Date());
@@ -95,10 +95,10 @@ function AddEvent(props: TProps) {
 						</LocalizationProvider>
 					</div>
 					<div className={s.input_group}>
-						<label htmlFor="time-from">time from:</label>
+						<label htmlFor="time-from">time Start:</label>
 						<LocalizationProvider dateAdapter={AdapterDayjs}>
 							<DesktopTimePicker
-								label="Time From"
+								label="Time Start"
 								value={timeStart}
 								onChange={(val) => {
 									setTimeStart(val || new Date());
@@ -108,10 +108,10 @@ function AddEvent(props: TProps) {
 						</LocalizationProvider>
 					</div>
 					<div className={s.input_group}>
-						<label htmlFor="time-to">time to:</label>
+						<label htmlFor="time-to">time end:</label>
 						<LocalizationProvider dateAdapter={AdapterDayjs}>
 							<DesktopTimePicker
-								label="Time To"
+								label="Time End"
 								value={timeEnd}
 								onChange={(val) => {
 									setTimeEnd((val as any)?.$d || new Date());

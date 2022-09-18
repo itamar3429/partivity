@@ -61,7 +61,7 @@ function AddService() {
 							address: showAddress ? address : undefined,
 							city: showAddress ? city : undefined,
 							country: showAddress ? country : undefined,
-							name: chosenService !== "location" ? name : undefined,
+							name: name,
 						}).then((res) => {
 							if (res.success && res.service?.id) {
 								const { id } = res.service;

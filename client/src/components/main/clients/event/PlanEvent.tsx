@@ -61,7 +61,7 @@ function PlanEvent() {
 								gap: 25,
 							}}
 						>
-							<TextField
+							{/* <TextField
 								label="event name"
 								placeholder="Name of your event"
 								value={name}
@@ -78,7 +78,7 @@ function PlanEvent() {
 								}}
 								name="name"
 								required
-							/>
+							/> */}
 							<TextField
 								label="title"
 								placeholder="Title of your event"
@@ -91,7 +91,7 @@ function PlanEvent() {
 								inputProps={{
 									inputMode: "text",
 									type: "text",
-									pattern: ".{5}",
+									pattern: ".{5,}",
 									title: "title must have minimum 5 letters",
 								}}
 								name="title"

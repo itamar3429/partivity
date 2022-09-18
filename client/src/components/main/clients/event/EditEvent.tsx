@@ -12,7 +12,7 @@ import { errorToast } from "../../../../libs/toast/error";
 import { successToast } from "../../../../libs/toast/success";
 import Card from "../../../helper/Card";
 import Template from "../../template/Template";
-import AddService from "../eventService/AddService";
+import AddService from "./eventService/AddService";
 import s from "./event.module.scss";
 import EventSubmitModal from "./EventSubmitModal";
 import Service from "./Service";
@@ -99,7 +99,7 @@ function EditEvent() {
 								gap: 25,
 							}}
 						>
-							<TextField
+							{/* <TextField
 								label="event name"
 								placeholder="Name of your event"
 								value={name}
@@ -113,7 +113,7 @@ function EditEvent() {
 									type: "text",
 								}}
 								name="type"
-							/>
+							/> */}
 							<TextField
 								label="title"
 								placeholder="Title of your event"

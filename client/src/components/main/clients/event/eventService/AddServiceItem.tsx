@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
-import { api } from "../../../../config";
+import { api } from "../../../../../config";
 import { TServiceOption } from "./AddService";
 import s from "./EventService.module.scss";
 

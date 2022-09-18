@@ -6,6 +6,8 @@ import { IconButton } from "@mui/material";
 import Lottie from "react-lottie-player";
 import Logo from "../helper/Logo";
 import Loader from "../helper/Loader";
+import ForClient from "../auth/authExclude/ForClient";
+import ForUnauthorized from "../auth/authExclude/ForUnauthorized";
 
 function WelcomeTemplate({ children }: React.PropsWithChildren<{}>) {
 	const [show, setShow] = useState(false);
@@ -24,19 +26,36 @@ function WelcomeTemplate({ children }: React.PropsWithChildren<{}>) {
 	return (
 		<div className="main">
 			<div className="nav-section">
-				<CustomLink
-					to="/welcome"
-					style={{ color: "inherit", textDecoration: "inherit" }}
-				>
-					<div className="nav-logo">
-						<Logo
-							SpanClass="nav-logo-text"
-							fontSize={"18pt"}
-							iconClass="nav-logo-img"
-							letterSpacing={"23px"}
-						></Logo>
-					</div>
-				</CustomLink>
+				<ForClient>
+					<CustomLink
+						to="/"
+						style={{ color: "inherit", textDecoration: "inherit" }}
+					>
+						<div className="nav-logo">
+							<Logo
+								SpanClass="nav-logo-text"
+								fontSize={"18pt"}
+								iconClass="nav-logo-img"
+								letterSpacing={"23px"}
+							></Logo>
+						</div>
+					</CustomLink>
+				</ForClient>
+				<ForUnauthorized>
+					<CustomLink
+						to="/welcome"
+						style={{ color: "inherit", textDecoration: "inherit" }}
+					>
+						<div className="nav-logo">
+							<Logo
+								SpanClass="nav-logo-text"
+								fontSize={"18pt"}
+								iconClass="nav-logo-img"
+								letterSpacing={"23px"}
+							></Logo>
+						</div>
+					</CustomLink>
+				</ForUnauthorized>
 				<div className={"nav-bar" + (show ? " show" : " hide")}>
 					<div className="balloon-outer">
 						<Lottie

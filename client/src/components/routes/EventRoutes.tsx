@@ -4,6 +4,7 @@ import IsClient from "../auth/authMiddleware/IsClient";
 import SetPageRender from "../helper/Render";
 import EditEvent from "../main/clients/event/EditEvent";
 import PlanEvent from "../main/clients/event/PlanEvent";
+import Invite from "../main/clients/invite";
 
 const EventRoutes = () => {
 	return (
@@ -15,6 +16,10 @@ const EventRoutes = () => {
 			<Route
 				path="edit/:eventId"
 				element={SetPageRender(<EditEvent />, "event/edit", IsClient)}
+			></Route>
+			<Route
+				path="invite/:eventId"
+				element={SetPageRender(<Invite />, "event/invite")}
 			></Route>
 		</>
 	);

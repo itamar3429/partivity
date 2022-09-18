@@ -1,6 +1,7 @@
 # client:
 
--  Create invite page for client event.
+<!-- -  Create invite page for client event. -->
+
 -  Become provider page
 -  Let people confirm invitation.
 -  Client dashboard - add more details about the party. attendance and more

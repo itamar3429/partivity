@@ -1,0 +1,32 @@
+.container {
+	width: 50%;
+	min-width: 300px;
+	margin: auto;
+	margin-top: 100px;
+	text-align: center;
+	position: relative;
+
+	.title {
+	}
+	.sub_title {
+	}
+
+	.envelope_animation {
+		@media screen and (max-width: 700px) {
+			margin-top: 50px;
+		}
+	}
+
+	.fireworks_animation {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 100%;
+		// z-index: -1
+
+		@media screen and (max-width: 700px) {
+			top: 300px;
+		}
+	}
+}

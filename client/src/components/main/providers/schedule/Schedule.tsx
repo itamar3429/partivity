@@ -121,6 +121,7 @@ function Schedule() {
 		end: Date;
 		id: number;
 	}) => {
+		if (start.getTime() > end.getTime()) end.setDate(end.getDate() + 1);
 		const res = await editSchedules(id, {
 			title,
 			end,

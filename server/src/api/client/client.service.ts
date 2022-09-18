@@ -94,7 +94,7 @@ export class ClientService {
       end = new Date(now);
     }
     end.setHours(end.getHours() + 12 * 3);
-    start.setHours(start.getHours() - 12 * 2);
+    start.setHours(start.getHours() - 12 * 0.5);
 
     const res = await this.schedule
       .createQueryBuilder(N_SCHEDULE)
@@ -148,6 +148,19 @@ export class ClientService {
 
   async addEventService(userId: number, eventService: addEventServiceDto) {
     const isOwner = await this.isEventOwner(userId, eventService.eventId);
+    const newEventService = this.eventServices.create({
+      event_id: eventService.eventId,
+      schedule_id: eventService.scheduleId,
+      user_id: userId,
+    });
+    const isExists = await this.eventServices.findOne({
+      where: newEventService,
+    });
+    if (isExists) {
+      return new UnauthorizedException(
+        'This service schedule is already used in this event',
+      );
+    }
     if (isOwner) {
       await this.eventServices.save({
         event_id: eventService.eventId,

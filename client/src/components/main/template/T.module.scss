@@ -95,7 +95,7 @@ $item-back-color: #c1d3fc67;
 				position: absolute;
 				top: 0;
 				left: 0;
-				margin-top: calc($nav-height + 20px);
+				margin-top: calc($nav-height + 5px);
 				margin-left: 15px;
 				width: calc(100% - 30px);
 				border-radius: 20px;
@@ -105,6 +105,8 @@ $item-back-color: #c1d3fc67;
 				overflow: hidden;
 				height: fit-content;
 				z-index: 999;
+
+				box-shadow: 0 0 2rem 0 rgb(136 152 170 / 15%);
 			}
 			&.show {
 				.nav_list {
@@ -302,6 +304,9 @@ $item-back-color: #c1d3fc67;
 		}
 
 		.username {
+			@media only screen and (max-width: $nav-mobile) {
+				display: none;
+			}
 		}
 	}
 
@@ -360,6 +365,7 @@ $item-back-color: #c1d3fc67;
 		.menu_item {
 			padding: 15px 30px;
 			cursor: pointer;
+			transition: background-color 0.5s;
 
 			.icon {
 				margin-right: 20px;

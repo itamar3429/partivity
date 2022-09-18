@@ -4,14 +4,14 @@ import React from "react";
 import {
 	deleteImages,
 	updatePrimaryImage,
-} from "../../../api/providers/serviceImages";
+} from "../../../../api/providers/serviceImages";
 import LooksOneIcon from "@mui/icons-material/LooksOne";
 import LooksTwoIcon from "@mui/icons-material/LooksTwo";
-import { api } from "../../../config";
-import s from "./P.module.scss";
+import { api } from "../../../../config";
+import s from "./images.module.scss";
 import { useParams } from "react-router-dom";
-import { errorToast } from "../../../libs/toast/error";
-import { successToast } from "../../../libs/toast/success";
+import { errorToast } from "../../../../libs/toast/error";
+import { successToast } from "../../../../libs/toast/success";
 
 type TProps = {
 	image: {

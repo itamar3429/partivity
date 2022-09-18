@@ -2,10 +2,10 @@ import React from "react";
 import { Route } from "react-router-dom";
 import IsProvider from "../auth/authMiddleware/IsProvider";
 import SetPageRender from "../helper/Render";
-import EditImages from "../main/providers/EditImages";
-import AddService from "../main/providers/AddService";
-import Providers from "../main/providers/Providers";
-import EditService from "../main/providers/EditService";
+import EditImages from "../main/providers/serviceImages/EditImages";
+import AddService from "../main/providers/service/AddService";
+import Providers from "../main/providers/dashboard";
+import EditService from "../main/providers/service/EditService";
 import Schedule from "../main/providers/schedule/Schedule";
 
 const WelcomeRoutes = () => {

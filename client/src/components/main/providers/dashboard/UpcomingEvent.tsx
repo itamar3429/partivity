@@ -1,7 +1,7 @@
 import { Button, Tooltip } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
-import s from "./P.module.scss";
+import s from "./index.module.scss";
 
 type TProps = {
 	event: any;

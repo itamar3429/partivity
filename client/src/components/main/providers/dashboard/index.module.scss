@@ -14,24 +14,6 @@
 	}
 }
 
-.add-service-card {
-	margin-top: 50px;
-}
-
-.images_card {
-	margin-top: 50px;
-	margin-bottom: 50px;
-}
-
-.add-service-input {
-	width: 300px;
-	min-width: 200px;
-
-	@media only screen and (max-width: 650px) {
-		width: 100% !important;
-	}
-}
-
 .service {
 	margin: 20px;
 
@@ -115,46 +97,6 @@
 		@media only screen and (max-width: 1100px) {
 			max-height: 180px;
 		}
-	}
-}
-
-.edit-img-list {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 20px;
-	align-items: center;
-	justify-content: flex-start;
-	padding: 20px;
-
-	.edit-img-item {
-		margin: 20px;
-		display: inline-block;
-		width: 200px;
-		position: relative;
-		user-select: none;
-
-		.img {
-			width: 200px;
-		}
-
-		.img_btns {
-			position: absolute;
-			right: 5px;
-			bottom: 5px;
-			z-index: 2;
-		}
-	}
-}
-
-.add-new-img {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: flex-end;
-	padding: 30px;
-	gap: 20px;
-
-	.file-input {
 	}
 }
 

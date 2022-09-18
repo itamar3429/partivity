@@ -11,15 +11,15 @@ import {
 import { Stack } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { editService, getService } from "../../../api/providers/service";
+import { editService, getService } from "../../../../api/providers/service";
 // import editService from "../../../api/providers/editService";
 // import { getService } from "../../../api/providers/getServices";
-import { useDispatch } from "../../../app/hooks";
-import { errorToast } from "../../../libs/toast/error";
-import Card from "../../helper/Card";
-import { TransitionRedirect } from "../../helper/Link";
-import Template from "../template/Template";
-import s from "./P.module.scss";
+import { useDispatch } from "../../../../app/hooks";
+import { errorToast } from "../../../../libs/toast/error";
+import Card from "../../../helper/Card";
+import { TransitionRedirect } from "../../../helper/Link";
+import Template from "../../template/Template";
+import s from "./service.module.scss";
 
 export const services = ["location", "music", "food", "general"] as const;
 

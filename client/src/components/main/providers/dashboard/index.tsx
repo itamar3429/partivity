@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 // import getServices, { TService } from "../../../api/providers/getServices";
-import Card from "../../helper/Card";
-import Template from "../template/Template";
+import Card from "../../../helper/Card";
+import Template from "../../template/Template";
 import Service from "./Service";
-import s from "./P.module.scss";
-import { errorToast } from "../../../libs/toast/error";
-import { successToast } from "../../../libs/toast/success";
+import { errorToast } from "../../../../libs/toast/error";
+import { successToast } from "../../../../libs/toast/success";
 import getServices, {
 	deleteService,
 	TService,
-} from "../../../api/providers/service";
-import { getUpcomingEvents } from "../../../api/providers/schedule";
+} from "../../../../api/providers/service";
+import { getUpcomingEvents } from "../../../../api/providers/schedule";
 import UpcomingEvent from "./UpcomingEvent";
+import s from "./index.module.scss";
 
 function Providers() {
 	const [services, setServices] = useState<TService[]>([]);

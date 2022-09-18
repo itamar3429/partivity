@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import Register from "../auth/Register";
 import WelcomeRoutes from "./WelcomeRoutes";
 import About from "../intro/About";
-import Dashboard from "../main/clients/dashboard/Dashboard";
+import Dashboard from "../main/clients/dashboard";
 import Render from "../helper/Render";
 import EventRoutes from "./EventRoutes";
 import ProvidersRoutes from "./ProvidersRoutes";

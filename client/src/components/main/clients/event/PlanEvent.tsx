@@ -2,15 +2,15 @@ import { Button, Stack, TextField, Tooltip } from "@mui/material";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import React, { useState } from "react";
-import Card from "../../helper/Card";
-import Template from "../template/Template";
-import s from "./C.module.scss";
+import Card from "../../../helper/Card";
+import Template from "../../template/Template";
+import s from "./event.module.scss";
 import InfoIcon from "@mui/icons-material/Info";
-import { addEvent } from "../../../api/client/events";
-import { useDispatch } from "../../../app/hooks";
+import { addEvent } from "../../../../api/client/events";
+import { useDispatch } from "../../../../app/hooks";
 import { useNavigate } from "react-router-dom";
-import { TransitionRedirect } from "../../helper/Link";
-import { errorToast } from "../../../libs/toast/error";
+import { TransitionRedirect } from "../../../helper/Link";
+import { errorToast } from "../../../../libs/toast/error";
 // name title description status
 function PlanEvent() {
 	const [name, setName] = useState("");
@@ -73,8 +73,11 @@ function PlanEvent() {
 								inputProps={{
 									inputMode: "text",
 									type: "text",
+									pattern: ".{3}",
+									title: "name must have minimum 3 letters",
 								}}
-								name="type"
+								name="name"
+								required
 							/>
 							<TextField
 								label="title"
@@ -88,8 +91,11 @@ function PlanEvent() {
 								inputProps={{
 									inputMode: "text",
 									type: "text",
+									pattern: ".{5}",
+									title: "title must have minimum 5 letters",
 								}}
-								name="type"
+								name="title"
+								required
 							/>
 							<TextField
 								label="Description"

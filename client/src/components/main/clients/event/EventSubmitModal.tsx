@@ -2,10 +2,10 @@ import { Button } from "@mui/material";
 import React from "react";
 import { Modal } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import { bookEvent } from "../../../api/client/events";
-import { errorToast } from "../../../libs/toast/error";
-import { successToast } from "../../../libs/toast/success";
-import Card from "../../helper/Card";
+import { bookEvent } from "../../../../api/client/events";
+import { errorToast } from "../../../../libs/toast/error";
+import { successToast } from "../../../../libs/toast/success";
+import Card from "../../../helper/Card";
 
 type TProps = {
 	onHide: () => void;

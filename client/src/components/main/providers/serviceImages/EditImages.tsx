@@ -4,12 +4,12 @@ import { useParams } from "react-router-dom";
 import {
 	addServiceImage,
 	getImages,
-} from "../../../api/providers/serviceImages";
-import Card from "../../helper/Card";
-import Template from "../template/Template";
+} from "../../../../api/providers/serviceImages";
+import Card from "../../../helper/Card";
+import Template from "../../template/Template";
 import EditImageItem from "./EditImageItem";
-import s from "./P.module.scss";
-import { errorToast } from "../../../libs/toast/error";
+import s from "./images.module.scss";
+import { errorToast } from "../../../../libs/toast/error";
 
 function parseFileName(str: string, len: number) {
 	const dotIndex = str.lastIndexOf(".");

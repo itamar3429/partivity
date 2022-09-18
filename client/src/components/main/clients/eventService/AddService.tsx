@@ -1,24 +1,24 @@
 import { Button, IconButton, MenuItem, Stack, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
-import Card from "../../helper/Card";
-import s from "./C.module.scss";
+import Card from "../../../helper/Card";
+import s from "./EventService.module.scss";
 import CloseIcon from "@mui/icons-material/Close";
-import { services as totalServices } from "../../../api/providers/types";
+import { services as totalServices } from "../../../../api/providers/types";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import SearchForm, { TOption } from "../../helper/SearchForm";
+import SearchForm, { TOption } from "../../../helper/SearchForm";
 import {
 	addEventService,
 	getAvailableDates,
 	getServicesOptions,
 	TServiceOptions,
-} from "../../../api/client/events";
+} from "../../../../api/client/events";
 import AddServiceItem from "./AddServiceItem";
-import { getDateString, removeTZOffset } from "../../../libs/dates";
+import { getDateString, removeTZOffset } from "../../../../libs/dates";
 import { useParams } from "react-router-dom";
-import { errorToast } from "../../../libs/toast/error";
-import { successToast } from "../../../libs/toast/success";
+import { errorToast } from "../../../../libs/toast/error";
+import { successToast } from "../../../../libs/toast/success";
 
 type TProps = {
 	onHide: () => void;
@@ -203,11 +203,11 @@ function AddService(props: TProps) {
 					></SearchForm>
 				</Stack>
 				<div className={s.services}>
-					{servicesArr.map((s) => (
+					{servicesArr.map((service) => (
 						<AddServiceItem
-							service={s}
+							service={service}
 							onSelect={onSelect}
-							selected={s.schedule_id === selectedSchedule}
+							selected={service.schedule_id === selectedSchedule}
 						></AddServiceItem>
 					))}
 				</div>

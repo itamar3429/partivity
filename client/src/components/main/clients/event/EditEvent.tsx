@@ -7,13 +7,13 @@ import {
 	getEvent,
 	removeEventService,
 	updateEvent,
-} from "../../../api/client/events";
-import { errorToast } from "../../../libs/toast/error";
-import { successToast } from "../../../libs/toast/success";
-import Card from "../../helper/Card";
-import Template from "../template/Template";
-import AddService from "./AddService";
-import s from "./C.module.scss";
+} from "../../../../api/client/events";
+import { errorToast } from "../../../../libs/toast/error";
+import { successToast } from "../../../../libs/toast/success";
+import Card from "../../../helper/Card";
+import Template from "../../template/Template";
+import AddService from "../eventService/AddService";
+import s from "./event.module.scss";
 import EventSubmitModal from "./EventSubmitModal";
 import Service from "./Service";
 

@@ -12,15 +12,15 @@ import {
 import { Stack } from "@mui/system";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { addService } from "../../../api/providers/service";
-import { services } from "../../../api/providers/types";
-import { useDispatch } from "../../../app/hooks";
-import { errorToast } from "../../../libs/toast/error";
-import Card from "../../helper/Card";
-import { TransitionRedirect } from "../../helper/Link";
+import { addService } from "../../../../api/providers/service";
+import { services } from "../../../../api/providers/types";
+import { useDispatch } from "../../../../app/hooks";
+import { errorToast } from "../../../../libs/toast/error";
+import Card from "../../../helper/Card";
+import { TransitionRedirect } from "../../../helper/Link";
 // import Filler from "../../helper/Filler";
-import Template from "../template/Template";
-import s from "./P.module.scss";
+import Template from "../../template/Template";
+import s from "./service.module.scss";
 
 function AddService() {
 	const [service, setService] = useState(0);

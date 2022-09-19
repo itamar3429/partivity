@@ -27,8 +27,6 @@ export class ServicesController {
       const res = await this.service.getServices(user.id);
       return res;
     } catch (error) {
-      console.log(error);
-
       return new InternalServerErrorException('Error: Failed to get services');
     }
   }
@@ -39,8 +37,6 @@ export class ServicesController {
       const service = await this.service.getService(user.id, id);
       return service;
     } catch (error) {
-      console.log(error);
-
       return new InternalServerErrorException(
         'Failed to get the service details',
       );

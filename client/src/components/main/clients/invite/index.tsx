@@ -34,13 +34,16 @@ function Invite() {
 	return (
 		<WelcomeTemplate>
 			<div className={s.container}>
-				<h1 className={s.title}>Welcome to The Party</h1>
-				<h4 className={s.sub_title}>
-					You have been invited to join {event.title}.
-				</h4>
-				<p>{event.description}</p>
-				<div>
-					We'll be expecting you on {new Date(event.date).toDateString()}
+				<div className={s.text}>
+					<h1 className={s.title}>Welcome to The Party</h1>
+					<h4 className={s.sub_title}>
+						You have been invited to join {event.title}.
+					</h4>
+					<p>{event.description}</p>
+					<div>
+						We'll be expecting you on{" "}
+						{new Date(event.date).toDateString()}
+					</div>
 				</div>
 				{!!envelope && (
 					<Lottie

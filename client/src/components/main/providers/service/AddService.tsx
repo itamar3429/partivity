@@ -71,7 +71,6 @@ function AddService() {
 									navigate
 								);
 							} else {
-								console.log(res);
 								errorToast(
 									res.message ||
 										"unknown error while trying to create a service"

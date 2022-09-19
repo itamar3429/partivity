@@ -31,11 +31,9 @@ export class AuthController {
   @UseGuards(Authenticate)
   @Post('logout')
   async logout(@Request() req: Express.Request, @Response() res: E_Response) {
-    console.log('logging out', req.user);
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     req.logout(() => {});
     res.json({ success: true });
-    //  return { success: true };
   }
 
   @UsePipes(ValidationPipe)

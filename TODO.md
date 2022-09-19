@@ -7,6 +7,7 @@
 -  Client dashboard - add more details about the party. attendance and more
 -  Enrich header features/gestures.
 -  Service/menu landing page(info about the service)
+-  Client delete event (before booked)
 -  Admin - provider application review/reject/authorize.
 -  Admin - suspend provider activity
    <!-- -  Add user menu (logout setting etc...) -->
@@ -22,5 +23,5 @@
 
 -  Provider food menu (CRUD).
 -  Verify event services dates are the same for all event services schedule.
--  Enable address for more services [/ coordinates and max radius]<br> (to act as location restriction, only for delivering services like food, music and more)
+-  Enable address for more services[/ coordinates and max radius]<br> (to act as location restriction, only for delivering services like food, music and more)
 -  Delete event for user (if not booked yet)

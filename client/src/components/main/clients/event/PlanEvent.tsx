@@ -40,7 +40,6 @@ function PlanEvent() {
 								navigate
 							);
 						} else {
-							console.log(res);
 							errorToast(res.message);
 						}
 					}}

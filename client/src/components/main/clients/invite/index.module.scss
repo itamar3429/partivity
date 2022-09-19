@@ -5,13 +5,21 @@
 	margin-top: 100px;
 	text-align: center;
 	position: relative;
-
+	overflow: hidden;
+	.text {
+		z-index: 99;
+		// user-select: initial;
+		* {
+			z-index: 99;
+		}
+	}
 	.title {
 	}
 	.sub_title {
 	}
 
 	.envelope_animation {
+		z-index: -2;
 		@media screen and (max-width: 700px) {
 			margin-top: 50px;
 		}
@@ -23,10 +31,10 @@
 		left: 50%;
 		transform: translateX(-50%);
 		width: 100%;
-		// z-index: -1
+		z-index: 9;
 
 		@media screen and (max-width: 700px) {
-			top: 300px;
+			top: 120px;
 		}
 	}
 }

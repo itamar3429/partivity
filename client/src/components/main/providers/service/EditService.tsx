@@ -95,8 +95,6 @@ function EditService() {
 							},
 							serviceId
 						).then((res) => {
-							console.log(res);
-
 							if (res.success) {
 								TransitionRedirect("/providers/", dispatch, navigate);
 							} else {

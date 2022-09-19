@@ -13,8 +13,6 @@ export const apiRegister = async (
 			"Content-Type": "application/json",
 		},
 	}).then(async (res) => {
-		console.log(res);
-
 		if (res.ok) {
 			return res.json();
 		} else {

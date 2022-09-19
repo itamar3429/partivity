@@ -51,7 +51,6 @@ function EditEvent() {
 				errorToast(res.message);
 			}
 		} catch (error) {
-			console.log(error);
 			errorToast("something went wrong try again later");
 		}
 		setLoading(false);
@@ -191,7 +190,6 @@ function EditEvent() {
 									if (res.success) {
 										successToast("event updated successfully");
 									} else {
-										console.log(res);
 										errorToast(res.message);
 									}
 								}

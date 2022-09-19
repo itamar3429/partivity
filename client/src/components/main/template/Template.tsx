@@ -123,7 +123,6 @@ function Template(props: React.PropsWithChildren<TProps>) {
 								<KeyboardArrowLeftIcon />
 							)}
 						</IconButton>
-						some feature go here
 					</div>
 					<UserMenu></UserMenu>
 				</div>

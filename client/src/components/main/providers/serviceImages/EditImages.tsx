@@ -143,7 +143,7 @@ function EditImages() {
 											}
 										}
 									} catch (err) {
-										console.log("couldn't load file");
+										errorToast("Failed tp load file");
 									}
 									setLoading(false);
 								}}

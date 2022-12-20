@@ -1,6 +1,6 @@
 const host =
 	process.env.NODE_ENV === "production"
-		? "//production.host"
+		? "https://paritivity-api.onrender.com"
 		: "//localhost:5000";
 
 export const api = {

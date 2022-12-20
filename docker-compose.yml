@@ -2,19 +2,16 @@ version: "3.4"
 
 services:
    db:
-      image: mysql:latest
-      command: --authentication_policy=mysql_native_password
+      image: postgres:15.1-alpine
       restart: always
       environment:
-         MYSQL_ROOT_PASSWORD: pass
-         MYSQL_DATABASE: db
-         MYSQL_USER: user
-         MYSQL_PASSWORD: pass
+         - POSTGRES_USER=postgres
+         - POSTGRES_PASSWORD=postgres
+         - POSTGRES_DB=db
       ports:
-         - 3306:3306
-      volumes: # not working need to checkout why that is
-         - ./init:/docker-entrypoint-initdb.d
-         - mysql:/var/lib/mysql
+         - 5432:5432
+      volumes:
+         - db:/var/lib/postgresql/data
    s3:
       image: minio/minio:latest
       command: server /data
@@ -47,12 +44,14 @@ services:
       env_file: server/.env
       environment:
          NODE_ENV: development
-         MYSQL_PASSWORD: pass
-         MYSQL_HOST: db
-         MYSQL_DATABASE: db
-         MYSQL_USERNAME: user
-         MYSQL_PORT: 3306
-         MYSQL_PROTOCOL: DEV
+
+         DB_PASSWORD: postgres
+         DB_HOST: db
+         DB_DATABASE: db
+         DB_USERNAME: postgres
+         DB_PORT: 5432
+         DB_PROTOCOL: DEV
+
          MINIO_ACCESS_KEY: minio_secret_key
          MINIO_SECRET_KEY: minio_secret_key
          MINIO_HOST: s3
@@ -63,4 +62,4 @@ services:
          - ./server:/app
 volumes:
    s3:
-   mysql:
+   db:

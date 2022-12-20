@@ -29,16 +29,14 @@ export const entitiesObj = {
 };
 
 export const OrmForRoot = TypeOrmModule.forRoot({
-  type: 'mysql',
+  type: 'postgres',
   username: mysqlConfig.username,
   password: mysqlConfig.password,
   host: mysqlConfig.host,
   port: mysqlConfig.port,
   database: mysqlConfig.database,
   //   ssl: mysqlConfig.database,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  ssl: mysqlConfig.ssl,
   entities: entitiesArr,
   synchronize: true,
 });

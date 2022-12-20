@@ -2,13 +2,13 @@
 // config();
 
 export const mysqlConfig = {
-  username: process.env.MYSQL_USERNAME,
-  password: process.env.MYSQL_PASSWORD,
-  host: process.env.MYSQL_HOST,
-  port: Number(process.env.MYSQL_PORT),
-  database: process.env.MYSQL_DATABASE,
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  database: process.env.DB_DATABASE,
   ssl:
-    process.env.MYSQL_PROTOCOL === 'DEV'
+    process.env.DB_PROTOCOL === 'DEV'
       ? false
       : {
           rejectUnauthorized: false,

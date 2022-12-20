@@ -2,12 +2,12 @@
 
 FROM node:lts-alpine as stage-0
 WORKDIR /app
-COPY ["package*.json", "/app/"]
-RUN npm ci
-COPY . /app/
+COPY package*.json /app/
+RUN cd /app && npm ci
+COPY ./ /app/
 
 # CMD ["npm", "run", "build","&&","ls","/app"]
-RUN npm run build
+RUN cd /app && npm run build
 
 
 

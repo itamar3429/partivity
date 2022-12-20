@@ -13,16 +13,22 @@ services:
          PORT: 3000
       ports:
          - 3000:3000
+      volumes:
+         - ./client:/app
+         - ./client/nginx:/etc/nginx/templates/
    api:
       container_name: api
       image: partivity-api-prod
       restart: always
       build:
          context: server
-         dockerfile: ./Dockerfile.prod
+         dockerfile: ./Dockerfile.dev
       env_file: server/.env
       environment:
          NODE_ENV: production
          PORT: 5000
+         WATCHPACK_POLLING: true
       ports:
          - 5000:5000
+      volumes:
+         - ./server:/app

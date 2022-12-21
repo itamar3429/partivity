@@ -4,7 +4,7 @@ import { AppModule } from './app.module';
 // import expressSession from 'express-session';
 import cookieSession from 'cookie-session';
 import cors from 'cors';
-
+const production = process.env.NODE_ENV === 'production';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(
@@ -17,9 +17,9 @@ async function bootstrap() {
     cookieSession({
       keys: ['this is a very secret key for the partivity website'],
       maxAge: 60 * 60 * 24 * 1000 * 2,
-      sameSite: 'strict',
+      sameSite: production ? 'none' : 'strict',
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: production,
     }),
   );
   app.use(passport.initialize());

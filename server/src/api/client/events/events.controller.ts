@@ -26,6 +26,8 @@ export class EventsController {
       const res = await this.service.getEvent(user.id, id);
       return res;
     } catch (error) {
+      console.log(error);
+
       return new InternalServerErrorException('Failed to get event');
     }
   }

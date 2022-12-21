@@ -1,13 +1,17 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import Events from '../../typeorm/event.entity';
 import { In, Repository, MoreThan, LessThan } from 'typeorm';
 import EventServices from '../../typeorm/eventServices.entity';
-import Event from '../../typeorm/event.entity';
-import { AddEventDto, addEventServiceDto } from './client.dto';
 import ServiceSchedule from '../../typeorm/schedule.entity';
 import Service from '../../typeorm/services.entity';
 import ServiceImages from '../../typeorm/images.entity';
+import User from '../../typeorm/users.entity';
+import { addEventServiceDto } from './client.dto';
 
 const N_EVENTS = Events.getName();
 const N_EVENT_S = EventServices.getName();
@@ -26,6 +30,8 @@ export class ClientService {
     private readonly services: Repository<Service>,
     @InjectRepository(ServiceSchedule)
     private readonly schedule: Repository<ServiceSchedule>,
+    @InjectRepository(User)
+    private readonly user: Repository<User>,
   ) {}
 
   async isEventOwner(userId: number, eventId: number) {
@@ -39,7 +45,7 @@ export class ClientService {
       await this.eventServices.query(
         `SELECT COUNT(*) as count FROM ${N_EVENT_S}
 	 INNER JOIN ${N_EVENTS} ON  ${N_EVENTS}.id = ${N_EVENT_S}.event_id
-	 WHERE ${N_EVENT_S}.id = ? AND ${N_EVENTS}.user_id = ?
+	 WHERE ${N_EVENT_S}.id = $1 AND ${N_EVENTS}.user_id = $2
 	 `,
         [eventServiceId, userId],
       )
@@ -56,7 +62,7 @@ export class ClientService {
         `${N_SCHEDULE}.title AS schedule_title`,
         `${N_SERVICES}.*`,
         `${N_SERVICES}.title AS service_title`,
-        `JSON_ARRAYAGG(obj_id) AS images`,
+        `ARRAY_AGG(obj_id) AS images`,
       ])
       .leftJoin(
         ServiceSchedule,
@@ -77,7 +83,7 @@ export class ClientService {
         event_id: In(eventIds),
         user_id: userId,
       })
-      .groupBy(`${N_EVENT_S}.id`)
+      .groupBy(`${N_EVENT_S}.id, ${N_SERVICES}.id, ${N_SCHEDULE}.id`)
       .getRawMany();
 
     return res;
@@ -122,18 +128,20 @@ export class ClientService {
         booked: false,
       })
       .getRawMany();
+    console.log(res);
+
     return { success: true, services: res };
   }
 
   async getDates() {
     const res = await this.schedule.query(
       `
-		SELECT JSON_ARRAYAGG(start) as dates from 
+		SELECT ARRAY_AGG(start) as dates from 
 			(
-				select distinct DATE_FORMAT(start, '%Y-%c-%d') 
+				select distinct TO_CHAR(start::date, 'yyyy-mm-dd') 
 				as start from ${N_SCHEDULE} 
 				INNER JOIN ${N_SERVICES} ON ${N_SERVICES}.id = ${N_SCHEDULE}.service_id
-				where start > ? 
+				where start > $1 
 					AND booked = FALSE
 					AND ${N_SERVICES}.deleted = FALSE
 			)
@@ -259,5 +267,30 @@ export class ClientService {
       return row;
     });
     return { booked: isBooked, eventServices: eventServices };
+  }
+
+  async becomeProvider(user_id: number, firstName: string, lastName: string) {
+    try {
+      const res = await this.user.update(
+        { id: user_id, role: 'client' },
+        {
+          role: 'provider',
+          first_name: firstName,
+          last_name: lastName,
+        },
+      );
+      if (res.affected) {
+        return { success: true, message: 'client can now provide services' };
+      } else
+        return {
+          success: false,
+          message:
+            "couldn't make the user provider. Could be because he's already a provider",
+        };
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to update user as a provider',
+      );
+    }
   }
 }

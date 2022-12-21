@@ -10,6 +10,7 @@ import LoginRoutes from "./LoginRoutes";
 import IsNotLogged from "../auth/authMiddleware/IsNotLogged";
 import GetUserInfo from "../auth/GetUserInfo";
 import IsClient from "../auth/authMiddleware/IsClient";
+import BecomeProvider from "../main/providers/become";
 
 /**
  *
@@ -44,7 +45,14 @@ const AppRoutes = () => {
 				path="/register"
 				element={Render(<Register />, "register", IsNotLogged)}
 			/>
-			<Route path="about" element={Render(<About />, "intro/about")} />
+			<Route
+				path="about"
+				element={Render(<About />, "intro/about", IsClient)}
+			/>
+			<Route
+				path="provider/join"
+				element={Render(<BecomeProvider />, "provider/join")}
+			/>
 			<Route path="*" element={<div>404 page not found</div>} />
 		</Routes>
 	);

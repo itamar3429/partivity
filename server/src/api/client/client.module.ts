@@ -9,6 +9,10 @@ import { DashboardModule } from './dashboard/dashboard.module';
 @Module({
   providers: [ClientService],
   controllers: [ClientController],
-  imports: [TypeOrmModule.forFeature(entitiesArr), EventsModule, DashboardModule],
+  imports: [
+    TypeOrmModule.forFeature(entitiesArr),
+    EventsModule,
+    DashboardModule,
+  ],
 })
 export class ClientModule {}

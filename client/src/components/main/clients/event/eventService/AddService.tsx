@@ -49,6 +49,8 @@ function AddService(props: TProps) {
 
 	const { eventId } = useParams();
 
+	console.log(totalServices, serviceOptions);
+
 	const services = totalServices.filter((service) =>
 		serviceOptions.find((x) => x.service === service)
 	);

@@ -28,3 +28,10 @@ export class addEventServiceDto {
   @IsNumber()
   scheduleId: number;
 }
+
+export class BecomeProviderDto {
+  @IsString()
+  firstName: string;
+  @IsString()
+  lastName: string;
+}

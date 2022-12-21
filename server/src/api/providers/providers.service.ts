@@ -14,7 +14,6 @@ import { MINIO_IMG_BUCKET } from '../../minio/constants';
 import { v4 as uuidV4 } from 'uuid';
 
 const N_IMAGES = ServiceImages.getName();
-const N_SERVICES = Service.getName();
 
 @Injectable()
 export class ProvidersService {
@@ -91,9 +90,9 @@ export class ProvidersService {
       const res = await this.serviceImages.query(
         `
 			UPDATE ${N_IMAGES} set 
-			${N_IMAGES}.primary = (${N_IMAGES}.id = ?) 
-			WHERE ${N_IMAGES}.service_id = ?
-				AND ${N_IMAGES}.USER_id = ?`,
+			${N_IMAGES}.primary = (${N_IMAGES}.id = $1) 
+			WHERE ${N_IMAGES}.service_id = $2
+				AND ${N_IMAGES}.USER_id = $3`,
         [imageId, serviceId, userId],
       );
 
@@ -116,8 +115,8 @@ export class ProvidersService {
       if (remove.primary) {
         await this.serviceImages.query(
           `
-				UPDATE ${N_IMAGES} set ${N_IMAGES}.primary = ?
-				WHERE service_id = ? 
+				UPDATE ${N_IMAGES} set ${N_IMAGES}.primary = $1
+				WHERE service_id = $2 
 				limit 1
 			`,
           [true, remove.service_id],

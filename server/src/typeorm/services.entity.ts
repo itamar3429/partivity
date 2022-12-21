@@ -19,7 +19,7 @@ class Service {
   @Column({ nullable: false })
   user_id: number;
 
-  @Column({ type: 'char', length: 100 })
+  @Column({ type: 'varchar', length: 100 })
   service: typeof serviceEnum[number];
 
   @Column({ name: 'service_type' })

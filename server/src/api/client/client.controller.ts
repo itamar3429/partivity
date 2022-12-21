@@ -14,7 +14,11 @@ import {
 } from '@nestjs/common';
 import { Authenticate } from '../../auth/auth.guard';
 import { TUser, User } from '../../decorators/user.decorator';
-import { addEventServiceDto, getServicesDto } from './client.dto';
+import {
+  addEventServiceDto,
+  BecomeProviderDto,
+  getServicesDto,
+} from './client.dto';
 import { ClientService } from './client.service';
 
 @Controller()
@@ -50,6 +54,8 @@ export class ClientController {
       const res = await this.service.addEventService(user.id, body);
       return res;
     } catch (error) {
+      console.log(error);
+
       return new InternalServerErrorException('Failed to add a service event');
     }
   }
@@ -76,5 +82,17 @@ export class ClientController {
     } catch (error) {
       return new InternalServerErrorException('Failed to book the event');
     }
+  }
+
+  @Post('become-provider')
+  @UsePipes(ValidationPipe)
+  @UseGuards(Authenticate)
+  async becomeProvider(@User() user: TUser, @Body() body: BecomeProviderDto) {
+    const res = this.service.becomeProvider(
+      user.id,
+      body.firstName,
+      body.lastName,
+    );
+    return res;
   }
 }

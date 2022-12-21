@@ -70,7 +70,7 @@ export class EventsService {
         `${N_SCHEDULE}.title AS schedule_title`,
         `${N_SERVICES}.*`,
         `${N_SERVICES}.title AS service_title`,
-        `JSON_ARRAYAGG(obj_id) AS images`,
+        `ARRAY_AGG(obj_id) AS images`,
       ])
       .leftJoin(
         ServiceSchedule,
@@ -91,7 +91,7 @@ export class EventsService {
         event_id: In(eventIds),
         user_id: userId,
       })
-      .groupBy(`${N_EVENT_S}.id`)
+      .groupBy(`${N_EVENT_S}.id, ${N_SERVICES}.id, ${N_SCHEDULE}.id `)
       .getRawMany();
 
     return res;
@@ -138,14 +138,14 @@ export class EventsService {
     return this.events.query(
       `
   SELECT ${N_EVENTS}.*, 
-  JSON_ARRAYAGG(JSON_OBJECT(
+  ARRAY_AGG(JSON_OBJECT_AGG(
 	 'id', ${N_EVENT_S}.id,
 	 'event_id',${N_EVENT_S}.event_id,
 	 'service_id',${N_EVENT_S}.service_id
 	 )) as event_services
 	from ${N_EVENTS} 
   LEFT JOIN ${N_EVENT_S} ON event_id = ${N_EVENTS}.id
-  WHERE user_id = ?
+  WHERE user_id = $1
   GROUP BY ${N_EVENTS}.id
   `,
       [userId],
@@ -156,15 +156,15 @@ export class EventsService {
     return this.events.query(
       `
 	  SELECT ${N_EVENTS}.*, 
-	  JSON_ARRAYAGG(JSON_OBJECT(
+	  ARRAY_AGG(JSON_OBJECT_AGG(
 		 'id', ${N_EVENT_S}.id,
 		 'event_id',${N_EVENT_S}.event_id,
 		 'service_id',${N_EVENT_S}.service_id
 		 )) as event_services
 		from ${N_EVENTS} 
 	  LEFT JOIN ${N_EVENT_S} ON event_id = ${N_EVENTS}.id
-	  WHERE user_id = ?
-	  AND ${N_EVENTS}.id = ?
+	  WHERE user_id = $1
+	  AND ${N_EVENTS}.id = $2
 	  GROUP BY ${N_EVENTS}.id
 	`,
       [userId, eventId],

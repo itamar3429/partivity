@@ -6,7 +6,6 @@ import { useSelector } from "./app/hooks";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import GetUserInfo from "./components/auth/GetUserInfo";
 
 function App() {
 	const className = useSelector((state) => state.transition.className);

@@ -28,9 +28,9 @@ export class ServicesService {
 
   async getServices(userId: number) {
     const services = await this.serviceRepo.query(
-      `SELECT ${N_SERVICES}.*, JSON_ARRAYAGG(obj_id) AS images FROM ${N_SERVICES} 
+      `SELECT ${N_SERVICES}.*, ARRAY_AGG(obj_id) AS images FROM ${N_SERVICES} 
 	 LEFT JOIN ${N_IMAGES} ON service_id = ${N_SERVICES}.id
-	 WHERE ${N_SERVICES}.user_id = ?
+	 WHERE ${N_SERVICES}.user_id = $1
 	 AND deleted = false
 	 GROUP BY ${N_SERVICES}.id`,
       [userId],
@@ -41,10 +41,10 @@ export class ServicesService {
 
   async getService(userId: number, serviceId: number) {
     const service = await this.serviceRepo.query(
-      `SELECT ${N_SERVICES}.*, JSON_ARRAYAGG(obj_id) AS images FROM ${N_SERVICES} 
+      `SELECT ${N_SERVICES}.*, ARRAY_AGG(obj_id) AS images FROM ${N_SERVICES} 
 			LEFT JOIN ${N_IMAGES} ON service_id = ${N_SERVICES}.id
-			WHERE ${N_SERVICES}.user_id = ?
-				AND ${N_SERVICES}.id = ?
+			WHERE ${N_SERVICES}.user_id = $1
+				AND ${N_SERVICES}.id = $2
 			GROUP BY ${N_SERVICES}.id`,
       [userId, serviceId],
     );

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { apiAuth } from "../../api/auth";
-import { useDispatch, useSelector } from "../../app/hooks";
+import { useDispatch } from "../../app/hooks";
 import { setUser } from "../../app/slices/general.slice";
 
 /**
@@ -11,16 +11,17 @@ import { setUser } from "../../app/slices/general.slice";
  *
  * and if he should be given privileges and in what extent (his role)
  */
-function GetUserInfo() {
+function GetUserInfo(once = false) {
 	const dispatch = useDispatch();
 	const authExpirationMinutes = 30;
 
 	useEffect(() => {
 		authentication();
 		// authenticate every 30 minutes
-		setInterval(() => {
-			authentication();
-		}, authExpirationMinutes * 60 * 1000);
+		if (!once)
+			setInterval(() => {
+				authentication();
+			}, authExpirationMinutes * 60 * 1000);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 

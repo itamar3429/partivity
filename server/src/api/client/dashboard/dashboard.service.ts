@@ -2,14 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import Event from '../../../typeorm/event.entity';
 import { LessThanOrEqual, MoreThan, Repository } from 'typeorm';
-import Service from '../../../typeorm/services.entity';
-import ServiceSchedule from '../../../typeorm/schedule.entity';
-import ServiceImages from '../../../typeorm/images.entity';
-
-const N_EVENTS = Event.getName();
-const N_SERVICES = Service.getName();
-const N_SCHEDULE = ServiceSchedule.getName();
-const N_IMAGES = ServiceImages.getName();
 
 @Injectable()
 export class DashboardService {

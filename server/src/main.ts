@@ -23,7 +23,6 @@ async function bootstrap() {
       sameSite: production ? 'none' : 'strict',
       httpOnly: true,
       secure: proxySecure,
-      // secureProxy: proxySecure,
     })(req, res, next);
   });
 

@@ -1,4 +1,4 @@
 #! /bin/bash
 
-docker-compose -f docker-compose.prod.yml build
-docker-compose -f docker-compose.prod.yml up -d --force-recreate
+# docker-compose -f docker-compose.prod.yml build
+docker compose -f docker-compose.prod.yml up --build --force-recreate
